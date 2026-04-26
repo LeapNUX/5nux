@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Deprecated
 ### Removed
+- Internal dogfooding artifacts (`sprint-log/`, `testing-log/`, `requirements/`) — these were the meta-narrative of how testnux was built; not relevant to OSS users.
+- v0.3 integrations folder (`integrations/gstack/`, `integrations/claude-code-mcp/`) — feature is on the roadmap (v0.3 target) but the in-progress code did not belong in the v0.1 release.
 ### Fixed
 ### Security
 

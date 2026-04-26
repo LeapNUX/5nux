@@ -335,17 +335,17 @@ benefit gstack core, not just TestNUX:
 **If you're a gstack maintainer or contributor:** open an issue here
 referencing what you'd like to upstream — we'll co-write the PR.
 
-The gstack `/testnux` skill bundle ships in `integrations/gstack/testnux/` —
-ready for inclusion in the official gstack skill catalog.
+The gstack `/testnux` skill bundle is on the v0.3 roadmap — planned for inclusion
+in the official gstack skill catalog once shipped.
 
 ### → Anthropic / Claude Code native team
 
 TestNUX is designed to be Claude-Code-friendly from day one. Three integration
 points where we'd love collaboration with Anthropic:
 
-- **MCP server registration** — `integrations/claude-code-mcp/` ships a stdio
-  MCP server exposing TestNUX's commands as Claude Code tools. We'd like
-  TestNUX listed in the official Anthropic MCP server directory.
+- **MCP server registration** — v0.3 will ship a stdio MCP server exposing
+  TestNUX's commands as Claude Code tools. We'd like TestNUX listed in the
+  official Anthropic MCP server directory once it ships.
 - **Native skill catalog** — Once gstack's `/testnux` skill is upstream,
   TestNUX commands become slash-command-callable in any Claude Code session.
   An official cross-listing in Anthropic's skill marketplace (when it exists)

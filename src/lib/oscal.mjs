@@ -22,10 +22,18 @@
  */
 
 import { randomUUID } from 'crypto';
+import { v5 as uuidv5 } from 'uuid';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
 export const OSCAL_VERSION = '1.1.2';
+
+/**
+ * Stable namespace UUID for all testnux OSCAL outputs (UUID v4, generated once).
+ * MUST NEVER CHANGE — modifying this would invalidate every UUID in all
+ * previously-generated OSCAL documents, breaking Trestle / RegScale record linkage.
+ */
+const TESTNUX_OSCAL_NAMESPACE = 'b0ab198a-bced-48a9-ae15-e5c4ca770a79';
 
 /** Risk status for controls declined by design (e.g. risk-accepted, out-of-scope). */
 const RISK_STATUS_DEVIATION = 'deviation-requested';
@@ -393,49 +401,24 @@ function normalizeControlId(id) {
 }
 
 /**
- * Derive a deterministic UUID v5-like string from a seed string.
- * Uses SHA-256 via crypto.randomUUID fallback with seeded hash.
- * For true UUID v5 you'd need a proper implementation; this gives
- * stable, UUID-shaped identifiers that survive round-trips.
+ * Generate a deterministic UUID v5 from a seed string.
  *
- * NOTE: This uses a simple hash-to-UUID mapping. In production v0.2,
- * replace with the `uuid` package's v5() for RFC-4122 compliance.
+ * UUID v5 (RFC-4122) is SHA-1 based and combines a namespace UUID with a
+ * name string. Same seed + same namespace = same UUID, every time.
+ *
+ * The TESTNUX_OSCAL_NAMESPACE constant must NEVER change — modifying it
+ * would invalidate UUIDs in all previously-generated OSCAL outputs.
+ *
+ * Why deterministic instead of random: OSCAL assessment-results documents
+ * are regenerated on every test run. Stable UUIDs let downstream tooling
+ * (Trestle, RegScale) recognize them as updates to existing records
+ * instead of creating new ones.
  */
 function deterministicUUID(seed) {
-  // Simple djb2-style hash → hex → UUID shape
-  let h1 = 0xdeadbeef;
-  let h2 = 0x41c6ce57;
-  for (let i = 0; i < seed.length; i++) {
-    const ch = seed.charCodeAt(i);
-    h1 = Math.imul(h1 ^ ch, 2654435761);
-    h2 = Math.imul(h2 ^ ch, 1597334677);
+  if (typeof seed !== 'string' || seed.length === 0) {
+    throw new TypeError('deterministicUUID requires a non-empty string seed');
   }
-  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822519) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489917);
-  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822519) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489917);
-
-  const uint32a = (h1 >>> 0).toString(16).padStart(8, '0');
-  const uint32b = (h2 >>> 0).toString(16).padStart(8, '0');
-  // Use a second pass to fill out 128 bits
-  let h3 = 0xabcdef12 ^ h1;
-  let h4 = 0x98765432 ^ h2;
-  h3 = Math.imul(h3 ^ (h3 >>> 16), 2246822519) ^ Math.imul(h4 ^ (h4 >>> 13), 3266489917);
-  h4 = Math.imul(h4 ^ (h4 >>> 16), 2246822519) ^ Math.imul(h3 ^ (h3 >>> 13), 3266489917);
-  const uint32c = (h3 >>> 0).toString(16).padStart(8, '0');
-  const uint32d = (h4 >>> 0).toString(16).padStart(8, '0');
-
-  // Force version=4 bits (bit 12-15 of third group = 0100) and variant bits
-  const third  = uint32b.slice(0, 4);
-  const fourth = uint32c.slice(0, 4);
-  const thirdFixed  = '4' + third.slice(1);          // version 4
-  const fourthFixed = ((parseInt(fourth[0], 16) & 0x3) | 0x8).toString(16) + fourth.slice(1); // variant 10xx
-
-  return [
-    uint32a.slice(0, 8),
-    uint32b.slice(0, 4),
-    thirdFixed,
-    fourthFixed,
-    uint32c.slice(0, 4) + uint32d.slice(0, 8),
-  ].join('-');
+  return uuidv5(seed, TESTNUX_OSCAL_NAMESPACE);
 }
 
 /**

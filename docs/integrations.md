@@ -35,28 +35,26 @@ LLM integration details:
 - `--dry-run` flag prints planned LLM calls and estimated cost before executing
 - `--max-spend <USD>` aborts if estimated cost exceeds the threshold
 
-### v0.3 — gstack skill bundle
+### v0.3 — gstack skill bundle (planned)
 
-v0.3 ships `/testnux` as a first-class gstack skill. The skill wraps the standalone CLI and adds:
+v0.3 will ship `/testnux` as a first-class gstack skill. The skill will wrap the standalone CLI and add:
 
 - Browser-coupled discovery (`testnux discover` via `claude-in-chrome` MCP)
 - Multi-agent batch plan generation (`testnux batch-plan`)
 - Design-review and QA enrichment loops
 
-The standalone CLI remains the primary distribution path. gstack is an optional integration for teams already using gstack.
+The standalone CLI remains the primary distribution path. gstack will be an optional integration for teams already using gstack.
 
-Install (once gstack integration ships):
+Usage (once shipped):
 
 ```
 /testnux init login --industry general
 /testnux report login
 ```
 
-### v0.3 — MCP server for Claude Code
+### v0.3 — MCP server for Claude Code (planned)
 
-v0.3 also ships an MCP (Model Context Protocol) server that exposes TestNUX as a tool in Claude Code. This enables inline test-plan generation, report access, and RTM queries without leaving the editor.
-
-Server entry point: `integrations/claude-code-mcp/server.mjs`
+v0.3 will also ship an MCP (Model Context Protocol) server that exposes TestNUX as a tool in Claude Code. This will enable inline test-plan generation, report access, and RTM queries without leaving the editor.
 
 Usage (once shipped):
 
@@ -65,8 +63,8 @@ Usage (once shipped):
 {
   "mcpServers": {
     "testnux": {
-      "command": "node",
-      "args": ["./node_modules/testnux/integrations/claude-code-mcp/server.mjs"]
+      "command": "npx",
+      "args": ["-y", "testnux", "mcp"]
     }
   }
 }

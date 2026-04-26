@@ -20,9 +20,9 @@ import {
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-/** Strict UUID v4 regex per RFC-4122 §4.4. */
-const UUID_V4_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+/** Strict UUID v5 regex per RFC-4122 §4.3 (namespace + SHA-1, version nibble = 5). */
+const UUID_V5_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 /** Permissive UUID regex (any version) — matches what oscal.mjs checkUUID uses. */
 const UUID_LOOSE_RE =
@@ -75,11 +75,11 @@ describe('toOSCAL — happy path', () => {
     expect(UUID_LOOSE_RE.test(ar.uuid)).toBe(true);
   });
 
-  it('TC-OSCAL-03: assessment-results UUID is version-4 shaped (version nibble = 4)', () => {
+  it('TC-OSCAL-03: assessment-results UUID is version-5 shaped (version nibble = 5)', () => {
     const doc = toOSCAL(buildSCA());
     const ar = doc['assessment-results'];
-    // deterministicUUID forces version=4 and variant=10xx bits
-    expect(UUID_V4_RE.test(ar.uuid)).toBe(true);
+    // deterministicUUID uses uuid v5 (RFC-4122): version nibble = 5, variant = 10xx
+    expect(UUID_V5_RE.test(ar.uuid)).toBe(true);
   });
 
   it('TC-OSCAL-04: metadata has all required NIST OSCAL 1.1.2 fields', () => {
@@ -117,10 +117,10 @@ describe('toOSCAL — happy path', () => {
     expect(r).toHaveProperty('risks');
   });
 
-  it('TC-OSCAL-07: result UUID is version-4 shaped', () => {
+  it('TC-OSCAL-07: result UUID is version-5 shaped', () => {
     const doc = toOSCAL(buildSCA());
     const r = doc['assessment-results'].results[0];
-    expect(UUID_V4_RE.test(r.uuid)).toBe(true);
+    expect(UUID_V5_RE.test(r.uuid)).toBe(true);
   });
 
   it('TC-OSCAL-08: result.start and result.end are ISO-8601', () => {
@@ -146,11 +146,11 @@ describe('toOSCAL — happy path', () => {
     expect(risks[0].title).toMatch(/SC-28/i);
   });
 
-  it('TC-OSCAL-11: each finding UUID is version-4 shaped', () => {
+  it('TC-OSCAL-11: each finding UUID is version-5 shaped', () => {
     const doc = toOSCAL(buildSCA());
     const findings = doc['assessment-results'].results[0].findings;
     for (const f of findings) {
-      expect(UUID_V4_RE.test(f.uuid)).toBe(true);
+      expect(UUID_V5_RE.test(f.uuid)).toBe(true);
     }
   });
 
@@ -160,7 +160,7 @@ describe('toOSCAL — happy path', () => {
     expect(Array.isArray(parties)).toBe(true);
     expect(parties).toHaveLength(1);
     expect(parties[0].name).toBe('Alice Smith');
-    expect(UUID_V4_RE.test(parties[0].uuid)).toBe(true);
+    expect(UUID_V5_RE.test(parties[0].uuid)).toBe(true);
   });
 });
 

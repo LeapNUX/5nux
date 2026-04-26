@@ -320,7 +320,11 @@ export async function runScaPdf(surface, opts = {}) {
     return;
   }
 
-  // Convert markdown to HTML first (using marked if available, else raw)
+  // Convert markdown to HTML first (using marked if available, else raw).
+  // Sanitize the rendered HTML with DOMPurify before feeding it to puppeteer:
+  // marked v12 passes inline HTML through verbatim, so a malicious SCA author
+  // could embed <script>, <img onerror=...>, or <iframe src="file://..."> and
+  // have it execute at PDF render time inside headless Chromium.
   let marked;
   try {
     marked = (await import('marked')).marked;
@@ -328,9 +332,34 @@ export async function runScaPdf(surface, opts = {}) {
     // Non-fatal — use raw wrapping
   }
 
+  // DOMPurify is a runtime dep — always available.
+  const { default: DOMPurify } = await import('isomorphic-dompurify');
+
   const mdContent = fs.readFileSync(existingFile, 'utf-8');
-  const htmlBody = marked ? marked(mdContent) : `<pre>${mdContent}</pre>`;
-  const html = _wrapHtml(htmlBody, `SCA — ${surface}`);
+  const rawHtml = marked
+    ? marked.parse(mdContent, { gfm: true, breaks: false })
+    : `<pre>${mdContent}</pre>`;
+
+  // Strip dangerous elements/attributes while preserving everything a legitimate
+  // SCA document needs: headings, paragraphs, tables, code blocks, links, images.
+  const safeHtml = DOMPurify.sanitize(rawHtml, {
+    ALLOWED_TAGS: [
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'p', 'br', 'hr', 'div', 'span',
+      'strong', 'em', 'code', 'pre', 'blockquote',
+      'ul', 'ol', 'li',
+      'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'a', 'img',
+    ],
+    ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'id', 'class'],
+    ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|data:image\/(?:png|jpeg|gif|webp)):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i,
+    ADD_TAGS: ['style'],
+    ADD_ATTR: ['style'],
+    FORBID_TAGS: ['script', 'iframe', 'object', 'embed', 'form', 'input', 'button'],
+    FORBID_ATTR: ['onload', 'onerror', 'onclick', 'onmouseover', 'onfocus', 'onblur', 'srcset'],
+  });
+
+  const html = _wrapHtml(safeHtml, `SCA — ${surface}`);
 
   const pdfPath = existingFile.replace(/\.md$/, '.pdf');
 

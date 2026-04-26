@@ -14,9 +14,47 @@ jobs:
     name: Developer Certificate of Origin
     runs-on: ubuntu-latest
     steps:
-      - name: Check DCO sign-off on all commits
-        uses: dco-check/dco-check@v1
+      - name: Checkout PR commits
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
         with:
-          # Fail if any commit in the PR is missing a Signed-off-by line.
-          # Contributors must use: git commit -s
-          require_dco: "true"
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Verify Signed-off-by on every commit
+        # Inline DCO check — no external action dep (avoids supply-chain risk).
+        # Walks every commit between PR base and head; fails if ANY commit
+        # lacks a `Signed-off-by:` trailer matching the author's email.
+        # Contributors: use `git commit -s` (or git config alias.cs 'commit -s').
+        run: |
+          set -euo pipefail
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          echo "Checking DCO sign-off on commits ${BASE_SHA}..${HEAD_SHA}"
+
+          MISSING=()
+          while IFS= read -r sha; do
+            [ -z "$sha" ] && continue
+            AUTHOR_EMAIL=$(git log -1 --format='%ae' "$sha")
+            AUTHOR_NAME=$(git log -1 --format='%an' "$sha")
+            EXPECTED="Signed-off-by: ${AUTHOR_NAME} <${AUTHOR_EMAIL}>"
+            if ! git log -1 --format='%B' "$sha" | grep -qF "$EXPECTED"; then
+              MISSING+=("$sha")
+              echo "❌ Commit $sha is missing or has mismatched Signed-off-by"
+              echo "   Expected: $EXPECTED"
+              echo "   Found:    $(git log -1 --format='%B' "$sha" | grep -i 'signed-off-by:' || echo '(none)')"
+            fi
+          done < <(git rev-list "${BASE_SHA}..${HEAD_SHA}")
+
+          if [ "${#MISSING[@]}" -gt 0 ]; then
+            echo ""
+            echo "DCO FAIL: ${#MISSING[@]} commit(s) missing Signed-off-by trailer."
+            echo ""
+            echo "How to fix:"
+            echo "  git rebase -i ${BASE_SHA}    # mark missing commits 'reword'"
+            echo "  # Add to each commit message: Signed-off-by: Your Name <you@example.com>"
+            echo "  # Or amend the most recent commit: git commit --amend -s --no-edit"
+            echo "  git push --force-with-lease"
+            exit 1
+          fi
+
+          echo "✅ DCO PASS — all $(git rev-list --count "${BASE_SHA}..${HEAD_SHA}") commits properly signed off."

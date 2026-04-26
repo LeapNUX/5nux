@@ -12,6 +12,8 @@ This folder shows what TestNUX **PRODUCES** when run against a real codebase (de
 | HTML report | `output/login-execution-report.html` | Self-contained execution report: tabbed view (Pass / Fail / Blocked / Skipped), per-TC cards with embedded screenshots, standards-alignment table, TOC with anchor links |
 | SCA | `output/login-sca-v0.1.md` | Complete 8-section Security Control Assessment: executive summary, per-control inventory, threat coverage, declined-by-design documentation, open items, and sign-off table |
 | Screenshots | `screenshots/` | Per-TC Playwright `afterEach` evidence screenshots (populated when you run the spec) |
+| UAT sign-off log | `output/uat-log.jsonl` | HMAC-SHA256 hash-chained sign-off log (machine-readable; tamper-evident) |
+| UAT sign-off ledger | `output/uat-sign-off.md` | Human-readable rendered version of the sign-off ledger produced by `testnux sign --verify` |
 
 ---
 
@@ -91,6 +93,9 @@ The generated HTML and XLSX open automatically in your browser.
 | `[VERIFY]` confidence markers | SCA Per-Control Inventory, 3+ cells |
 | 8-section SCA structure | `login-sca-v0.1.md` |
 | Declined-by-Design documentation | SCA Section 6 |
+| Hash-chained UAT sign-off log | `uat-log.jsonl` (schema sentinel + 5 entries) |
+| Human-readable sign-off ledger | `uat-sign-off.md` (summary table + per-entry detail + tamper-evidence notes) |
+| `needs-rework` sign-off status | LOGIN-13 entry — TOTP backend not wired |
 
 ### Production lessons baked in
 

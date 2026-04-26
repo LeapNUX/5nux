@@ -186,27 +186,14 @@ program
     'npm install @modelcontextprotocol/sdk',
   )
   .action(async () => {
-    // Resolve server path relative to this file so it works whether testnux
-    // is invoked via `npx testnux mcp`, a global install, or a local clone.
-    const serverUrl = new URL(
-      '../integrations/claude-code-mcp/server.mjs',
-      import.meta.url,
+    // The MCP server is planned for v0.3 and is not yet shipped in this release.
+    console.error(
+      '\nThe TestNUX MCP server is on the roadmap for v0.3 and has not yet shipped.\n\n' +
+        'In the meantime, use the standalone CLI:\n\n' +
+        '  npx testnux <command>\n\n' +
+        'See docs/integrations.md for the v0.3 integration roadmap.\n',
     );
-
-    try {
-      await import(serverUrl.href);
-    } catch (err) {
-      if (err.code === 'ERR_MODULE_NOT_FOUND' && err.message.includes('@modelcontextprotocol')) {
-        console.error(
-          '\nERROR: @modelcontextprotocol/sdk is not installed.\n\n' +
-            'Install it with:\n\n  npm install @modelcontextprotocol/sdk\n\n' +
-            'Then run: npx testnux mcp\n',
-        );
-        process.exit(1);
-      }
-      console.error(err.message);
-      process.exit(1);
-    }
+    process.exit(1);
   });
 
 // ── rtm ───────────────────────────────────────────────────────────────────────
