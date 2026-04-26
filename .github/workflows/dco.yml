@@ -1,0 +1,22 @@
+# Copyright 2026 Chu Ling
+# SPDX-License-Identifier: Apache-2.0
+
+name: DCO Check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - "release/**"
+
+jobs:
+  dco:
+    name: Developer Certificate of Origin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check DCO sign-off on all commits
+        uses: dco-check/dco-check@v1
+        with:
+          # Fail if any commit in the PR is missing a Signed-off-by line.
+          # Contributors must use: git commit -s
+          require_dco: "true"

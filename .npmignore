@@ -1,0 +1,26 @@
+# Development & CI
+.github/
+.git*
+.editorconfig
+.eslintrc.json
+.prettierrc.json
+
+# Docs and examples (too large for npm bundle)
+docs/
+examples/
+
+# Tests and coverage
+test/
+src/__tests__/
+*.test.js
+*.test.mjs
+*.test.ts
+*.spec.js
+*.spec.mjs
+*.spec.ts
+coverage/
+.nyc_output/
+
+# Misc
+*.log
+.DS_Store

@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/StillNotBald/testing-hub/schemas/test-plan-frontmatter.schema.json",
+  "title": "Testing Hub — test-plan.md Frontmatter",
+  "description": "JSON Schema (draft-07) for the YAML frontmatter block at the top of every test-plan.md file. Used by `testing-hub validate` to lint test-pass folders.",
+  "type": "object",
+  "required": ["status", "industry", "r_ids", "tc_prefix"],
+  "additionalProperties": true,
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Execution status of this test plan. Pick exactly one from the allowed taxonomy.",
+      "enum": [
+        "DRAFT",
+        "READY",
+        "IN-PROGRESS",
+        "DONE",
+        "BLOCKED-IMPLEMENTATION",
+        "BLOCKED-CONFIG",
+        "SKIPPED",
+        "ARCHIVED"
+      ],
+      "examples": ["DRAFT", "READY", "DONE", "BLOCKED-CONFIG"]
+    },
+    "industry": {
+      "type": "string",
+      "description": "Industry profile driving the standards-alignment table. Controls which standards appear in the HTML report footer.",
+      "minLength": 1,
+      "examples": ["general", "fintech", "healthcare", "gov", "edu", "ecommerce"]
+    },
+    "r_ids": {
+      "type": "array",
+      "description": "List of product requirement IDs (R-XX) that this test plan covers. Must match IDs in requirements/REQUIREMENTS.md.",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^R-\\d+$",
+        "description": "A single requirement ID in the format R-<integer> (e.g. R-42, R-100)."
+      },
+      "examples": [["R-01", "R-42", "R-99"]]
+    },
+    "tc_prefix": {
+      "type": "string",
+      "description": "TC ID prefix used throughout this plan (e.g. 'LOGIN', 'DASH', 'ADM-SET'). Must be UPPER-KEBAB-CASE, 1-12 characters.",
+      "pattern": "^[A-Z0-9-]{1,12}$",
+      "examples": ["LOGIN", "DASH", "ADM-SET", "REG"]
+    },
+    "_review_required": {
+      "type": "boolean",
+      "description": "Set true when the plan was auto-generated or not yet human-reviewed. The validate command emits a warning when this is true and status is READY or higher.",
+      "default": false,
+      "examples": [true, false]
+    },
+    "uat_status": {
+      "type": "string",
+      "description": "UAT sign-off status. Used in v0.3 for the stakeholder sign-off workflow.",
+      "enum": ["pending", "accepted", "rejected", "needs-rework"],
+      "default": "pending",
+      "examples": ["pending", "accepted", "rejected"]
+    },
+    "industry_standards": {
+      "type": "array",
+      "description": "Explicit list of standards exercised by this test plan. Overrides the industry profile defaults if provided.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "examples": [
+        ["OWASP ASVS 4.0", "WCAG 2.2 AA"],
+        ["NIST 800-63B", "NYDFS 23 NYCRR 500"]
+      ]
+    },
+    "slug": {
+      "type": "string",
+      "description": "Kebab-case page identifier matching the testing-log folder name suffix (e.g. 'dashboard-login').",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "examples": ["login", "dashboard-login", "admin-settings"]
+    },
+    "date": {
+      "type": "string",
+      "description": "ISO 8601 date of initial scaffold (YYYY-MM-DD).",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "examples": ["2026-04-26"]
+    }
+  }
+}
