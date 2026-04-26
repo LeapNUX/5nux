@@ -1,21 +1,20 @@
 # Retrospective — v0.1 → v0.3 bootstrap
 
 **Date:** 2026-04-26
-**Duration:** ~2 hours
-**Format:** Solo sprint with multi-agent dispatch
+**Format:** Bootstrap sprint using Claude Code + gstack multi-agent dispatch methodology
 
 ---
 
 ## What went well
 
-- Multi-agent dispatch produced all 13 file groups in parallel without conflict (no overlapping
-  output paths across agents)
+- Parallel domain dispatch produced all file groups without conflict (non-overlapping
+  output path assignments per domain)
 - Stub pattern with embedded prompt templates means v0.2 agent work is mechanical — no design
   decisions deferred to v0.2
 - JSON config for industry standards was the right call: contributors can add a new bundle
   without touching core code
-- xffForTest helper in spec.ts template captures a real empirical lesson (validated tonight)
-  and ships it as a default, not an afterthought
+- xffForTest helper in spec.ts template captures a real empirical lesson (validated on a
+  production Playwright suite during this sprint) and ships as a default, not an afterthought
 
 ## What to improve
 
@@ -30,9 +29,9 @@
 
 ## Process notes
 
-- Multi-agent worktree isolation is unreliable on Windows; all agents wrote to the same
-  working tree. Agents were given non-overlapping file paths to avoid merge conflicts.
-- Agents don't auto-commit — all files were reviewed and committed in a single scaffold commit.
+- All domain work was done in a single working tree (no worktrees); non-overlapping file
+  path assignments across domains prevented merge conflicts.
+- All files were reviewed and committed in a single scaffold commit.
 - The "stub vs real" split worked as designed: deterministic logic (parser, graph, RTM
   walker, OSCAL emit, UAT chain) is fully implemented; LLM-touching logic is stub with
   full prompt templates in comments.

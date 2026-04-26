@@ -13,7 +13,7 @@ _review_required: false
 **Target:** `bin/testing-hub.mjs` (CLI entry point)
 **Node:** >= 20.0.0
 **Invocation pattern:** `node bin/testing-hub.mjs <command> [options]`
-**Working directory:** repo root (`C:/Users/Chu Ling/Desktop/Projects/testing-hub/`)
+**Working directory:** repo root (wherever you cloned `testing-hub`)
 
 ---
 

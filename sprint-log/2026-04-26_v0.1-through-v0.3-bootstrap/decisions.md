@@ -1,6 +1,6 @@
 # Architectural + Product Decisions — v0.1 → v0.3 bootstrap
 
-Decision journal for the 2026-04-26 one-night ship session.
+Decision journal for the 2026-04-26 bootstrap sprint.
 Format: Date / Context / Options / Chosen path / Rationale / Consequences.
 
 ---
@@ -270,7 +270,7 @@ If test N triggers 6 wrong-password attempts, test N+1 hits 429 within the same 
 **Chosen path:** Option 2 — `xffForTest(title)` function in spec.ts template derives a
 deterministic `10.99.X.Y` IP from the test title hash. The rate-limiter trusts LAST-HOP XFF.
 
-**Rationale:** Validated empirically tonight: each test gets its own IP bucket, reruns
+**Rationale:** Validated empirically on a production Playwright suite: each test gets its own IP bucket, reruns
 get the same IP (deterministic), no artificial sleeps needed. Requires rate-limiter to
 trust last-hop XFF (not first-hop — trivially spoofable by clients).
 

@@ -63,6 +63,32 @@ See **[docs/adoption-checklist.md](docs/adoption-checklist.md)** — includes ti
 
 ---
 
+## Premium tier (planned v0.4+)
+
+The CLI is free forever (Apache 2.0). The premium tier adds hosted infrastructure, a multi-tenant auditor portal, GRC platform integrations, and human services (white-glove onboarding, training, quarterly review, advisory). Enterprise-grade features (liability cover, cryptographic notarization, WORM evidence retention) are on the roadmap but not yet offered — see `docs/premium.md` for the honest status.
+
+See **[docs/premium.md](docs/premium.md)** for the full tier breakdown, pricing matrix, feature list, and what stays free forever. First 3 customers in each tier get founder-rate pricing — contact `chu@stillnotbald.com`.
+
+---
+
+## How Testing Hub compares to alternatives
+
+|  | Testing Hub | Vanta / Drata / Secureframe | Comp AI / Delve |
+|---|---|---|---|
+| **Distribution** | OSS CLI (Apache 2.0); local-first | Hosted SaaS, per-seat | Hosted SaaS / OSS hybrid |
+| **Where evidence lives** | Your git repo (markdown + screenshots + OSCAL JSON) | Vendor's cloud (lock-in) | Vendor's cloud |
+| **What it produces** | Test plans + RTM + SCA + UAT log | Continuous evidence collection + auditor portal | AI-drafted policies + auto-screenshot |
+| **Auditor handoff** | Export package (markdown + OSCAL); auditor reads in any tool | Auditor logs into their platform | Auditor logs into their platform |
+| **Pricing** | Free OSS forever; paid SaaS layer (planned v0.4+) | $8K-$50K+/yr per company | $$ per company |
+| **AI-assisted plan/test authoring** | v0.2 (opt-in, BYO Claude API key) | No (focus on policy + evidence) | Yes (core feature) |
+| **Federal compliance (OSCAL)** | v0.2 emit-native | Partial via integrations | Limited |
+| **Lock-in risk** | None (your data, your repo, exit anytime) | High (data lives in their DB) | Medium |
+| **Best fit** | Engineering-led teams that want git-native evidence + want to keep their auditor relationship | Teams that want a turnkey GRC dashboard for their CISO | Teams that want AI to write their policies for them |
+
+**Where Testing Hub feeds into the others:** v0.2 will export your evidence package as OSCAL JSON (NIST 1.1.2) which Vanta/Drata/Secureframe/RegScale all import. Testing Hub is the eng-side authoring layer; GRC platforms are the CISO dashboard layer. They're complementary, not competitive — pick Testing Hub if you want git-native authorship; pick a GRC platform on TOP if you want a hosted dashboard for your CISO.
+
+---
+
 ## Why this exists
 
 Most testing tools are **runtime-focused** — run tests, show results. They stop there.
@@ -172,7 +198,7 @@ examples/demo-dashboard/
 
 Run `npx testing-hub demo` to generate and open these locally.
 
-A hosted live demo is available at: **[testing-hub.dev/demo]** *(link active at v0.1 launch)*
+**Live demo:** Browse the [sample execution report](./examples/demo-dashboard/output/login-execution-report.html) — a real 1300+ line self-contained HTML you can open offline. No SaaS dashboard required.
 
 ---
 
@@ -232,7 +258,7 @@ The date-prefix on test-pass folders creates audit snapshots — every engagemen
 - `[VERIFY]` confidence markers on every LLM-generated cell
 - JSON Schema for `test-plan.md` frontmatter
 
-### v0.2 (~6–8 weeks post-v0.1)
+### v0.2 (Q3 2026 target; depends on traction + founder full-time decision)
 
 - OSCAL JSON export alongside markdown (Trestle integration; 1-day spike first)
 - RTM generator: `testing-hub rtm` — generates `TRACEABILITY.md` from requirements + sprint log + code grep
@@ -242,7 +268,7 @@ The date-prefix on test-pass folders creates audit snapshots — every engagemen
 - Eval harness for LLM-generated SCA output (5 held-out examples, scoring rubric, regression CI)
 - Human-edit-survives-regeneration markers for RTM rows and SCA operational notes
 
-### v0.3 (~6–8 weeks post-v0.2)
+### v0.3 (Q4 2026 target if v0.2 + paying customers happen on schedule)
 
 - UAT sign-off layer: per-TC `uat_status` field, stakeholder HTML dropdown, HMAC e-signature, `uat-log.jsonl` audit trail
 - Business requirements (BR-XX) layer above R-XX, RTM grows a column

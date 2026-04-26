@@ -20,17 +20,6 @@ Include:
 - Steps to reproduce or a proof-of-concept (PoC).
 - Your suggested severity (Critical / High / Medium / Low).
 
-### GPG encryption (optional)
-
-If you need to send sensitive details, you may encrypt your message to the
-maintainer's GPG key. Key fingerprint:
-
-```
-[INSERT GPG KEY FINGERPRINT]
-```
-
-The key is available at `https://keys.openpgp.org` — search by the email above.
-
 ## Disclosure policy
 
 - We will acknowledge receipt within **2 business days**.

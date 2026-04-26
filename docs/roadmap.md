@@ -1,5 +1,7 @@
 # Roadmap
 
+> **Pacing reality:** Testing Hub is a side-project as of 2026-04-26. The 60-day decision date (2026-06-25) determines whether v0.2 ships in Q3 2026 (full-time pace) or Q4 2026 (sustainable side-project pace). Either way, v0.1 ships first; everything else flows from there.
+
 ---
 
 ## Guiding principle
@@ -60,7 +62,7 @@ The deterministic pipeline (markdown → HTML + XLSX) ships in v0.1 and does not
 
 ---
 
-## v0.2 — ~6–8 weeks post-v0.1
+## v0.2 — Q3 2026 target (depends on traction + founder full-time decision per launch plan)
 
 **Theme:** LLM acceleration + RTM + SCA. Close the manual gaps; extend Testing Hub to steps 4 and 5 of the regulator-evidence chain.
 
@@ -96,7 +98,7 @@ Run the OSCAL feasibility spike (1 day). FedRAMP RFC-0024 mandates machine-reada
 
 ---
 
-## v0.3 — ~6–8 weeks post-v0.2 (~3 months from v0.1)
+## v0.3 — Q4 2026 target if v0.2 + paying customers happen on schedule
 
 **Theme:** UAT layer, multi-industry, ecosystem integrations. Make Testing Hub CISO-buyable.
 

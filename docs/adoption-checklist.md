@@ -210,27 +210,11 @@ Tasks 1–3 can run in parallel once you have your first test pass scaffolded. T
 
 ## What if you can't do this work yourself? — Premium tier
 
-If the 4 tasks above are blockers — no team capacity, no auditor relationship, no time for cultural change — the **premium tier** (planned v0.4+) offers:
+If the 4 tasks above are blockers — no team capacity, no auditor relationship, no time for cultural change — the **premium tier** (planned v0.4+) covers this and much more.
 
-- **White-glove onboarding** (3 days remote): we run all 4 tasks above with you
-  - We extract your R-IDs from your existing requirements docs
-  - We train your team on the status taxonomy in a working session against your real backlog
-  - We set up UAT_SECRET, workflow, and the first 5 sign-off attestations
-  - We facilitate one auditor introduction + Zoom (we have relationships with A-LIGN, Schellman, and BDO)
+See **[docs/premium.md](docs/premium.md)** for the full offering: hosted runs, auditor portal, liability cover, cryptographic notarization, WORM retention, GRC integrations, white-glove onboarding, training, quarterly review, and embedded consulting. The OSS is not a limited version of the paid product — it is the complete tool. Premium sells the hosted infrastructure, the assurance, and the human time that the CLI was never designed to provide.
 
-- **Custom industry standards bundle** (2 days): if your industry isn't in the 6 we ship (`general`, `fintech`, `healthcare`, `gov`, `edu`, `ecommerce`), we build a bundle for you (e.g., insurance, supply-chain, energy)
-
-- **Quarterly review** (4 hours/quarter): we audit your SCA + RTM artifacts, flag drift, and recommend fixes before your next audit engagement
-
-- **Embedded consulting** (10–40 hours/month): we sit in your sprint reviews and keep the discipline alive as your team and codebase evolve
-
-**Pricing:** TBD post-validation (Q3 2026 launch target).
-
-**Contact:** `chu@stillnotbald.com` — note we're solo-founded; bandwidth is limited; first 3 customers get founder-rate pricing.
-
-> The OSS gives you the **skill**. The premium tier gives you the **service** when you need someone to run the play with you.
-
-The OSS is not a limited version of the paid product. It is the complete tool. The premium tier sells the human work that the tool was never designed to do — domain knowledge extraction, cultural change management, and auditor relationship access.
+**Contact:** `chu@stillnotbald.com` — first 3 customers in each tier get founder-rate pricing.
 
 ---
 

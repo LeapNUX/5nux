@@ -578,6 +578,44 @@ describe('discover — URL fetch errors', () => {
   });
 });
 
+describe('discover — --max-spend enforcement', () => {
+  it('exits 1 and does NOT call API when estimated cost exceeds --max-spend 0.01', async () => {
+    process.env.CLAUDE_API_KEY = 'sk-ant-test-key';
+
+    let thrown;
+    try {
+      await runDiscover('https://example.com/login', {
+        output:   tmpDir,
+        maxSpend: 0.01,
+        json:     false,
+      });
+    } catch (err) {
+      thrown = err;
+    }
+
+    expect(thrown).toBeDefined();
+    expect(thrown.exitCode).toBe(1);
+    expect(thrown.message).toMatch(/max-spend/i);
+    // Critical: API must NOT have been called before aborting
+    expect(mockMessageCreate).not.toHaveBeenCalled();
+  });
+
+  it('proceeds to API call when estimated cost is within --max-spend 100', async () => {
+    process.env.CLAUDE_API_KEY = 'sk-ant-test-key';
+
+    await runDiscover('https://example.com/login', {
+      output:   tmpDir,
+      maxSpend: 100,
+      json:     false,
+    });
+
+    // API should have been called (cost estimate is well under $100)
+    expect(mockMessageCreate).toHaveBeenCalledOnce();
+    // And scenarios.md should be written
+    expect(fs.existsSync(path.join(tmpDir, 'scenarios.md'))).toBe(true);
+  });
+});
+
 describe('discover — slug derivation', () => {
   it('derives slug from URL path: /auth/login → "auth-login"', async () => {
     process.env.CLAUDE_API_KEY = 'sk-ant-test-key';

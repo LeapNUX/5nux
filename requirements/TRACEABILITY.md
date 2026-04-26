@@ -49,7 +49,7 @@
 | R-08 | spec.ts template: per-test XFF rate-limit isolation | DONE | `templates/spec.ts` (`xffForTest` helper, lines 66-74) | Manual review: djb2 hash verified deterministic across identical test titles | — | — |
 <!-- testing-hub:row R-08 end -->
 <!-- testing-hub:row R-09 begin -->
-| R-09 | spec.ts template: form.requestSubmit pattern | DONE | `templates/spec.ts` (inline comment + pattern, lines 11-18) | Manual review: pattern matches FirstLeap Playwright prod-build fix (2026-04 incident) | — | — |
+| R-09 | spec.ts template: form.requestSubmit pattern | DONE | `templates/spec.ts` (inline comment + pattern, lines 11-18) | Manual review: pattern empirically validated in a production Playwright suite (2026-04 incident — React form submit race) | — | — |
 <!-- testing-hub:row R-09 end -->
 <!-- testing-hub:row R-10 begin -->
 | R-10 | spec.ts template: afterEach evidence capture | DONE | `templates/spec.ts` (`captureEvidence` + afterEach hook) | Manual review: hook present; custom-context note documented inline | — | — |

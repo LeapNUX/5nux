@@ -73,7 +73,40 @@ export async function runDiscover(url, opts = {}) {
     maxTokens = DEFAULT_MAX_TOKENS,
     dryRun    = false,
     json      = false,
+    maxSpend  = null,
   } = opts;
+
+  // ── Step 0: Validate URL scheme (SSRF / file:// guard) ───────────────────
+
+  {
+    let parsed;
+    try { parsed = new URL(url); } catch {
+      printError(json, `Invalid URL: ${url}\n\n  discover only accepts http:// or https:// URLs.`);
+      const err = new Error('Invalid URL');
+      err.exitCode = 1;
+      throw err;
+    }
+    // Reject non-HTTP schemes (file://, data:, javascript:, etc.)
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      printError(json,
+        `URL scheme "${parsed.protocol}" is not allowed.\n\n` +
+        '  discover only fetches http:// or https:// URLs.\n' +
+        '  file://, data:, javascript: and other schemes are rejected.',
+      );
+      const err = new Error(`Disallowed URL scheme: ${parsed.protocol}`);
+      err.exitCode = 1;
+      throw err;
+    }
+    // Reject AWS metadata IP and other link-local addresses (basic SSRF guard)
+    const host = parsed.hostname.toLowerCase();
+    const BLOCKED_HOSTS = ['169.254.169.254', 'metadata.google.internal', 'metadata.internal'];
+    if (BLOCKED_HOSTS.includes(host)) {
+      printError(json, `URL host "${parsed.hostname}" is blocked (SSRF protection).`);
+      const err = new Error(`Blocked host: ${parsed.hostname}`);
+      err.exitCode = 1;
+      throw err;
+    }
+  }
 
   // ── Step 1: Check CLAUDE_API_KEY ──────────────────────────────────────────
 
@@ -211,6 +244,25 @@ export async function runDiscover(url, opts = {}) {
       console.log('');
     }
     return;
+  }
+
+  // ── Step 4b: Enforce --max-spend BEFORE API call ──────────────────────────
+
+  if (maxSpend !== null) {
+    if (costEstimate > maxSpend) {
+      const msg =
+        `Estimated cost ($${costEstimate.toFixed(2)}) exceeds --max-spend ($${maxSpend.toFixed(2)}). ` +
+        `Aborting before API call. Re-run with higher --max-spend or --dry-run to inspect.`;
+      printError(json, msg);
+      const err = new Error('Cost estimate exceeds --max-spend');
+      err.exitCode = 1;
+      throw err;
+    } else {
+      if (!json) {
+        console.log(`  ✓ Estimated cost ($${costEstimate.toFixed(2)}) within --max-spend ($${maxSpend.toFixed(2)}). Proceeding.`);
+        console.log('');
+      }
+    }
   }
 
   // ── Step 5: Call Claude API ───────────────────────────────────────────────

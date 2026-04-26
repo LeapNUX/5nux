@@ -36,3 +36,19 @@ jobs:
 
       - name: Test
         run: npm test --if-present
+
+  lint-templates:
+    name: Lint templates (security)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Lint templates for forbidden patterns
+        run: node scripts/lint-templates.mjs

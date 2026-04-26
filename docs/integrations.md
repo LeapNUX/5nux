@@ -30,7 +30,7 @@ The v0.1 deterministic core (`init`, `report`, `validate`, `demo`, `doctor`) rem
 
 LLM integration details:
 
-- Model: Claude Sonnet for mechanical tasks (codify, doc), Claude Opus for reasoning tasks (plan, discover)
+- Model: configurable via `--model` flag; default is a cost/speed-balanced Sonnet-class model for mechanical tasks, Opus-class for reasoning tasks (see `docs/v0.2-llm-agents.md`)
 - All LLM-generated cells render with `[VERIFY]` markers until human-attested
 - `--dry-run` flag prints planned LLM calls and estimated cost before executing
 - `--max-spend <USD>` aborts if estimated cost exceeds the threshold

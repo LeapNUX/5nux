@@ -15,13 +15,20 @@
 ## Step 1 — Install
 
 ```bash
-npm install -g testing-hub@next
+# Until v0.1.0 hits npm, install from source:
+git clone https://github.com/StillNotBald/testing-hub.git
+cd testing-hub
+npm install
+npm link    # makes `testing-hub` command available globally
+testing-hub --version    # verify
 ```
 
-Expected output:
+Once we publish v0.1.0 to npm (target: post-validation), this becomes `npm install -g testing-hub`.
+
+Expected output from `testing-hub --version`:
 
 ```
-added 47 packages in 3s
+testing-hub 0.0.1
 ```
 
 ---

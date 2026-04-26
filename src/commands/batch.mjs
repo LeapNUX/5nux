@@ -80,7 +80,32 @@ export async function runBatchPlan(opts = {}) {
   const agentCount  = Math.ceil(pageList.length / pagesPerAgent);
   const costLow     = pageList.length * 0.5;
   const costHigh    = pageList.length * 2.0;
-  const costEstimate = `$${costLow.toFixed(2)}–$${costHigh.toFixed(2)}`;
+  const costEstimateStr = `$${costLow.toFixed(2)}–$${costHigh.toFixed(2)}`;
+
+  // ── Enforce --max-spend BEFORE any LLM call ───────────────────────────────
+  // Use the conservative HIGH-end estimate so users never accidentally overspend.
+  if (maxSpend !== null) {
+    if (costHigh > maxSpend) {
+      const msg =
+        `Estimated cost (high-end $${costHigh.toFixed(2)} for ${pageList.length} pages) ` +
+        `exceeds --max-spend ($${maxSpend.toFixed(2)}). ` +
+        `Aborting before API call. Re-run with higher --max-spend or --dry-run to inspect.`;
+      if (json) {
+        process.stderr.write(JSON.stringify({ event: 'batch-plan.error', message: msg }) + '\n');
+      } else {
+        console.error('');
+        console.error('  ❌ ' + msg);
+        console.error('');
+      }
+      const err = new Error('Cost estimate exceeds --max-spend');
+      err.exitCode = 1;
+      throw err;
+    } else {
+      if (!json) {
+        console.log(`  ✓ Estimated cost (high-end $${costHigh.toFixed(2)}) within --max-spend ($${maxSpend.toFixed(2)}). Proceeding.`);
+      }
+    }
+  }
 
   log(json, {
     event:         'batch-plan.stub',
@@ -88,7 +113,7 @@ export async function runBatchPlan(opts = {}) {
     agentCount,
     pagesPerAgent,
     maxSpend,
-    costEstimate,
+    costEstimate:  costEstimateStr,
     version:       'v0.1',
   });
 
@@ -99,14 +124,9 @@ export async function runBatchPlan(opts = {}) {
     console.log(`  Pages          : ${pageList.length} (${pageList.join(', ')})`);
     console.log(`  Pages/agent    : ${pagesPerAgent}`);
     console.log(`  Agent count    : ${agentCount} (estimated)`);
-    console.log(`  Cost estimate  : ${costEstimate} (discover+plan+codify+enrich)`);
+    console.log(`  Cost estimate  : ${costEstimateStr} (discover+plan+codify+enrich)`);
     if (maxSpend !== null) {
       console.log(`  Max spend      : $${maxSpend.toFixed(2)}`);
-      if (costLow > maxSpend) {
-        console.log('');
-        console.log(`  WARNING: Estimated low-end cost ($${costLow.toFixed(2)}) exceeds`);
-        console.log(`  --max-spend ($${maxSpend.toFixed(2)}). Job would be aborted in v0.2.`);
-      }
     }
     console.log('');
     console.log('  In v0.2, this command will:');
@@ -121,7 +141,7 @@ export async function runBatchPlan(opts = {}) {
     console.log('  3. REPLACEMENT-AGENT PATTERN — each sub-agent gets a fresh');
     console.log('     context window; no single agent accumulates a 200k-token');
     console.log('     history. The coordinator dispatches via the Claude API');
-    console.log('     (Claude claude-sonnet-4-6 for speed + cost balance).');
+    console.log('     (claude-sonnet-4-6 for speed + cost balance).');
     console.log('');
     console.log('  4. PER-PAGE PIPELINE — for each page in the batch:');
     console.log('     a. discover <url>    → <slug>-scenarios.md');
@@ -154,7 +174,7 @@ export async function runBatchPlan(opts = {}) {
         pages:        pageList,
         agentCount,
         pagesPerAgent,
-        costEstimate,
+        costEstimate: costEstimateStr,
         message:      'v0.1 stub — see v0.2 roadmap for LLM-powered batch planning',
       }) + '\n',
     );

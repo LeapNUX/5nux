@@ -88,11 +88,32 @@ Both MCP servers are free and run locally:
 
 ---
 
-## Hosted SaaS layer (planned v0.4+)
+## Premium tier (planned v0.4+)
 
-A hosted SaaS tier is planned for v0.4 and beyond. It will be a paid tier with pricing determined after OSS validation is complete.
+A paid hosted tier is planned for v0.4 and beyond. Pricing is TBD pending OSS validation (Q3 2026 target).
 
-**The OSS CLI remains free and fully functional regardless of SaaS tier.** This commitment was made at the project's founding and is documented in the LICENSE and NOTICE files. The hosted layer adds convenience (shared artifact storage, team dashboards, managed evidence hosting) — it does not gate any current functionality.
+**The OSS CLI remains free and fully functional regardless of what the paid tiers include.** This commitment was made at the project's founding (CEO ceremony D3) and is documented in the LICENSE and NOTICE files.
+
+The premium tier adds costs in three categories:
+
+| Category | What you're paying for | Not paying for |
+|---|---|---|
+| **Hosted SaaS** | Cloud runs, evidence vault, auditor portal, multi-tenant org, SSO | SCA/RTM generation, OSCAL emit, industry bundles — those are free |
+| **Assurance** | Liability cover (E&O insurance), cryptographic notarization, WORM retention | The discipline itself — the discipline is free |
+| **Human time** | White-glove onboarding, training, quarterly review, advisory | The tooling that lets you do it yourself — that's free |
+
+**Indicative tier pricing (TBD):**
+
+| Tier | Range | Anchor value |
+|---|---|---|
+| Solo / Pro | $99–499/mo | Hosted runs + cloud vault |
+| Team | $999–2,999/mo | Multi-tenant + auditor portal + SSO |
+| Enterprise | Custom | Liability cover + cryptographic notarization + WORM |
+| Service add-ons | $5K–100K project | Onboarding, training, advisory, readiness assessments |
+
+First 3 customers in each tier receive 50% off year-one (founder-rate trade for case study).
+
+See **[docs/premium.md](docs/premium.md)** for the full feature breakdown, detailed pricing matrix, what stays free forever, and how to contact us.
 
 ---
 

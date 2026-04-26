@@ -56,23 +56,27 @@ Requirements covered in this sprint (from requirements/REQUIREMENTS.md):
 
 ---
 
-## Multi-agent dispatch summary
+## Build approach summary
 
-| Agent | Task | Files produced |
+This sprint used Claude Code (gstack multi-agent dispatch pattern) with non-overlapping
+file-path assignments to parallelise scaffolding across logical domains. Files were reviewed
+and committed in a single scaffold commit after all agents completed.
+
+| Domain | Task | Files produced |
 |---|---|---|
-| Agent-1 (Sonnet) | Core CLI scaffolding | bin/testing-hub.mjs, package.json, .eslintrc.json, .prettierrc.json, .editorconfig, .gitignore, .npmignore |
-| Agent-2 (Sonnet) | Commands: init, validate, doctor, demo | src/commands/init.mjs, validate.mjs, doctor.mjs, demo.mjs |
-| Agent-3 (Sonnet) | Commands: report, sign, run, compare | src/commands/report.mjs, sign.mjs, env.mjs, visual.mjs |
-| Agent-4 (Sonnet) | Commands: rtm, br, sca | src/commands/rtm.mjs, br.mjs, sca.mjs, sca-oscal.mjs |
-| Agent-5 (Sonnet) | v0.2 stub commands | src/commands/discover.mjs, plan.mjs, codify.mjs, enrich.mjs, batch.mjs |
-| Agent-6 (Sonnet) | Core libraries | src/lib/parser.mjs, graph.mjs, oscal.mjs, uat-log.mjs |
-| Agent-7 (Sonnet) | Industry standards JSON | src/config/industry-standards/{general,fintech,healthcare,gov,edu,ecommerce}.json |
-| Agent-8 (Sonnet) | Templates | templates/{test-plan.md, spec.ts, uat-log.jsonl, business-requirements.md, README.md}, templates/sca/v1.0.md |
-| Agent-9 (Sonnet) | Schemas | schemas/test-plan-frontmatter.schema.json |
-| Agent-10 (Sonnet) | Docs | docs/{getting-started.md, concepts.md, reference.md, roadmap.md, integrations.md}, docs/architecture/data-model.md, docs/v0.2-*.md, docs/v0.3-*.md |
-| Agent-11 (Sonnet) | Examples | examples/demo-dashboard/{README.md, output/*, screenshots/.gitkeep} |
-| Agent-12 (Sonnet) | Integrations | integrations/gstack/testing-hub/{SKILL.md, install.sh}, integrations/claude-code-mcp/{server.mjs, manifest.json}, integrations/README.md |
-| Agent-13 (Sonnet) | Repo housekeeping | LICENSE, NOTICE, CONTRIBUTING.md, SECURITY.md, CHANGELOG.md, README.md, .github/ |
+| Core CLI scaffolding | CLI entry point + repo config | bin/testing-hub.mjs, package.json, .eslintrc.json, .prettierrc.json, .editorconfig, .gitignore, .npmignore |
+| Commands: init/validate/doctor/demo | Deterministic core commands | src/commands/init.mjs, validate.mjs, doctor.mjs, demo.mjs |
+| Commands: report/sign/run/compare | Reporting + env commands | src/commands/report.mjs, sign.mjs, env.mjs, visual.mjs |
+| Commands: rtm/br/sca | Traceability + SCA commands | src/commands/rtm.mjs, br.mjs, sca.mjs, sca-oscal.mjs |
+| v0.2 stub commands | LLM-wired stubs with prompt templates | src/commands/discover.mjs, plan.mjs, codify.mjs, enrich.mjs, batch.mjs |
+| Core libraries | Parser, graph, OSCAL, UAT chain | src/lib/parser.mjs, graph.mjs, oscal.mjs, uat-log.mjs |
+| Industry standards JSON | 6 industry bundles | src/config/industry-standards/{general,fintech,healthcare,gov,edu,ecommerce}.json |
+| Templates | All user-facing templates | templates/{test-plan.md, spec.ts, uat-log.jsonl, business-requirements.md, README.md}, templates/sca/v1.0.md |
+| Schemas | JSON Schema definitions | schemas/test-plan-frontmatter.schema.json |
+| Docs | 12 documentation pages | docs/{getting-started.md, concepts.md, reference.md, roadmap.md, integrations.md}, docs/architecture/data-model.md, docs/v0.2-*.md, docs/v0.3-*.md |
+| Examples | Demo artifact outputs | examples/demo-dashboard/{README.md, output/*, screenshots/.gitkeep} |
+| Integrations | gstack skill + MCP server | integrations/gstack/testing-hub/{SKILL.md, install.sh}, integrations/claude-code-mcp/{server.mjs, manifest.json}, integrations/README.md |
+| Repo housekeeping | OSS boilerplate | LICENSE, NOTICE, CONTRIBUTING.md, SECURITY.md, CHANGELOG.md, README.md, .github/ |
 
 ---
 
