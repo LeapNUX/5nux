@@ -6,6 +6,8 @@ This page defines the vocabulary Testing Hub uses. Compliance buyers and enginee
 
 ## The three discipline tracks
 
+> **Discipline only delivers consistency if your team adopts it.** The templates, CLI, and conventions in this document are tools — not outcomes. See [adoption-checklist.md](adoption-checklist.md) for the 4 must-do adoption tasks: originating R-IDs, adopting the status taxonomy, setting up UAT sign-off, and validating your SCA shape with an auditor. The checklist includes time estimates and exit criteria so you can plan a real onboarding.
+
 Testing Hub is built around a git-native, three-track structure. Each track answers a different question:
 
 | Track | Folder | Answers |

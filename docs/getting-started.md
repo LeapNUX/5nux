@@ -210,3 +210,11 @@ The HTML report is self-contained — one file, no external dependencies. Email 
 - **See what a finished SCA looks like** — [examples/demo-dashboard/output/login-sca-v0.1.md](../examples/demo-dashboard/output/login-sca-v0.1.md) is the public reference artifact
 - **CLI reference** — [reference.md](reference.md) for full flag tables and exit codes
 - **Architecture** — [architecture/data-model.md](architecture/data-model.md) if you want to understand the data model before extending Testing Hub
+
+---
+
+## What's next: the 4 must-do adoption tasks
+
+The CLI works. Getting consistent outcomes requires the discipline and the auditor conversation.
+
+See **[docs/adoption-checklist.md](adoption-checklist.md)** for the 4 must-do adoption tasks — originating your R-IDs, adopting the status labeling discipline, setting up UAT_SECRET, and validating your SCA shape with an auditor. Each task has a time estimate, exit criteria, and common mistakes. If you skip any of them, the CLI produces well-formatted artifacts that still have the same consistency problems you had before.

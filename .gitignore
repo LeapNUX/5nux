@@ -38,3 +38,8 @@ Thumbs.db
 
 # Testing Hub — sensitive seed data (never commit real test users)
 *.fixtures/test-users.json
+
+# Test artifacts that may leak to repo root from discover.mjs tests
+/*-scenarios.md
+/scenarios.md
+/scenarios.raw.txt

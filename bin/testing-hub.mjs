@@ -349,24 +349,30 @@ scaCmd
     }
   });
 
-// ── discover (v0.2 LLM agent stub) ───────────────────────────────────────────
+// ── discover (v0.2 ALPHA — wired to Claude API) ───────────────────────────────
 
 program
   .command('discover <url>')
   .description(
-    '[v0.2 stub] Browse a page and emit draft scenarios.md with Given/When/Then TCs. ' +
-    'In v0.1, prints what v0.2 will do and writes a fillable template. ' +
-    'Requires CLAUDE_API_KEY in v0.2.',
+    '[v0.2 ALPHA] Browse a page and emit scenarios.md with Given/When/Then TCs. ' +
+    'Fetches page HTML, extracts DOM summary, calls Claude API, writes scenarios.md. ' +
+    'Requires: CLAUDE_API_KEY env var + npm install @anthropic-ai/sdk',
   )
-  .option('--slug <slug>', 'override the derived slug for the output file')
-  .option('--out <dir>', 'output directory for scenarios.md', '.')
+  .option('--slug <slug>', 'override the derived slug used in frontmatter')
+  .option('--output <dir>', 'output directory for scenarios.md (default: .)', '.')
+  .option('--model <model>', 'Claude model to use', 'claude-sonnet-4-6')
+  .option('--max-tokens <n>', 'max tokens in LLM response', (v) => parseInt(v, 10), 8000)
+  .option('--dry-run', 'print the prompt and cost estimate without calling the API')
   .action(async (url, opts, cmd) => {
     const global = cmd.parent.opts();
     try {
       await runDiscover(url, {
-        slug: opts.slug,
-        out:  opts.out,
-        json: global.json,
+        slug:      opts.slug,
+        output:    opts.output,
+        model:     opts.model,
+        maxTokens: opts.maxTokens,
+        dryRun:    opts.dryRun ?? false,
+        json:      global.json,
       });
     } catch (err) {
       emit(global.json, { error: err.message });
@@ -693,6 +699,9 @@ visualCmd
 function emit(isJson, payload) {
   if (isJson) {
     process.stdout.write(JSON.stringify(payload) + '\n');
+  } else if (payload.error) {
+    // In non-JSON mode, print errors to stderr so they are visible and catchable
+    process.stderr.write(`ERROR: ${payload.error}\n`);
   }
 }
 

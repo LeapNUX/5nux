@@ -55,6 +55,14 @@ The `demo` command downloads a prebuilt fixture, generates the HTML + XLSX, and 
 
 ---
 
+## Adoption checklist
+
+Forking Testing Hub gives you the tooling. Getting consistent outcomes requires 4 must-do adoption tasks that the CLI cannot do for you: originating your R-IDs, adopting the status labeling discipline, setting up the UAT sign-off chain, and getting one auditor to validate your SCA shape.
+
+See **[docs/adoption-checklist.md](docs/adoption-checklist.md)** — includes time estimates, exit criteria, common mistakes, and a step-by-step guide for Claude/AI agents running the onboarding playbook.
+
+---
+
 ## Why this exists
 
 Most testing tools are **runtime-focused** — run tests, show results. They stop there.
@@ -248,6 +256,8 @@ The date-prefix on test-pass folders creates audit snapshots — every engagemen
 
 **Does Testing Hub cost anything?**  
 The CLI is free (Apache 2.0). The v0.2 LLM agents use Claude's API — approximately $0.30–$0.50 per page for a full AI pass. Heavy multi-agent dispatch (8 parallel agents) can burn ~5 sessions of Claude Max quota per hour. See [docs/costs.md](docs/costs.md) for the full breakdown and recommended working patterns.
+
+OSS = self-serve via markdown docs. Premium tier (v0.4+) = white-glove onboarding + consulting + auditor facilitation. See [docs/adoption-checklist.md](docs/adoption-checklist.md) for what's included.
 
 **Do I need Claude Max or an Anthropic API key?**  
 Not for v0.1. The `report` command is fully deterministic — no LLM required. Claude access is required only for v0.2 agents (PLAN, CODIFY, DISCOVER, DOC phases).

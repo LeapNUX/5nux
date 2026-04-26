@@ -39,6 +39,34 @@ node bin/testing-hub.mjs doctor
 node bin/testing-hub.mjs demo
 ```
 
+### v0.2 LLM commands (optional peer dependency)
+
+The v0.2 LLM commands (`discover`, `plan`, `codify`, `enrich`) call the Anthropic API
+via `@anthropic-ai/sdk`. This is an **optional peer dependency** — it is not installed
+automatically with `npm install testing-hub` to keep the base install lightweight.
+
+To develop or test LLM commands locally:
+
+```bash
+# Install the optional peer dep
+npm install @anthropic-ai/sdk
+
+# Set your Anthropic API key
+export CLAUDE_API_KEY=sk-ant-...
+
+# Smoke-test discover
+node bin/testing-hub.mjs discover https://example.com --dry-run  # no API call
+node bin/testing-hub.mjs discover https://example.com            # real call
+
+# Run without the SDK installed → graceful error (no crash)
+# npm uninstall @anthropic-ai/sdk
+# node bin/testing-hub.mjs discover https://example.com
+# → ERROR: @anthropic-ai/sdk is not installed. Install with: npm install @anthropic-ai/sdk
+```
+
+The unit tests mock `@anthropic-ai/sdk` via `vi.mock` — they do not require a real API
+key and run correctly in CI without the package installed.
+
 ---
 
 ## Testing requirement
