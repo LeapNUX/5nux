@@ -1,12 +1,12 @@
 # Costs
 
-An honest breakdown of what TestNUX costs to run.
+An honest breakdown of what TrunkNuX costs to run.
 
 ---
 
-## TestNUX CLI: free
+## TrunkNuX CLI: free
 
-TestNUX is Apache 2.0 open-source software. The CLI has:
+TrunkNuX is Apache 2.0 open-source software. The CLI has:
 
 - No license fee
 - No telemetry
@@ -19,7 +19,7 @@ It runs entirely on your local machine. Output lives in your repo. Nothing is se
 
 ## Claude API cost (v0.2 LLM agents)
 
-The v0.1 core (`testnux report`, `validate`, `init`, `demo`) has **zero API cost**. It's deterministic — markdown in, HTML + XLSX out.
+The v0.1 core (`trunknux report`, `validate`, `init`, `demo`) has **zero API cost**. It's deterministic — markdown in, HTML + XLSX out.
 
 The v0.2 LLM agents (discover, plan, codify, enrich, batch) call Claude's API. Here's an honest per-page estimate using Sonnet-class models:
 
@@ -52,7 +52,7 @@ If you're using Claude Max (subscription) instead of pay-per-use API, cost shows
 
 | What | Recommendation |
 |---|---|
-| **Subscription tier** | **Claude Max 5x** (~$100/mo) — enough headroom for serious TestNUX usage; upgrade to 20x only if you regularly burn through 5x in under 1 hour |
+| **Subscription tier** | **Claude Max 5x** (~$100/mo) — enough headroom for serious TrunkNuX usage; upgrade to 20x only if you regularly burn through 5x in under 1 hour |
 | **Primary model** | **Opus 4.7 with extra-high reasoning effort** — for plan/codify/SCA generation where quality matters more than speed |
 | **Subagent model** | **Sonnet** (latest) — for mechanical work the primary delegates (template substitution, parsing, file walks, lint checks). Extends quota by ~3-5x because subagents share the budget but cost much less per token. |
 
@@ -68,7 +68,7 @@ What actually drives the burn:
 |---|---|
 | Single Opus thread, conversational coding | ~4–5 hours (full window) |
 | Opus + 2–3 Sonnet subagents in parallel | ~2–3 hours |
-| Opus + 5–8 Sonnet subagents (full multi-agent) | **~1–2 hours** ← what TestNUX bootstrap looked like |
+| Opus + 5–8 Sonnet subagents (full multi-agent) | **~1–2 hours** ← what TrunkNuX bootstrap looked like |
 | Pure Opus parallel agents (no Sonnet delegation) | ~30–60 min (avoid this — burns Opus tokens fast) |
 
 The 5-hour window then resets. So plan two passes per day at most: one in the morning, one after the reset.
@@ -77,7 +77,7 @@ The 5-hour window then resets. So plan two passes per day at most: one in the mo
 
 1. **Wait for reset** (~5 hours from when window started) — best for solo founders; your "down time" is ideation, not coding
 2. **Upgrade to Claude Max 20x** — 4x the quota, ~$200/mo; only worth it if you consistently exhaust 5x with no waste
-3. **Switch to pay-per-use Anthropic API** — no rate limit, dollar-capped via `--max-spend`. Best for big batch runs (e.g., `testnux batch-plan` over 30 pages) where you want predictability. Estimate: $10–$40 for a full 30-page site pass.
+3. **Switch to pay-per-use Anthropic API** — no rate limit, dollar-capped via `--max-spend`. Best for big batch runs (e.g., `trunknux batch-plan` over 30 pages) where you want predictability. Estimate: $10–$40 for a full 30-page site pass.
 4. **Switch to a smaller model temporarily** — flip primary from Opus to Sonnet 4.6 for the rest of the session; quality drops slightly but quota lasts longer
 
 ### Working pattern that respects the burn
@@ -93,7 +93,7 @@ The 5-hour window then resets. So plan two passes per day at most: one in the mo
 
 ## gstack: free
 
-gstack (https://github.com/garrytan/gstack) is OSS with no cost. There is no commercial gstack license required to use TestNUX.
+gstack (https://github.com/garrytan/gstack) is OSS with no cost. There is no commercial gstack license required to use TrunkNuX.
 
 ---
 
@@ -102,7 +102,7 @@ gstack (https://github.com/garrytan/gstack) is OSS with no cost. There is no com
 Both MCP servers are free and run locally:
 
 - **claude-in-chrome MCP** — runs in your local browser. No cost.
-- **testnux-mcp** (planned v0.3) — local MCP server. No cost.
+- **trunknux-mcp** (planned v0.3) — local MCP server. No cost.
 
 ---
 
@@ -142,8 +142,8 @@ The question isn't "is AI-accelerated testing free?" — it's "what's the altern
 | Method | Time per page | Direct cost |
 |---|---|---|
 | Fully manual (no AI) | 4–8 hours | $0 API, ~$200–800 labor |
-| TestNUX v0.1 (no AI) | 1–2 hours | $0 |
-| TestNUX v0.2 (AI agents) | 15–30 min | $0.30 – $0.50 API |
+| TrunkNuX v0.1 (no AI) | 1–2 hours | $0 |
+| TrunkNuX v0.2 (AI agents) | 15–30 min | $0.30 – $0.50 API |
 
 At $0.50/page and 30 pages, you're spending $15 in API costs to save 60–180 hours of manual work. For regulated environments where evidence packages are mandatory, that math is straightforward.
 
@@ -153,7 +153,7 @@ At $0.50/page and 30 pages, you're spending $15 in API costs to save 60–180 ho
 
 | Cost item | Amount |
 |---|---|
-| TestNUX CLI | Free |
+| TrunkNuX CLI | Free |
 | Playwright | Free |
 | gstack | Free |
 | claude-in-chrome MCP | Free |

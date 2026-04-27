@@ -4,9 +4,9 @@
 /**
  * real-run/spec.ts
  *
- * TestNUX — Playwright spec for demo-dashboard /login.
+ * TrunkNuX — Playwright spec for demo-dashboard /login.
  * Generated for Wave 3 real-run: replaces hand-crafted sample HTML
- * with a genuine testnux report artifact.
+ * with a genuine trunknux report artifact.
  *
  * Target:   http://localhost:3737/login
  * App:      demo-dashboard (Next.js 16, shadcn/ui, no auth backend)
@@ -31,7 +31,7 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 
 // ── __dirname shim for ESM ─────────────────────────────────────────────────────
-// testnux package is "type": "module". Use import.meta.url to derive __dirname.
+// trunknux package is "type": "module". Use import.meta.url to derive __dirname.
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

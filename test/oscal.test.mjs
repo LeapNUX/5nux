@@ -1,4 +1,4 @@
-// Copyright (c) 2026 TestNUX Contributors
+// Copyright (c) 2026 TrunkNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
@@ -390,7 +390,7 @@ describe('validateOSCAL — error paths', () => {
 
 /** Write a minimal uat-log.jsonl fixture to a temp file and return its path. */
 function writeUatLogFixture(entries) {
-  const tmpDir  = fs.mkdtempSync(path.join(os.tmpdir(), 'testnux-oscal-test-'));
+  const tmpDir  = fs.mkdtempSync(path.join(os.tmpdir(), 'trunknux-oscal-test-'));
   const logPath = path.join(tmpDir, 'uat-log.jsonl');
   const lines   = entries.map((e) => JSON.stringify(e)).join('\n') + '\n';
   fs.writeFileSync(logPath, lines, 'utf-8');

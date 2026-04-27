@@ -1,12 +1,12 @@
 # Prerequisites & Setup Guide
 
-Everything you need to run TestNUX — from the bare minimum to the full-power stack.
+Everything you need to run TrunkNuX — from the bare minimum to the full-power stack.
 
 ---
 
 ## Required (v0.1 minimum)
 
-These are the only hard requirements to run `testnux report` and produce audit artifacts.
+These are the only hard requirements to run `trunknux report` and produce audit artifacts.
 
 | Requirement | Version | Why |
 |---|---|---|
@@ -14,7 +14,7 @@ These are the only hard requirements to run `testnux report` and produce audit a
 | npm | 10 or higher | Package resolution |
 | A git repo | any | Three-track discipline requires version control |
 
-**Three-track discipline** — TestNUX expects your repo to have (or be willing to adopt) this structure:
+**Three-track discipline** — TrunkNuX expects your repo to have (or be willing to adopt) this structure:
 
 ```
 requirements/        ← what you said you'd build
@@ -22,7 +22,7 @@ sprint-log/          ← what was built
 testing-log/         ← what was tested
 ```
 
-If your repo doesn't have this yet, `npx testnux init` will scaffold it. You don't need it pre-existing.
+If your repo doesn't have this yet, `npx trunknux init` will scaffold it. You don't need it pre-existing.
 
 ---
 
@@ -36,7 +36,7 @@ These are optional for v0.1 but required or strongly recommended for v0.2 LLM ag
 **Cost:** ~$200/month  
 **Required for:** v0.2 LLM agents (discover, plan, codify, enrich, batch)
 
-The v0.2 agents use Claude as the reasoning engine. Without a Claude API token or Claude Max subscription, the AI-acceleration phases (PLAN, CODIFY, DISCOVER, DOC) do not run. The deterministic core (`testnux report`) works without Claude — but you'll be authoring test plans and Playwright specs by hand.
+The v0.2 agents use Claude as the reasoning engine. Without a Claude API token or Claude Max subscription, the AI-acceleration phases (PLAN, CODIFY, DISCOVER, DOC) do not run. The deterministic core (`trunknux report`) works without Claude — but you'll be authoring test plans and Playwright specs by hand.
 
 If you're using Claude Max, you get API access through the Claude interface. If you want pay-per-use with no rate limits, use an Anthropic API key instead (see [docs/costs.md](costs.md)).
 
@@ -46,9 +46,9 @@ If you're using Claude Max, you get API access through the Claude interface. If 
 **Cost:** Free (OSS)  
 **Required for:** `/browse`, `/qa`, `/design-review`, multi-agent dispatch
 
-gstack is the OSS solo-builder framework by Garry Tan that TestNUX's discipline derives from. The three-track structure, slash-command pattern, multi-agent dispatch workflow, and marker-comment audit trail all originate in gstack. Install it to unlock the `/browse` headless browser, `/qa` automated QA pipeline, and the full agent-dispatch workflow.
+gstack is the OSS solo-builder framework by Garry Tan that TrunkNuX's discipline derives from. The three-track structure, slash-command pattern, multi-agent dispatch workflow, and marker-comment audit trail all originate in gstack. Install it to unlock the `/browse` headless browser, `/qa` automated QA pipeline, and the full agent-dispatch workflow.
 
-TestNUX works without gstack — but the recommended working pattern (agent dispatch → merge → validate → report) assumes gstack is available. See [docs/credit.md](credit.md) for full attribution.
+TrunkNuX works without gstack — but the recommended working pattern (agent dispatch → merge → validate → report) assumes gstack is available. See [docs/credit.md](credit.md) for full attribution.
 
 ```bash
 # Install gstack (follow the repo README for the current install path)
@@ -72,7 +72,7 @@ TestNUX works without gstack — but the recommended working pattern (agent disp
 npx playwright install
 ```
 
-Playwright is the evidence-capture engine. TestNUX's `afterEach` hook uses it to take per-TC screenshots that become the proof-of-execution embedded in your HTML reports. You don't need to install it manually — `npx playwright install` handles it.
+Playwright is the evidence-capture engine. TrunkNuX's `afterEach` hook uses it to take per-TC screenshots that become the proof-of-execution embedded in your HTML reports. You don't need to install it manually — `npx playwright install` handles it.
 
 ---
 
@@ -87,9 +87,9 @@ Playwright is the evidence-capture engine. TestNUX's `afterEach` hook uses it to
 Two options — either works:
 
 - **Pandoc** — lightweight, document-quality PDF from markdown. Install from https://pandoc.org.
-- **Headless Chromium** — already present if Playwright is installed. TestNUX can use it to print-to-PDF from the HTML report.
+- **Headless Chromium** — already present if Playwright is installed. TrunkNuX can use it to print-to-PDF from the HTML report.
 
-The `testnux doctor --check pdf` command will tell you which is available.
+The `trunknux doctor --check pdf` command will tell you which is available.
 
 ### Extended OSCAL validation (v0.2+)
 
@@ -103,7 +103,7 @@ The `testnux doctor --check pdf` command will tell you which is available.
 |---|---|---|
 | claude-in-chrome MCP | Your real Chrome: tabs, cookies, DOM, navigation | Testing authenticated / logged-in flows |
 | gstack `/browse` | Isolated Playwright Chromium (clean profile, no your cookies) | QA pipelines, design audits, headless screenshots |
-| TestNUX CLI | Your local filesystem (repo only) | Scaffolding, report generation, validation |
+| TrunkNuX CLI | Your local filesystem (repo only) | Scaffolding, report generation, validation |
 
 **Hybrid policy (recommended):** Use claude-in-chrome for anything that requires a real login. Use gstack `/browse` for everything else. The two are complementary — `/browse` keeps session isolation; claude-in-chrome preserves your real auth state. Never use `/browse` where you need real cookies; never use chrome-mcp where you want a clean profile.
 
@@ -119,46 +119,46 @@ npm --version    # must be 10+
 # 2. Install Playwright browsers
 npx playwright install
 
-# 3. Run TestNUX's preflight check
-npx testnux doctor
+# 3. Run TrunkNuX's preflight check
+npx trunknux doctor
 
 # 4. Scaffold your first test pass
-npx testnux init my-first-page --industry general
+npx trunknux init my-first-page --industry general
 
 # 5. (Optional) Run the bundled demo to verify output generation
-npx testnux demo
+npx trunknux demo
 ```
 
-No global install required — everything runs via `npx`. If you want the `testnux` command available globally:
+No global install required — everything runs via `npx`. If you want the `trunknux` command available globally:
 
 ```bash
-npm install -g testnux
+npm install -g trunknux
 ```
 
 ---
 
 ## Verifying your setup
 
-The `testnux doctor` command checks your environment and reports what's missing:
+The `trunknux doctor` command checks your environment and reports what's missing:
 
 ```bash
 # Full preflight check
-npx testnux doctor
+npx trunknux doctor
 
 # Check Claude API / Claude Max access only
-npx testnux doctor --check claude
+npx trunknux doctor --check claude
 
 # Check gstack installation only
-npx testnux doctor --check gstack
+npx trunknux doctor --check gstack
 
 # Check claude-in-chrome MCP availability
-npx testnux doctor --check chrome-mcp
+npx trunknux doctor --check chrome-mcp
 
 # Check PDF generation capability
-npx testnux doctor --check pdf
+npx trunknux doctor --check pdf
 ```
 
-A green `doctor` output means you're ready to run `testnux report`. Yellow warnings are optional capabilities. Red errors block core functionality.
+A green `doctor` output means you're ready to run `trunknux report`. Yellow warnings are optional capabilities. Red errors block core functionality.
 
 ---
 
@@ -167,6 +167,6 @@ A green `doctor` output means you're ready to run `testnux report`. Yellow warni
 | Variable | Required | Description |
 |---|---|---|
 | `ANTHROPIC_API_KEY` | v0.2 agents only | Your Anthropic API key (alternative to Claude Max session) |
-| `TESTNUX_INDUSTRY` | No | Default industry preset (`general`, `fintech`, `healthcare`) |
+| `TRUNKNUX_INDUSTRY` | No | Default industry preset (`general`, `fintech`, `healthcare`) |
 
 Set `ANTHROPIC_API_KEY` if you're using pay-per-use API access instead of Claude Max. If you're using Claude Max through the Claude interface with gstack, no env var is needed.

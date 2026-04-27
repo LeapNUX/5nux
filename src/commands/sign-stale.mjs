@@ -4,11 +4,11 @@
 /**
  * src/commands/sign-stale.mjs
  *
- * Implements `testnux sign stale-check <surface>` — flag sign-off entries
+ * Implements `trunknux sign stale-check <surface>` — flag sign-off entries
  * that have exceeded the configured age threshold.
  *
  * Usage:
- *   testnux sign stale-check <surface> [--threshold 90d] [--strict]
+ *   trunknux sign stale-check <surface> [--threshold 90d] [--strict]
  *     Reads <folder>/uat-log.jsonl.
  *     Reports entries older than --threshold (default: 90 days).
  *     Exits 0 unless --strict is set AND stale entries are found.
@@ -46,7 +46,7 @@ export async function runSignStaleCheck(surface, opts = {}) {
   if (!fs.existsSync(surfaceDir)) {
     const err = new Error(
       `Surface folder not found: ${surfaceDir}\n` +
-      `  Run \`testnux init ${surface.replace(/^\d{4}-\d{2}-\d{2}_/, '')}\` first.`,
+      `  Run \`trunknux init ${surface.replace(/^\d{4}-\d{2}-\d{2}_/, '')}\` first.`,
     );
     err.exitCode = 2;
     throw err;
@@ -162,7 +162,7 @@ export async function runSignStaleCheck(surface, opts = {}) {
       console.log('');
       console.log('  Suggested action: Re-attest stale entries by running:');
       for (const e of staleEntries) {
-        console.log(`    testnux sign ${surface} --tc ${e.tc_id}`);
+        console.log(`    trunknux sign ${surface} --tc ${e.tc_id}`);
       }
     }
 

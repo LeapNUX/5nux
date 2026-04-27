@@ -1,14 +1,20 @@
-# TestNUX™
+# TrunkNuX™
 
-**Turn a page-route into an audit-ready evidence package — without touching a GUI.**
+**One CLI for the whole testing-to-audit journey. Trunk today, world tree tomorrow.**
 
 ```
-markdown test plan + Playwright spec
-        ↓
-testnux report
-        ↓
-self-contained HTML + XLSX + RTM rows
+   ENGINEER         QA            COMPLIANCE        AUDITOR
+   ─────────       ─────          ──────────       ─────────
+   test plan   →   reports    →   signoffs    →   evidence
+   + spec          XLSX/HTML      HMAC PDF         package
+   + evidence      RTM            SCA + OSCAL      (HTML+PDF+JSON)
+                                                   hash-chain
+                                                   verifiable
 ```
+
+TrunkNuX is the **trunk** of your audit chain. Branches grow from it: today the test-plan + report + signoff + SCA + OSCAL workflows; v0.3 adds attestation, compliance packages, vendor-DD responses. The trunk is git-native, deterministic at the core, AI-augmented at the edges, with `[VERIFY]` markers that gate every LLM cell until a human attests it.
+
+> **Why "trunk":** every regulated team needs a structural backbone that holds the audit chain together, regardless of firm size. A 5-person fintech and a 50,000-person bank both need the same chain: tests → evidence → attestation → audit submission. TrunkNuX is that backbone. The roadmap calls for it to grow into something Yggdrasil-scale: a world tree connecting engineering, compliance, legal, audit, regulator, and vendor-DD across every regulated industry. We're a trunk now. Help us grow the branches.
 
 No SaaS dependency. No CI lock-in. Output lives in your repo, versioned with your code.
 
@@ -16,7 +22,7 @@ No SaaS dependency. No CI lock-in. Output lives in your repo, versioned with you
 
 ## TL;DR
 
-TestNUX supports **the full journey from testing to audit, end-to-end**.
+TrunkNuX supports **the full journey from testing to audit, end-to-end**.
 
 ```
   ENGINEER          QA            COMPLIANCE        AUDITOR
@@ -27,14 +33,14 @@ TestNUX supports **the full journey from testing to audit, end-to-end**.
 
 Engineers write test plans. Tests execute and capture evidence. Reports go out. Compliance officers attest to controls with HMAC-chained signoffs. Auditors receive a self-contained evidence package they can verify independently of the tool. Everyone in the chain sees evidence in formats they can already open (HTML, Excel, PDF, JSON, Markdown). No SaaS login. No vendor lock-in. The data lives in your git repo.
 
-TestNUX serves **two audiences at once**:
+TrunkNuX serves **two audiences at once**:
 
 - **Operators (engineering / QA leads)** install and run the CLI. They get the deterministic pipeline, the LLM accelerators, and the version-control discipline.
 - **Consumers (compliance officers, audit committees, legal counsel, UAT reviewers, external auditors, regulators)** read the artifacts the CLI produces — without ever installing anything. They get a self-contained HTML report, a signed PDF, an XLSX with Pass/Fail dropdowns, an SCA, and an OSCAL JSON for GRC ingestion.
 
-The first audience is small. The second is everyone in your audit chain. **Most TestNUX users don't run the CLI — they read what the CLI produced.** See [Which output do I read?](#which-output-do-i-read) below for the full audience-to-artifact map.
+The first audience is small. The second is everyone in your audit chain. **Most TrunkNuX users don't run the CLI — they read what the CLI produced.** See [Which output do I read?](#which-output-do-i-read) below for the full audience-to-artifact map.
 
-### What makes TestNUX different from the dozen test-report generators that already exist:
+### What makes TrunkNuX different from the dozen test-report generators that already exist:
 
 1. **Three-track discipline** — `requirements/` (what you said you'd build) + `sprint-log/` (what was built) + `testing-log/` (what was tested). One traceable graph, all in your repo, with date-stamped audit snapshots.
 2. **`[VERIFY]` markers on every LLM-drafted cell** — explicit "no human has attested this yet" annotation. AI accelerates authoring; humans gate evidence. Removing a `[VERIFY]` without reading the underlying content is the one thing that makes your evidence package fail under audit.
@@ -44,25 +50,25 @@ The `report` command is fully deterministic — no LLM required, same output eve
 
 ---
 
-### ⚠️ Important — TestNUX reduces manual work. It does not replace human judgment.
+### ⚠️ Important — TrunkNuX reduces manual work. It does not replace human judgment.
 
 **Every output is a starting point, not a final answer.**
 
-TestNUX is a CLI that reduces the manual workload of test-evidence authoring. It does not replace the judgment your QA engineers, compliance analysts, legal counsel, or auditors apply to that evidence. This applies across the entire output set:
+TrunkNuX is a CLI that reduces the manual workload of test-evidence authoring. It does not replace the judgment your QA engineers, compliance analysts, legal counsel, or auditors apply to that evidence. This applies across the entire output set:
 
-- **LLM-drafted artifacts** (`testnux discover`, `testnux plan`, `testnux codify`, `testnux enrich`) — every cell generated by a Claude API call renders with a `[VERIFY]` marker. That marker is not decoration. It means a human has not yet attested to this content. Until a qualified reviewer reads the output, corrects errors, fills gaps, and removes (or confirms) the `[VERIFY]` marker, that artifact is a draft, not evidence.
-- **Test plan** — a TestNUX-scaffolded test plan still needs an engineer to write real Given/When/Then scenarios. A scaffold with placeholder text is not a test plan.
-- **Playwright spec** — a TestNUX-codified spec still needs review for missed edge cases, incorrect assertions, and controls that the code claims to test but does not actually exercise.
+- **LLM-drafted artifacts** (`trunknux discover`, `trunknux plan`, `trunknux codify`, `trunknux enrich`) — every cell generated by a Claude API call renders with a `[VERIFY]` marker. That marker is not decoration. It means a human has not yet attested to this content. Until a qualified reviewer reads the output, corrects errors, fills gaps, and removes (or confirms) the `[VERIFY]` marker, that artifact is a draft, not evidence.
+- **Test plan** — a TrunkNuX-scaffolded test plan still needs an engineer to write real Given/When/Then scenarios. A scaffold with placeholder text is not a test plan.
+- **Playwright spec** — a TrunkNuX-codified spec still needs review for missed edge cases, incorrect assertions, and controls that the code claims to test but does not actually exercise.
 - **Execution report (XLSX + HTML)** — the `report` command is deterministic and traceable, but it faithfully documents whatever your test plan says. If your plan claims "TC-01 verifies password complexity" and your spec only checks that the form renders, the report will document that gap accurately. It will not catch the gap for you.
-- **SCA** — a Security Control Assessment generated by `testnux sca` requires a qualified security reviewer to validate that the control mappings are accurate and complete for your specific environment.
-- **Signoff PDF** (`testnux sign pdf`) — the HMAC-chained signoff ledger is designed for human attestation. A real reviewer must read each TC result and apply their judgment before signing. Signing without reading defeats the audit-defensibility purpose entirely.
+- **SCA** — a Security Control Assessment generated by `trunknux sca` requires a qualified security reviewer to validate that the control mappings are accurate and complete for your specific environment.
+- **Signoff PDF** (`trunknux sign pdf`) — the HMAC-chained signoff ledger is designed for human attestation. A real reviewer must read each TC result and apply their judgment before signing. Signing without reading defeats the audit-defensibility purpose entirely.
 - **OSCAL export** — machine-readable output for GRC platform ingestion; the accuracy of the assessment content it encodes is your team's responsibility.
 
-**Auditors and regulators will hold you and your organization accountable** for what is in your evidence package. "TestNUX generated this" is not a defense. The tool's role is to produce well-structured, traceable artifacts in the right formats. Verifying that those artifacts accurately reflect what was tested — and that the tests actually exercised the controls they claim to cover — is your team's responsibility.
+**Auditors and regulators will hold you and your organization accountable** for what is in your evidence package. "TrunkNuX generated this" is not a defense. The tool's role is to produce well-structured, traceable artifacts in the right formats. Verifying that those artifacts accurately reflect what was tested — and that the tests actually exercised the controls they claim to cover — is your team's responsibility.
 
 License: Apache 2.0. No warranty, express or implied. See LICENSE.
 
-**TestNUX automates the mechanics. Humans own the decisions.**
+**TrunkNuX automates the mechanics. Humans own the decisions.**
 
 ---
 
@@ -79,24 +85,24 @@ npm install @anthropic-ai/sdk
 
 Use `--dry-run` to see the prompt + cost estimate before any API call. Set `--max-spend` to cap a batch run. See [docs/costs.md](docs/costs.md) for empirical per-page burn rates if you're scoping a budget.
 
-See [docs/prerequisites.md](docs/prerequisites.md) for `testnux doctor --check` flags and the optional hybrid browser policy.
+See [docs/prerequisites.md](docs/prerequisites.md) for `trunknux doctor --check` flags and the optional hybrid browser policy.
 
 ---
 
 ## Install
 
 ```bash
-npm install -g testnux       # v0.2.1 — full pipeline
-testnux --version             # 0.2.1
+npm install -g trunknux       # v0.2.1 — full pipeline
+trunknux --version             # 0.2.1
 ```
 
-One-shot via `npx testnux <command>` works without install. Available on npm: [npmjs.com/package/testnux](https://www.npmjs.com/package/testnux). See [CHANGELOG.md](CHANGELOG.md) for what shipped.
+One-shot via `npx trunknux <command>` works without install. Available on npm: [npmjs.com/package/trunknux](https://www.npmjs.com/package/trunknux). See [CHANGELOG.md](CHANGELOG.md) for what shipped.
 
 ---
 
 ## What you get
 
-TestNUX produces a single self-contained HTML execution report:
+TrunkNuX produces a single self-contained HTML execution report:
 
 - 📋 Sticky TOC sidebar with anchor links to every TC
 - 🎯 Filter tabs: All / PASS / FAIL / BLOCKED / SKIPPED
@@ -111,9 +117,9 @@ Open `examples/demo-dashboard/output/login-execution-report.html` in your browse
 
 ## Which output do I read?
 
-> ### For compliance, audit, legal, UAT — you don't install TestNUX
+> ### For compliance, audit, legal, UAT — you don't install TrunkNuX
 >
-> If you're a **compliance officer, audit committee member, legal counsel, UAT reviewer, internal auditor, or external auditor**, you read TestNUX outputs without ever running the CLI. Your engineering or QA team operates TestNUX; you receive the artifacts:
+> If you're a **compliance officer, audit committee member, legal counsel, UAT reviewer, internal auditor, or external auditor**, you read TrunkNuX outputs without ever running the CLI. Your engineering or QA team operates TrunkNuX; you receive the artifacts:
 >
 > - **HTML execution report** — opens in any browser, no SaaS login, no plugin. TOC sidebar, status tabs, embedded screenshots, standards-alignment matrix.
 > - **XLSX test plan** — Excel-friendly, Pass/Fail dropdowns, colour-coded priority. UAT reviewers can edit directly.
@@ -121,9 +127,9 @@ Open `examples/demo-dashboard/output/login-execution-report.html` in your browse
 > - **SCA markdown / PDF** — 8-section Security Control Assessment for audit submission and vendor due-diligence.
 > - **OSCAL JSON** — machine-readable assessment that ingests directly into Vanta, Drata, Secureframe, RegScale.
 >
-> If you're evaluating TestNUX as a procurement decision, the questions that matter to you are: *Can I read the artifacts in the tools I already have? Can my auditors read them without a vendor login? Does the evidence survive when we change CLI tooling?* The answer to all three is **yes** — every output is a self-contained file in standard formats (HTML, Excel, PDF, JSON, Markdown) that your team can open today.
+> If you're evaluating TrunkNuX as a procurement decision, the questions that matter to you are: *Can I read the artifacts in the tools I already have? Can my auditors read them without a vendor login? Does the evidence survive when we change CLI tooling?* The answer to all three is **yes** — every output is a self-contained file in standard formats (HTML, Excel, PDF, JSON, Markdown) that your team can open today.
 
-TestNUX produces a family of artifacts from the same underlying data. Different people on your team need different views.
+TrunkNuX produces a family of artifacts from the same underlying data. Different people on your team need different views.
 
 | Artifact | Primary audience | What they're looking at | When to consume |
 |---|---|---|---|
@@ -134,12 +140,12 @@ TestNUX produces a family of artifacts from the same underlying data. Different 
 | `<slug>-execution-report.html` | Business stakeholders + external auditors | Self-contained HTML: TOC sidebar, status tabs, embedded screenshots, standards alignment matrix, threat coverage table — no SaaS login required | Review cycles; auditor handoff |
 | `<slug>-test-plan.xlsx` | Non-technical UAT reviewers + business stakeholders | TC matrix with Pass/Fail dropdowns, colour-coded priority — no code visible | UAT cycles |
 | `sca/<surface>.md` (and `.pdf`) | CISO, GRC analyst, security reviewer | 8-section Security Control Assessment: control coverage, gap analysis, evidence linkage | Compliance reviews; vendor due diligence |
-| `<surface>/uat-log.jsonl` + `uat-sign-off.pdf` (from `testnux sign pdf`) | Legal counsel, audit committee, regulator | Tamper-evident HMAC-chained signoff ledger with reviewer attestations and hash-chain verification badge | Final approval; regulator submission; legal hold |
+| `<surface>/uat-log.jsonl` + `uat-sign-off.pdf` (from `trunknux sign pdf`) | Legal counsel, audit committee, regulator | Tamper-evident HMAC-chained signoff ledger with reviewer attestations and hash-chain verification badge | Final approval; regulator submission; legal hold |
 | `TRACEABILITY.md` | External auditor | Bidirectional R-XX → TC-XX → evidence → signoff matrix — the single-document walkthrough of your entire control coverage | Audit walkthrough; control gap analysis |
-| `oscal-assessment.json` (from `testnux sca oscal`) | GRC platform integrators | Machine-readable NIST OSCAL 1.1.2 export of the assessment | Pipeline ingestion into Vanta, Drata, Secureframe, RegScale |
-| `visual-baseline/` + `visual-diff/` | Frontend QA + design QA | Per-TC baseline screenshots and pixel-diff images from `testnux visual compare` | Visual regression review between releases or environments |
+| `oscal-assessment.json` (from `trunknux sca oscal`) | GRC platform integrators | Machine-readable NIST OSCAL 1.1.2 export of the assessment | Pipeline ingestion into Vanta, Drata, Secureframe, RegScale |
+| `visual-baseline/` + `visual-diff/` | Frontend QA + design QA | Per-TC baseline screenshots and pixel-diff images from `trunknux visual compare` | Visual regression review between releases or environments |
 
-All of these artifacts are different views of the same data graph: **Requirement → TestCase → Result → Evidence → Attestation**. The audience determines the format; the truth is one source. Updating the source (your `test-plan.md`, `execution-log.md`, and `evidence/` screenshots) propagates to every downstream artifact on the next `testnux report` run.
+All of these artifacts are different views of the same data graph: **Requirement → TestCase → Result → Evidence → Attestation**. The audience determines the format; the truth is one source. Updating the source (your `test-plan.md`, `execution-log.md`, and `evidence/` screenshots) propagates to every downstream artifact on the next `trunknux report` run.
 
 ---
 
@@ -147,32 +153,32 @@ All of these artifacts are different views of the same data graph: **Requirement
 
 ```bash
 # Scaffold a new test pass
-testnux init demo-login --industry general
+trunknux init demo-login --industry general
 
-# Run TestNUX's own demo (no setup required)
-testnux demo
+# Run TrunkNuX's own demo (no setup required)
+trunknux demo
 
 # Check your environment
-testnux doctor
+trunknux doctor
 
 # After filling test-plan.md and running your Playwright spec:
-testnux report demo-login
+trunknux report demo-login
 
 # Validate a folder before reporting
-testnux validate demo-login
+trunknux validate demo-login
 ```
 
 The `demo` command downloads a prebuilt fixture, generates the HTML + XLSX, and opens both in your browser — then deletes the fixture. Fastest path to the "aha."
 
 ---
 
-## How TestNUX compares to alternatives
+## How TrunkNuX compares to alternatives
 
-TestNUX sits in the overlap of three established lanes. Honest comparisons against each:
+TrunkNuX sits in the overlap of three established lanes. Honest comparisons against each:
 
 ### vs. GRC compliance platforms
 
-|  | TestNUX | Vanta / Drata / Secureframe | Comp AI / Delve |
+|  | TrunkNuX | Vanta / Drata / Secureframe | Comp AI / Delve |
 |---|---|---|---|
 | **Distribution** | OSS CLI (Apache 2.0); local-first | Hosted SaaS, per-seat | Hosted SaaS / OSS hybrid |
 | **Where evidence lives** | Your git repo (markdown + screenshots + OSCAL JSON) | Vendor's cloud (lock-in) | Vendor's cloud |
@@ -186,12 +192,12 @@ TestNUX sits in the overlap of three established lanes. Honest comparisons again
 
 ### vs. test-management platforms
 
-|  | TestNUX | TestRail / Xray / Zephyr / qTest |
+|  | TrunkNuX | TestRail / Xray / Zephyr / qTest |
 |---|---|---|
 | **Distribution** | OSS CLI; data in your git repo | Hosted SaaS; data in vendor cloud |
 | **Test plan authoring** | Markdown + frontmatter (any editor, any IDE, any AI assistant) | Vendor UI required |
 | **Standards alignment built-in** | Yes — 7 industry bundles ship today (`general` / `ecommerce` / `edu` / `fintech` / `gov` / `healthcare` / `malaysia-banking`) | No (manual mapping required) |
-| **Traceability (R-XX → TC-XX → evidence → signoff)** | Deterministic generator (`testnux rtm`) | Manual matrix maintenance |
+| **Traceability (R-XX → TC-XX → evidence → signoff)** | Deterministic generator (`trunknux rtm`) | Manual matrix maintenance |
 | **AI plan/spec authoring** | Yes (Claude API, opt-in, [VERIFY] markers) | Some vendors are rolling out; quality varies |
 | **Audit-ready evidence package** | Yes — HMAC-chained signoff + OSCAL JSON + standards-alignment table baked in | No — they export TC results; you assemble the audit package separately |
 | **Pricing** | Free OSS | $20–50/user/month typical |
@@ -199,7 +205,7 @@ TestNUX sits in the overlap of three established lanes. Honest comparisons again
 
 ### vs. OSS test-report generators
 
-|  | TestNUX | Allure / Playwright HTML reporter / Cucumber Reports / Mochawesome |
+|  | TrunkNuX | Allure / Playwright HTML reporter / Cucumber Reports / Mochawesome |
 |---|---|---|
 | **What it produces** | Audit-ready evidence package: HTML + XLSX + RTM + SCA + signoff PDF + OSCAL JSON | HTML pass/fail report from a test run |
 | **Standards alignment** | OWASP / WCAG / HIPAA / PCI / NIST / FedRAMP / BNM RMiT / etc. baked in | None — pure pass/fail rendering |
@@ -209,37 +215,37 @@ TestNUX sits in the overlap of three established lanes. Honest comparisons again
 | **Pricing** | Free OSS | Free OSS |
 | **Best fit** | Teams that need regulator-ready evidence, not just test results | Teams that just want a pretty test-results page in CI |
 
-### Where TestNUX feeds into the others
+### Where TrunkNuX feeds into the others
 
-TestNUX is **complementary, not competitive**, with most of these:
+TrunkNuX is **complementary, not competitive**, with most of these:
 
-- **GRC platforms (Vanta / Drata / Secureframe / RegScale)** ingest TestNUX's OSCAL 1.1.2 JSON output. Pick TestNUX for engineering-side authorship; layer a GRC platform on TOP if your CISO wants a hosted dashboard.
-- **Test-management platforms (TestRail / Xray)** can ingest TestNUX's XLSX exports for non-technical reviewer flows. Or run TestNUX standalone and skip them.
-- **OSS test reporters (Allure / Playwright HTML)** can run alongside TestNUX in the same Playwright pipeline — TestNUX writes its evidence in `evidence/`, your reporter writes its HTML in `playwright-report/`. They don't conflict.
+- **GRC platforms (Vanta / Drata / Secureframe / RegScale)** ingest TrunkNuX's OSCAL 1.1.2 JSON output. Pick TrunkNuX for engineering-side authorship; layer a GRC platform on TOP if your CISO wants a hosted dashboard.
+- **Test-management platforms (TestRail / Xray)** can ingest TrunkNuX's XLSX exports for non-technical reviewer flows. Or run TrunkNuX standalone and skip them.
+- **OSS test reporters (Allure / Playwright HTML)** can run alongside TrunkNuX in the same Playwright pipeline — TrunkNuX writes its evidence in `evidence/`, your reporter writes its HTML in `playwright-report/`. They don't conflict.
 
-What makes TestNUX different from any of them is the **combination**: git-native + standards-aligned + LLM-augmented + signoff-chained + audit-package-output. Each individual feature has a competitor; the bundle is the moat.
+What makes TrunkNuX different from any of them is the **combination**: git-native + standards-aligned + LLM-augmented + signoff-chained + audit-package-output. Each individual feature has a competitor; the bundle is the moat.
 
 ---
 
 ## The full journey: testing → attestation → audit
 
-TestNUX is built to cover the entire chain from "an engineer writes a test plan" to "an auditor signs off on the evidence package." Different stages need different artifacts, and different people consume them. The CLI handles each stage.
+TrunkNuX is built to cover the entire chain from "an engineer writes a test plan" to "an auditor signs off on the evidence package." Different stages need different artifacts, and different people consume them. The CLI handles each stage.
 
 ### Stage 1 — Author and execute (engineering)
 
-An engineer or QA lead authors `test-plan.md`, writes `spec.ts`, runs Playwright. Evidence screenshots land in `evidence/`. AI accelerators (`testnux discover`, `plan`, `codify`, `enrich`) draft the boilerplate; humans confirm `[VERIFY]` markers before anything becomes evidence.
+An engineer or QA lead authors `test-plan.md`, writes `spec.ts`, runs Playwright. Evidence screenshots land in `evidence/`. AI accelerators (`trunknux discover`, `plan`, `codify`, `enrich`) draft the boilerplate; humans confirm `[VERIFY]` markers before anything becomes evidence.
 
 ### Stage 2 — Report and traceability (engineering → compliance)
 
-`testnux report` produces the deterministic XLSX + self-contained HTML + execution log. `testnux rtm` produces the bidirectional traceability matrix mapping R-XX requirements to TC-XX test cases to evidence files. The HTML report is what most stakeholders read; the RTM is what auditors walk during the audit.
+`trunknux report` produces the deterministic XLSX + self-contained HTML + execution log. `trunknux rtm` produces the bidirectional traceability matrix mapping R-XX requirements to TC-XX test cases to evidence files. The HTML report is what most stakeholders read; the RTM is what auditors walk during the audit.
 
 ### Stage 3 — Attest and assess (compliance)
 
-`testnux sca` produces an 8-section Security Control Assessment for a surface (today most often a tested page, but any control surface works). `testnux sign` records HMAC-chained attestations against TC results, control claims, vendor questionnaire responses, or release approvals. Multi-reviewer N-of-M attestation via `testnux br` enforces that QA, Security, and Compliance have all signed before a record is final.
+`trunknux sca` produces an 8-section Security Control Assessment for a surface (today most often a tested page, but any control surface works). `trunknux sign` records HMAC-chained attestations against TC results, control claims, vendor questionnaire responses, or release approvals. Multi-reviewer N-of-M attestation via `trunknux br` enforces that QA, Security, and Compliance have all signed before a record is final.
 
 ### Stage 4 — Submit and verify (audit)
 
-`testnux sign pdf` renders the signoff ledger to PDF with a hash-chain verification badge auditors can confirm independently of the tool. `testnux sca oscal` emits NIST OSCAL 1.1.2 JSON for ingestion into Vanta, Drata, Secureframe, RegScale. `testnux sign stale-check --threshold 90d` flags entries older than threshold so auditors know which evidence is fresh and which needs re-attestation.
+`trunknux sign pdf` renders the signoff ledger to PDF with a hash-chain verification badge auditors can confirm independently of the tool. `trunknux sca oscal` emits NIST OSCAL 1.1.2 JSON for ingestion into Vanta, Drata, Secureframe, RegScale. `trunknux sign stale-check --threshold 90d` flags entries older than threshold so auditors know which evidence is fresh and which needs re-attestation.
 
 ### Who runs each stage
 
@@ -258,9 +264,9 @@ Three artifact verbs that reuse the same machinery to cover non-testing workflow
 
 | Coming in v0.3 | Stage | What it produces | Status |
 |---|---|---|---|
-| `testnux attest <claim>` | 3 | Attestation workflow not tied to a test plan. A reviewer signs a control claim ("we encrypt customer data at rest with AES-256") with the same HMAC chain. Useful for SOC 2 / NYDFS / ISO 27001 attestation packages with 80+ control narratives that have nothing to do with testing. | Planned |
-| `testnux comply <industry>` | 3 + 4 | Scaffolds a regulator-ready compliance package from one of the 7 industry bundles. Control coverage table + evidence pointers + signoff blocks + OSCAL emission, ready for audit submission. | Planned |
-| `testnux respond <questionnaire>` | 4 | Vendor due-diligence response generator. Reads SIG / CAIQ / vendor questionnaire formats, drafts answers from the existing SCA + signoff log, marks every cell `[VERIFY]` for legal review before submission. | Planned |
+| `trunknux attest <claim>` | 3 | Attestation workflow not tied to a test plan. A reviewer signs a control claim ("we encrypt customer data at rest with AES-256") with the same HMAC chain. Useful for SOC 2 / NYDFS / ISO 27001 attestation packages with 80+ control narratives that have nothing to do with testing. | Planned |
+| `trunknux comply <industry>` | 3 + 4 | Scaffolds a regulator-ready compliance package from one of the 7 industry bundles. Control coverage table + evidence pointers + signoff blocks + OSCAL emission, ready for audit submission. | Planned |
+| `trunknux respond <questionnaire>` | 4 | Vendor due-diligence response generator. Reads SIG / CAIQ / vendor questionnaire formats, drafts answers from the existing SCA + signoff log, marks every cell `[VERIFY]` for legal review before submission. | Planned |
 
 Same `[VERIFY]` discipline. Same HMAC ledger. Same git-native storage. Different artifact verbs covering different stages of the same journey.
 
@@ -268,7 +274,7 @@ Same `[VERIFY]` discipline. Same HMAC ledger. Same git-native storage. Different
 
 Testing is concrete. Engineering teams already do it. It's the one place where evidence and code naturally converge, which makes the wedge tractable. The README leads with the testing surface because that's where most users will start.
 
-But the wedge is not the product. The product is the journey. If you're a compliance officer, GRC analyst, vendor-DD lead, or release-approval workflow owner reading this, the existing commands (`sign`, `sca`, `rtm`, `br`, `sca oscal`) already cover non-testing workflows today. If you want the v0.3 roadmap to prioritize your specific artifact type, [open an issue](https://github.com/StillNotBald/testnux/issues) tagged `artifact-type:<your-thing>`.
+But the wedge is not the product. The product is the journey. If you're a compliance officer, GRC analyst, vendor-DD lead, or release-approval workflow owner reading this, the existing commands (`sign`, `sca`, `rtm`, `br`, `sca oscal`) already cover non-testing workflows today. If you want the v0.3 roadmap to prioritize your specific artifact type, [open an issue](https://github.com/StillNotBald/trunknux/issues) tagged `artifact-type:<your-thing>`.
 
 ---
 
@@ -282,11 +288,11 @@ If you want consistent outcomes across teams, see [docs/adoption-checklist.md](d
 
 Most testing tools are **runtime-focused** — run tests, show results. They stop there.
 
-Regulators don't read Playwright output. They read structured evidence packages: per-TC screenshots, a traceability matrix from requirement to test result, a standards-alignment table. Building those by hand takes 4–8 hours per page. TestNUX generates them in under 5 minutes from the same markdown and screenshot files your engineers already produce.
+Regulators don't read Playwright output. They read structured evidence packages: per-TC screenshots, a traceability matrix from requirement to test result, a standards-alignment table. Building those by hand takes 4–8 hours per page. TrunkNuX generates them in under 5 minutes from the same markdown and screenshot files your engineers already produce.
 
-The gap TestNUX fills:
+The gap TrunkNuX fills:
 
-| What auditors ask for | Typical answer | TestNUX answer |
+| What auditors ask for | Typical answer | TrunkNuX answer |
 |---|---|---|
 | "Show me test evidence for control IA-2" | Screenshot folder + spreadsheet pasted together | Per-TC evidence embedded in a self-contained HTML report, linked to R-XX |
 | "Which requirements does this test cover?" | Manually maintained spreadsheet | `TRACEABILITY.md` generated from plan frontmatter |
@@ -326,17 +332,17 @@ testing-log/
 ## The 6-phase pipeline
 
 ```
-1. DISCOVER   →  page state catalogued (testnux discover)
+1. DISCOVER   →  page state catalogued (trunknux discover)
       ↓
-2. PLAN       →  test-plan.md authored (testnux plan)
+2. PLAN       →  test-plan.md authored (trunknux plan)
       ↓
-3. CODIFY     →  Playwright spec written (testnux codify)
+3. CODIFY     →  Playwright spec written (trunknux codify)
       ↓
 4. EXECUTE    →  tests run, evidence captured (Playwright + afterEach hook)
       ↓
-5. REPORT     →  XLSX + HTML generated (testnux report)
+5. REPORT     →  XLSX + HTML generated (trunknux report)
       ↓
-6. DOC        →  RTM + session log updated (testnux rtm)
+6. DOC        →  RTM + session log updated (trunknux rtm)
 ```
 
 **Honest scope at v0.2.0:** Phase 5 (REPORT) is the deterministic foundation — no LLM, same output every run. Phases 1, 2, 3, 6 are LLM-assisted (Claude API, opt-in via `CLAUDE_API_KEY`); every LLM-generated cell renders with a `[VERIFY]` marker until a human attests it. The deterministic core is what gets audited; the LLM agents accelerate authoring.
@@ -347,14 +353,14 @@ testing-log/
 
 | Phase | v0.1.1 | v0.2.0 (current) |
 |---|---|---|
-| DISCOVER | Manual | `testnux discover <url>` (Claude API, [VERIFY] markers) |
-| PLAN | Template-assisted | `testnux plan <slug>` (Claude API, [VERIFY] markers) |
-| CODIFY | Template-assisted | `testnux codify <slug>` (Claude API, preserves XFF + form.requestSubmit + afterEach patterns) |
+| DISCOVER | Manual | `trunknux discover <url>` (Claude API, [VERIFY] markers) |
+| PLAN | Template-assisted | `trunknux plan <slug>` (Claude API, [VERIFY] markers) |
+| CODIFY | Template-assisted | `trunknux codify <slug>` (Claude API, preserves XFF + form.requestSubmit + afterEach patterns) |
 | EXECUTE | Automated | Same — Playwright + bundled `afterEach` evidence hook |
 | REPORT | Fully automated (no LLM) | Same — fully deterministic, no LLM |
-| DOC | Template-assisted | `testnux rtm` (deterministic) + `testnux enrich` (LLM, append-only) |
+| DOC | Template-assisted | `trunknux rtm` (deterministic) + `trunknux enrich` (LLM, append-only) |
 
-The deterministic `report` pipeline is the audit-defensible core in both versions. v0.2.0 adds LLM agents that draft scenarios → plans → specs → enrichments — every output flagged `[VERIFY]` until a human reviews. Use `testnux batch-plan --pages "login,register,..."` for parallel multi-page authoring.
+The deterministic `report` pipeline is the audit-defensible core in both versions. v0.2.0 adds LLM agents that draft scenarios → plans → specs → enrichments — every output flagged `[VERIFY]` until a human reviews. Use `trunknux batch-plan --pages "login,register,..."` for parallel multi-page authoring.
 
 ---
 
@@ -363,7 +369,7 @@ The deterministic `report` pipeline is the audit-defensible core in both version
 Seven standards bundles ship today. Every generated report includes a standards-alignment table mapping each TC to the applicable controls.
 
 ```bash
-npx testnux init my-page --industry malaysia-banking
+npx trunknux init my-page --industry malaysia-banking
 ```
 
 | `--industry` flag | What it covers |
@@ -378,13 +384,13 @@ npx testnux init my-page --industry malaysia-banking
 
 The standards config for each bundle lives in `src/config/industry-standards/<industry>.json`. To use a custom control set, drop a `standards.json` file in any test-pass folder — it overrides the bundled config for that folder only.
 
-`testnux sca oscal` emits NIST OSCAL 1.1.2 — the machine-readable assessment format required by FedRAMP RFC-0024 (mandatory from September 2026). OSCAL output ingests directly into Vanta, Drata, Secureframe, and RegScale.
+`trunknux sca oscal` emits NIST OSCAL 1.1.2 — the machine-readable assessment format required by FedRAMP RFC-0024 (mandatory from September 2026). OSCAL output ingests directly into Vanta, Drata, Secureframe, and RegScale.
 
 ---
 
 ## Demo
 
-The demo target is a prebuilt Next.js dashboard at `examples/demo-dashboard/`. It ships with sample output artifacts showing what TestNUX produces:
+The demo target is a prebuilt Next.js dashboard at `examples/demo-dashboard/`. It ships with sample output artifacts showing what TrunkNuX produces:
 
 ```
 examples/demo-dashboard/
@@ -395,9 +401,9 @@ examples/demo-dashboard/
   screenshots/                  ← per-TC Playwright evidence screenshots
 ```
 
-Run `npx testnux demo` to generate and open these locally.
+Run `npx trunknux demo` to generate and open these locally.
 
-**Live demo:** Browse the [sample execution report](./examples/demo-dashboard/output/login-execution-report.html) — a real `testnux report` output from a Playwright run against the demo-dashboard project (13 PASS / 2 BLOCKED-CONFIG out of 15 TCs, 13 embedded screenshots), regenerated in v0.2.0 to replace the original hand-crafted sample. Self-contained HTML — open offline, no SaaS dashboard required.
+**Live demo:** Browse the [sample execution report](./examples/demo-dashboard/output/login-execution-report.html) — a real `trunknux report` output from a Playwright run against the demo-dashboard project (13 PASS / 2 BLOCKED-CONFIG out of 15 TCs, 13 embedded screenshots), regenerated in v0.2.0 to replace the original hand-crafted sample. Self-contained HTML — open offline, no SaaS dashboard required.
 
 ---
 
@@ -421,7 +427,7 @@ Note on AI-generated content: every LLM-generated cell in a report renders with 
 
 ## Three-track discipline (requirements / sprint-log / testing-log)
 
-TestNUX is built around a git-native three-track structure:
+TrunkNuX is built around a git-native three-track structure:
 
 ```
 requirements/                    ← what you said you'd build
@@ -447,43 +453,43 @@ The date-prefix on test-pass folders creates audit snapshots — every engagemen
 
 ### v0.1.1 (stable on `@latest`)
 
-- `testnux init <slug> [--industry general]` — scaffold test-pass folder
-- `testnux report <folder>` — XLSX + HTML from markdown inputs (deterministic, no LLM)
-- `testnux validate <folder>` — lint test-plan.md frontmatter against JSON Schema
-- `testnux demo` — run bundled demo-dashboard fixture, open output in browser
-- `testnux doctor` — preflight check (Node, Playwright, env vars, common pitfalls)
+- `trunknux init <slug> [--industry general]` — scaffold test-pass folder
+- `trunknux report <folder>` — XLSX + HTML from markdown inputs (deterministic, no LLM)
+- `trunknux validate <folder>` — lint test-plan.md frontmatter against JSON Schema
+- `trunknux demo` — run bundled demo-dashboard fixture, open output in browser
+- `trunknux doctor` — preflight check (Node, Playwright, env vars, common pitfalls)
 - OWASP ASVS + WCAG 2.2 AA standards alignment out of the box
 - `[VERIFY]` confidence markers on every LLM-generated cell
 
 ### v0.2.0 (current, shipped 2026-04-27)
 
 **LLM agent suite** (real Claude API; require `CLAUDE_API_KEY` + `npm install @anthropic-ai/sdk`):
-- `testnux discover <url>` — browse a page, emit `scenarios.md` with G/W/T TCs
-- `testnux plan <slug>` — `scenarios.md` → `test-plan.md` with frontmatter + R-IDs + [VERIFY]
-- `testnux codify <slug>` — `test-plan.md` → Playwright `spec.ts`; preserves XFF + form.requestSubmit + afterEach patterns; `--safe` mode for hand-edited specs
-- `testnux enrich <slug>` — three append-only passes (design-review / qa-structural / graph-context), marker-bounded so human edits survive regeneration
-- `testnux batch-plan --pages "login,register,..."` — parallel multi-page pipeline with cumulative `--max-spend` enforcement and replacement-agent failure isolation
+- `trunknux discover <url>` — browse a page, emit `scenarios.md` with G/W/T TCs
+- `trunknux plan <slug>` — `scenarios.md` → `test-plan.md` with frontmatter + R-IDs + [VERIFY]
+- `trunknux codify <slug>` — `test-plan.md` → Playwright `spec.ts`; preserves XFF + form.requestSubmit + afterEach patterns; `--safe` mode for hand-edited specs
+- `trunknux enrich <slug>` — three append-only passes (design-review / qa-structural / graph-context), marker-bounded so human edits survive regeneration
+- `trunknux batch-plan --pages "login,register,..."` — parallel multi-page pipeline with cumulative `--max-spend` enforcement and replacement-agent failure isolation
 - Eval harness at `test/eval/` — 3 fixture pages with golden outputs, scoring on TC count / R-ID format / [VERIFY] placement / standards alignment
 
 **Signoff suite (S1-S5):**
-- `testnux sign <surface>` — record an attestation (chained HMAC log)
-- `testnux sign pdf <surface>` — render the UAT signoff ledger to PDF with hash-chain verification badge
-- `testnux sign stale-check <surface> --threshold 90d` — flag entries older than threshold (CI gate via `--strict`)
-- OSCAL `assessment-log` integration — `testnux sca oscal` populates `responsible-parties` + `assessments[].assessment-log.entries` (validated against OSCAL 1.1.2 schema)
-- `testnux sign --justify-with-llm` — optional LLM-drafted justification text; reviewer edits + confirms; auto-prefixed `[VERIFY] LLM-drafted, reviewer-confirmed:`
-- Multi-reviewer N-of-M — `required_reviewers` field in BR frontmatter; `testnux br rtm` shows partial-attestation status; revocation supported (append-only)
+- `trunknux sign <surface>` — record an attestation (chained HMAC log)
+- `trunknux sign pdf <surface>` — render the UAT signoff ledger to PDF with hash-chain verification badge
+- `trunknux sign stale-check <surface> --threshold 90d` — flag entries older than threshold (CI gate via `--strict`)
+- OSCAL `assessment-log` integration — `trunknux sca oscal` populates `responsible-parties` + `assessments[].assessment-log.entries` (validated against OSCAL 1.1.2 schema)
+- `trunknux sign --justify-with-llm` — optional LLM-drafted justification text; reviewer edits + confirms; auto-prefixed `[VERIFY] LLM-drafted, reviewer-confirmed:`
+- Multi-reviewer N-of-M — `required_reviewers` field in BR frontmatter; `trunknux br rtm` shows partial-attestation status; revocation supported (append-only)
 
 **Per-env + visual regression:**
-- `testnux run <slug> --env staging|prod|local` — env-suffixed test-pass folders; auto-injects `env:` and `base_url:` into frontmatter
-- `testnux compare <slug> staging prod` — per-TC verdict: MATCH / PROMOTION / REGRESSION / DIVERGE / MISSING-A / MISSING-B; CI gate via `--threshold`
-- `testnux visual baseline <slug>` — capture full-page Playwright screenshots to `<folder>/visual-baseline/<TC-ID>.png`
-- `testnux visual compare <slug> --threshold 0.05 [--strict]` — pixelmatch diffs against baseline; graceful degrade if `pixelmatch` not installed
+- `trunknux run <slug> --env staging|prod|local` — env-suffixed test-pass folders; auto-injects `env:` and `base_url:` into frontmatter
+- `trunknux compare <slug> staging prod` — per-TC verdict: MATCH / PROMOTION / REGRESSION / DIVERGE / MISSING-A / MISSING-B; CI gate via `--threshold`
+- `trunknux visual baseline <slug>` — capture full-page Playwright screenshots to `<folder>/visual-baseline/<TC-ID>.png`
+- `trunknux visual compare <slug> --threshold 0.05 [--strict]` — pixelmatch diffs against baseline; graceful degrade if `pixelmatch` not installed
 
 **Deterministic generators:**
-- `testnux rtm` — generate `TRACEABILITY.md` from REQUIREMENTS.md + sprint-log + code grep + test-plan.md (human-edit-survives-regeneration markers)
-- `testnux sca init|generate|pdf` — Security Control Assessment from test results
-- `testnux mcp` — stdio MCP server for Claude Code integration (mount via `.claude/settings.json`)
-- `testnux report` is **no longer a stub** — full XLSX + self-contained HTML (TOC sidebar, status tabs, embedded screenshots, standards alignment matrix, threat coverage, base64-inlined assets)
+- `trunknux rtm` — generate `TRACEABILITY.md` from REQUIREMENTS.md + sprint-log + code grep + test-plan.md (human-edit-survives-regeneration markers)
+- `trunknux sca init|generate|pdf` — Security Control Assessment from test results
+- `trunknux mcp` — stdio MCP server for Claude Code integration (mount via `.claude/settings.json`)
+- `trunknux report` is **no longer a stub** — full XLSX + self-contained HTML (TOC sidebar, status tabs, embedded screenshots, standards alignment matrix, threat coverage, base64-inlined assets)
 
 **Tests:** 152 → 370 (all green). 0 lint errors.
 
@@ -491,31 +497,31 @@ The date-prefix on test-pass folders creates audit snapshots — every engagemen
 
 ### v0.3 (next; the journey extension)
 
-The v0.3 thesis: TestNUX is not a test reporter, it's the toolchain for the testing-to-audit journey. v0.3 adds three artifact verbs that extend the journey to non-testing workflows, plus the supporting infrastructure.
+The v0.3 thesis: TrunkNuX is not a test reporter, it's the toolchain for the testing-to-audit journey. v0.3 adds three artifact verbs that extend the journey to non-testing workflows, plus the supporting infrastructure.
 
 **New artifact verbs (cover stages 3 and 4 of the journey):**
-- `testnux attest <claim>` — attestation workflow not tied to a test plan. HMAC-chained, PDF output, useful for SOC 2 / NYDFS / ISO 27001 control narratives.
-- `testnux comply <industry>` — scaffolds a regulator-ready compliance package from any industry bundle. Control coverage + evidence pointers + signoff blocks + OSCAL emission. Audit-submission-ready.
-- `testnux respond <questionnaire>` — vendor due-diligence response generator. Reads SIG / CAIQ formats, drafts from existing SCA + signoff log, marks every cell `[VERIFY]` for legal review.
+- `trunknux attest <claim>` — attestation workflow not tied to a test plan. HMAC-chained, PDF output, useful for SOC 2 / NYDFS / ISO 27001 control narratives.
+- `trunknux comply <industry>` — scaffolds a regulator-ready compliance package from any industry bundle. Control coverage + evidence pointers + signoff blocks + OSCAL emission. Audit-submission-ready.
+- `trunknux respond <questionnaire>` — vendor due-diligence response generator. Reads SIG / CAIQ formats, drafts from existing SCA + signoff log, marks every cell `[VERIFY]` for legal review.
 
 **Infrastructure to support the journey:**
 - Eval harness expansion: 10+ real customer pages, regression CI gate before any LLM prompt change ships.
 - Cypress + Vitest adapter support (today: Playwright only).
 - Additional `--industry` bundles for emerging regulatory jurisdictions (UK FCA, EU DORA, India RBI candidates).
-- Optional `/testnux` skill for the gstack catalog — one distribution channel for users already on gstack; the underlying CLI is unchanged.
+- Optional `/trunknux` skill for the gstack catalog — one distribution channel for users already on gstack; the underlying CLI is unchanged.
 
 ---
 
 ## FAQ
 
 **Can I trust the output enough to skip human review?**  
-No. Every TestNUX output — LLM-drafted test plans, codified Playwright specs, signoff PDFs, SCAs, OSCAL exports — is a starting point for human review, not a final answer. The disclaimer block near the top of this README covers this in detail. The short version: `[VERIFY]` markers are not decoration; they mean a qualified human has not yet attested to that content. Removing a `[VERIFY]` marker without reading and validating the underlying content is the one thing that will make your evidence package fail under audit.
+No. Every TrunkNuX output — LLM-drafted test plans, codified Playwright specs, signoff PDFs, SCAs, OSCAL exports — is a starting point for human review, not a final answer. The disclaimer block near the top of this README covers this in detail. The short version: `[VERIFY]` markers are not decoration; they mean a qualified human has not yet attested to that content. Removing a `[VERIFY]` marker without reading and validating the underlying content is the one thing that will make your evidence package fail under audit.
 
-**Does TestNUX cost anything?**  
+**Does TrunkNuX cost anything?**  
 The CLI is free (Apache 2.0). The v0.2 LLM agents call Claude's API — approximately **$0.30–$0.50 per page** for a full pass (Sonnet-class) with `--max-spend` to cap a batch. See [docs/costs.md](docs/costs.md) for empirical per-page burn rates and recommended working patterns.
 
 **Do I need an Anthropic API key?**  
-Not for the deterministic core. `testnux report`, `testnux validate`, `testnux rtm`, `testnux sca`, `testnux run`/`compare`, `testnux visual baseline`/`compare`, and the entire signoff suite work without any LLM. A `CLAUDE_API_KEY` is required only for the v0.2 LLM agents (`discover`, `plan`, `codify`, `enrich`, `batch-plan`, and the optional `sign --justify-with-llm`).
+Not for the deterministic core. `trunknux report`, `trunknux validate`, `trunknux rtm`, `trunknux sca`, `trunknux run`/`compare`, `trunknux visual baseline`/`compare`, and the entire signoff suite work without any LLM. A `CLAUDE_API_KEY` is required only for the v0.2 LLM agents (`discover`, `plan`, `codify`, `enrich`, `batch-plan`, and the optional `sign --justify-with-llm`).
 
 ---
 
@@ -532,7 +538,7 @@ Quick version:
 
 ## Credits
 
-The three-track discipline (`requirements/` + `sprint-log/` + `testing-log/`) and the multi-agent dispatch patterns are inspired by [gstack](https://github.com/garrytan/gstack) by Garry Tan. TestNUX is a standalone CLI — gstack is not a runtime dependency, just an inspiration for the workflow shape. Other credits: Playwright (evidence capture), IBM Trestle (OSCAL validation), NIST OSCAL (standards schema), Anthropic Claude (v0.2 LLM agents). Full attribution at [docs/credit.md](docs/credit.md). Upstream patterns we plan to contribute back live in [CONTRIBUTING.md](CONTRIBUTING.md).
+The three-track discipline (`requirements/` + `sprint-log/` + `testing-log/`) and the multi-agent dispatch patterns are inspired by [gstack](https://github.com/garrytan/gstack) by Garry Tan. TrunkNuX is a standalone CLI — gstack is not a runtime dependency, just an inspiration for the workflow shape. Other credits: Playwright (evidence capture), IBM Trestle (OSCAL validation), NIST OSCAL (standards schema), Anthropic Claude (v0.2 LLM agents). Full attribution at [docs/credit.md](docs/credit.md). Upstream patterns we plan to contribute back live in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
@@ -540,7 +546,7 @@ The three-track discipline (`requirements/` + `sprint-log/` + `testing-log/`) an
 
 Apache 2.0. See [LICENSE](LICENSE).
 
-"TestNUX™" is a trademark of Chu Ling. See [NOTICE](NOTICE) for trademark terms. The Apache 2.0 license covers the code; the trademark covers the name.
+"TrunkNuX™" is a trademark of Chu Ling. See [NOTICE](NOTICE) for trademark terms. The Apache 2.0 license covers the code; the trademark covers the name.
 
 ---
 
@@ -548,4 +554,4 @@ Apache 2.0. See [LICENSE](LICENSE).
 
 Single point of contact for all matters (security, premium, partnerships, contributions): **ccling1998@gmail.com**
 
-For security vulnerabilities, please use [GitHub Private Vulnerability Reporting](https://github.com/StillNotBald/testnux/security/advisories/new) (preferred — gives us a private collaboration channel + CVE assignment workflow). Email is the fallback.
+For security vulnerabilities, please use [GitHub Private Vulnerability Reporting](https://github.com/StillNotBald/trunknux/security/advisories/new) (preferred — gives us a private collaboration channel + CVE assignment workflow). Email is the fallback.

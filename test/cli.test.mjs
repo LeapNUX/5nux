@@ -4,7 +4,7 @@
 /**
  * test/cli.test.mjs
  *
- * CLI smoke + integration tests for testnux.
+ * CLI smoke + integration tests for trunknux.
  *
  * Runs the real CLI binary via node:child_process execFileSync so every test
  * exercises the full command dispatch path including Commander registration,
@@ -12,7 +12,7 @@
  *
  * Each test creates its own isolated tmpdir sandbox and cleans up on teardown.
  *
- * Exit-code reference (from bin/testnux.mjs):
+ * Exit-code reference (from bin/trunknux.mjs):
  *   0  success
  *   1  generic / critical error
  *   2  missing or invalid input
@@ -30,7 +30,7 @@ import { fileURLToPath } from 'node:url';
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const BIN = path.resolve(__dirname, '..', 'bin', 'testnux.mjs');
+const BIN = path.resolve(__dirname, '..', 'bin', 'trunknux.mjs');
 const NODE = process.execPath;
 const INDUSTRY_STANDARDS_DIR = path.resolve(__dirname, '..', 'src', 'config', 'industry-standards');
 

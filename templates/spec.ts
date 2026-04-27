@@ -4,7 +4,7 @@
 /**
  * templates/spec.ts
  *
- * TestNUX — Playwright spec template.
+ * TrunkNuX — Playwright spec template.
  *
  * Replace all {{placeholder}} tokens before committing.
  *

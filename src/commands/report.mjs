@@ -4,7 +4,7 @@
 /**
  * src/commands/report.mjs
  *
- * Implements `testnux report <folder>`.
+ * Implements `trunknux report <folder>`.
  *
  * Given a testing-log/<date>_<slug>/ folder, reads:
  *   test-plan.md              — TC matrix + per-TC Given/When/Then sections
@@ -146,7 +146,7 @@ export async function runReport(folderArg, opts = {}) {
       log('error', `Folder not found: ${folderArg}`, jsonMode);
     } else {
       log('error', 'No folder specified and could not auto-detect a single testing-log/<date>_<slug>/ directory.', jsonMode);
-      log('info', 'Usage: testnux report <testing-log-folder>', jsonMode);
+      log('info', 'Usage: trunknux report <testing-log-folder>', jsonMode);
     }
     process.exit(1);
   }
@@ -160,7 +160,7 @@ export async function runReport(folderArg, opts = {}) {
 
   if (!jsonMode) {
     console.log('');
-    console.log(C.bold(`testnux report — ${slug}`));
+    console.log(C.bold(`trunknux report — ${slug}`));
     console.log(C.dim(`  folder: ${folder}`));
     if (planOnly) console.log(C.yellow('  mode: PLAN ONLY (no execution results)'));
     console.log('');

@@ -1,9 +1,9 @@
-# Sample output: TestNUX run against Demo Dashboard
+# Sample output: TrunkNuX run against Demo Dashboard
 
-This folder shows what TestNUX **PRODUCES** when run against a real codebase (demo-dashboard, a public Next.js admin app). The source code being tested is NOT in this repo — only the outputs. To reproduce, fork demo-dashboard separately and run `testnux init demo-dashboard-login --industry general` against it.
+This folder shows what TrunkNuX **PRODUCES** when run against a real codebase (demo-dashboard, a public Next.js admin app). The source code being tested is NOT in this repo — only the outputs. To reproduce, fork demo-dashboard separately and run `trunknux init demo-dashboard-login --industry general` against it.
 
-> **These outputs are real `testnux` artifacts generated against the demo-dashboard project, not handcrafted samples.**  
-> The HTML report (`output/login-execution-report.html`) and XLSX were produced by running `testnux report` against a live Playwright test pass on 2026-04-27.  
+> **These outputs are real `trunknux` artifacts generated against the demo-dashboard project, not handcrafted samples.**  
+> The HTML report (`output/login-execution-report.html`) and XLSX were produced by running `trunknux report` against a live Playwright test pass on 2026-04-27.  
 > To regenerate: see [`output/real-run/REGENERATE.md`](output/real-run/REGENERATE.md)
 
 ---
@@ -17,7 +17,7 @@ This folder shows what TestNUX **PRODUCES** when run against a real codebase (de
 | SCA | `output/login-sca-v0.1.md` | Complete 8-section Security Control Assessment: executive summary, per-control inventory, threat coverage, declined-by-design documentation, open items, and sign-off table |
 | Screenshots | `screenshots/` | Per-TC Playwright `afterEach` evidence screenshots (populated when you run the spec) |
 | UAT sign-off log | `output/uat-log.jsonl` | HMAC-SHA256 hash-chained sign-off log (machine-readable; tamper-evident) |
-| UAT sign-off ledger | `output/uat-sign-off.md` | Human-readable rendered version of the sign-off ledger produced by `testnux sign --verify` |
+| UAT sign-off ledger | `output/uat-sign-off.md` | Human-readable rendered version of the sign-off ledger produced by `trunknux sign --verify` |
 
 ---
 
@@ -28,20 +28,20 @@ This folder shows what TestNUX **PRODUCES** when run against a real codebase (de
 Clone demo-dashboard into a sibling directory and start it:
 
 ```bash
-git clone https://github.com/testnux-oss/demo-dashboard.git
+git clone https://github.com/trunknux-oss/demo-dashboard.git
 cd demo-dashboard
 npm install
 npm run build
 npm start          # starts on http://localhost:3737 by default
 ```
 
-Keep the server running. Open a second terminal for TestNUX commands.
+Keep the server running. Open a second terminal for TrunkNuX commands.
 
 ### Init a new test pass
 
 ```bash
-# From the testnux directory:
-testnux init demo-dashboard-login --industry general --target-url http://localhost:3737/login
+# From the trunknux directory:
+trunknux init demo-dashboard-login --industry general --target-url http://localhost:3737/login
 ```
 
 This scaffolds:
@@ -76,7 +76,7 @@ Screenshots land in `testing-log/<date>_demo-dashboard-login/evidence/`.
 ### Generate the report
 
 ```bash
-testnux report demo-dashboard-login
+trunknux report demo-dashboard-login
 ```
 
 The generated HTML and XLSX open automatically in your browser.
@@ -109,8 +109,8 @@ These patterns come from real-world first-pass experience and are baked into the
 - **Rate-limit tests last** — LOGIN-15 (6 wrong-password attempts) is the last test in the spec so it does not exhaust the rate-limit bucket for subsequent tests
 - **Production build required** — tests run against `npm run build && npm start`, not `npm run dev`
 - **Inline `captureEvidence` for custom contexts** — any TC that opens its own browser context calls `captureEvidence(page, tcId)` inline before closing the context
-- **`PLAN ONLY` mode** — run `testnux report demo-dashboard-login --plan-only` before execution to give stakeholders a pre-review XLSX
+- **`PLAN ONLY` mode** — run `trunknux report demo-dashboard-login --plan-only` before execution to give stakeholders a pre-review XLSX
 
 ---
 
-Want to use TestNUX on YOUR codebase? → see [docs/getting-started.md](../../docs/getting-started.md)
+Want to use TrunkNuX on YOUR codebase? → see [docs/getting-started.md](../../docs/getting-started.md)

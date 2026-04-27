@@ -7,7 +7,7 @@
 ## Prerequisites
 
 - Node.js 20 or later (`node --version`)
-- Playwright browsers (installed by TestNUX on first use)
+- Playwright browsers (installed by TrunkNuX on first use)
 - A terminal
 
 ---
@@ -15,8 +15,8 @@
 ## Step 1 — Install
 
 ```bash
-npm install -g testnux
-testnux --version    # verify
+npm install -g trunknux
+trunknux --version    # verify
 ```
 
 Expected output:
@@ -25,19 +25,19 @@ Expected output:
 0.1.0
 ```
 
-That's it. The package is on npm — `npm install -g testnux` works on any machine with Node 20+.
+That's it. The package is on npm — `npm install -g trunknux` works on any machine with Node 20+.
 
 **Alternative — install from GitHub** (for unreleased commits / contributors):
 
 ```bash
-npm install -g github:StillNotBald/testnux
+npm install -g github:StillNotBald/trunknux
 ```
 
 **Alternative — clone for development:**
 
 ```bash
-git clone https://github.com/StillNotBald/testnux.git
-cd testnux && npm install && npm link
+git clone https://github.com/StillNotBald/trunknux.git
+cd trunknux && npm install && npm link
 ```
 
 ---
@@ -45,13 +45,13 @@ cd testnux && npm install && npm link
 ## Step 2 — Preflight check
 
 ```bash
-testnux doctor
+trunknux doctor
 ```
 
 Expected output:
 
 ```
-testnux doctor v0.1.0
+trunknux doctor v0.1.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✔  Node 20.x detected
 ✔  Playwright chromium installed
@@ -73,15 +73,15 @@ Three tiers, each builds on the last. Stop wherever the value stops compounding 
 ### 60 seconds — see what you get
 
 ```
-npx testnux demo
+npx trunknux demo
 ```
 
-Opens a sample execution report in your browser. This is the artifact `testnux report` produces. If this looks like the kind of evidence you want, continue.
+Opens a sample execution report in your browser. This is the artifact `trunknux report` produces. If this looks like the kind of evidence you want, continue.
 
 ### 5 minutes — scaffold your first test pass
 
 ```
-testnux init my-page
+trunknux init my-page
 ```
 
 Creates `testing-log/2026-04-27_my-page/` with:
@@ -97,10 +97,10 @@ Look at the folder, read the templates. You should now understand the shape: one
 1. Edit `testing-log/2026-04-27_my-page/test-plan.md` — fill in 3-5 TCs from the template
 2. Edit `spec.ts` — write the Playwright assertions to match each TC (the template has the patterns: `form.requestSubmit`, XFF header, evidence afterEach hook)
 3. Run the spec: `npx playwright test testing-log/2026-04-27_my-page/spec.ts`
-4. Generate the report: `testnux report testing-log/2026-04-27_my-page`
+4. Generate the report: `trunknux report testing-log/2026-04-27_my-page`
 5. Open the generated `.html` — it's a self-contained file you can email to an auditor
 
-You now have the full loop. From here, scale: more pages, more TCs, `testnux rtm` for traceability across all pages, `testnux sign` for sign-off ledger, `testnux sca` for control assessments.
+You now have the full loop. From here, scale: more pages, more TCs, `trunknux rtm` for traceability across all pages, `trunknux sign` for sign-off ledger, `trunknux sca` for control assessments.
 
 ---
 
@@ -133,7 +133,7 @@ You now have the full loop. From here, scale: more pages, more TCs, `testnux rtm
 - **See a fully worked example** — the demo-dashboard login test plan at [examples/demo-dashboard/output/login-test-plan.md](../examples/demo-dashboard/output/login-test-plan.md) shows 15 real TCs with G/W/T and standards alignment
 - **See what a finished SCA looks like** — [examples/demo-dashboard/output/login-sca-v0.1.md](../examples/demo-dashboard/output/login-sca-v0.1.md) is the public reference artifact
 - **CLI reference** — [reference.md](reference.md) for full flag tables and exit codes
-- **Architecture** — [architecture/data-model.md](architecture/data-model.md) if you want to understand the data model before extending TestNUX
+- **Architecture** — [architecture/data-model.md](architecture/data-model.md) if you want to understand the data model before extending TrunkNuX
 
 ---
 

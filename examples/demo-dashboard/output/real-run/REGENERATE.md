@@ -1,13 +1,13 @@
 # How to regenerate the real-run artifacts
 
-This folder contains a real TestNUX test pass against demo-dashboard's `/login` page.
+This folder contains a real TrunkNuX test pass against demo-dashboard's `/login` page.
 Follow these steps to reproduce the full output from scratch.
 
 ## Prerequisites
 
 1. **Node.js 20+** and **npm** installed
 2. **demo-dashboard** cloned at a known path (e.g. `C:\Users\Chu Ling\Desktop\demo-dashboard\`)
-3. **testnux** repo at a known path (e.g. `C:\Users\Chu Ling\Desktop\Projects\testnux\`)
+3. **trunknux** repo at a known path (e.g. `C:\Users\Chu Ling\Desktop\Projects\trunknux\`)
 4. Playwright Chromium browser installed:
    ```bash
    cd "C:\Users\Chu Ling\Desktop\demo-dashboard"
@@ -33,7 +33,7 @@ Wait until you see `✓ Ready on http://localhost:3737` in the terminal output.
 Open a second terminal:
 
 ```bash
-cd "C:\Users\Chu Ling\Desktop\Projects\testnux\examples\demo-dashboard\output\real-run"
+cd "C:\Users\Chu Ling\Desktop\Projects\trunknux\examples\demo-dashboard\output\real-run"
 npx playwright test --config=playwright.config.ts --reporter=list
 ```
 
@@ -47,8 +47,8 @@ The spec also auto-writes `execution-log-auto.md` alongside itself.
 ### 3 — Generate the report
 
 ```bash
-cd "C:\Users\Chu Ling\Desktop\Projects\testnux"
-node bin/testnux.mjs report examples/demo-dashboard/output/real-run
+cd "C:\Users\Chu Ling\Desktop\Projects\trunknux"
+node bin/trunknux.mjs report examples/demo-dashboard/output/real-run
 ```
 
 This produces:
@@ -89,6 +89,6 @@ LOGIN-11 title now reads "Sign In — Apex Dashboard" (prod build deduplicates `
 | Problem | Fix |
 |---|---|
 | `Error: connect ECONNREFUSED 127.0.0.1:3737` | Dev server not running — go back to Step 1 |
-| `ReferenceError: __dirname is not defined` | testnux is ESM; spec uses `import.meta.url` shim — ensure Node 20+ |
+| `ReferenceError: __dirname is not defined` | trunknux is ESM; spec uses `import.meta.url` shim — ensure Node 20+ |
 | Screenshots blank | Playwright ran before page hydrated — add `await page.waitForLoadState('networkidle')` |
-| `testnux report` produces PLAN ONLY mode | `execution-log-auto.md` missing — re-run the Playwright spec first |
+| `trunknux report` produces PLAN ONLY mode | `execution-log-auto.md` missing — re-run the Playwright spec first |

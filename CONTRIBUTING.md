@@ -1,4 +1,4 @@
-# Contributing to TestNUX™
+# Contributing to TrunkNuX™
 
 Thank you for contributing. A few rules keep the project reliable and audit-defensible.
 
@@ -9,7 +9,7 @@ Thank you for contributing. A few rules keep the project reliable and audit-defe
 
 ## DCO — Developer Certificate of Origin
 
-TestNUX uses DCO instead of a CLA. This means you attest that your contribution is your own work (or that you have the right to submit it) by signing off every commit:
+TrunkNuX uses DCO instead of a CLA. This means you attest that your contribution is your own work (or that you have the right to submit it) by signing off every commit:
 
 ```bash
 git commit -s -m "feat: add validate command"
@@ -26,8 +26,8 @@ The full DCO text is at https://developercertificate.org.
 **Requirements:** Node 20+, npm 9+
 
 ```bash
-git clone https://github.com/StillNotBald/testnux.git
-cd testnux
+git clone https://github.com/StillNotBald/trunknux.git
+cd trunknux
 npm install
 npm test          # unit tests
 npm run build     # compile src/ → dist/
@@ -38,15 +38,15 @@ npm run lint:fix  # auto-fix formatting
 To smoke-test the CLI locally before pushing:
 
 ```bash
-node bin/testnux.mjs doctor
-node bin/testnux.mjs demo
+node bin/trunknux.mjs doctor
+node bin/trunknux.mjs demo
 ```
 
 ### v0.2 LLM commands (optional peer dependency)
 
 The v0.2 LLM commands (`discover`, `plan`, `codify`, `enrich`) call the Anthropic API
 via `@anthropic-ai/sdk`. This is an **optional peer dependency** — it is not installed
-automatically with `npm install testnux` to keep the base install lightweight.
+automatically with `npm install trunknux` to keep the base install lightweight.
 
 To develop or test LLM commands locally:
 
@@ -58,12 +58,12 @@ npm install @anthropic-ai/sdk
 export CLAUDE_API_KEY=sk-ant-...
 
 # Smoke-test discover
-node bin/testnux.mjs discover https://example.com --dry-run  # no API call
-node bin/testnux.mjs discover https://example.com            # real call
+node bin/trunknux.mjs discover https://example.com --dry-run  # no API call
+node bin/trunknux.mjs discover https://example.com            # real call
 
 # Run without the SDK installed → graceful error (no crash)
 # npm uninstall @anthropic-ai/sdk
-# node bin/testnux.mjs discover https://example.com
+# node bin/trunknux.mjs discover https://example.com
 # → ERROR: @anthropic-ai/sdk is not installed. Install with: npm install @anthropic-ai/sdk
 ```
 

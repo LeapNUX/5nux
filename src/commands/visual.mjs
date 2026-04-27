@@ -4,14 +4,14 @@
 /**
  * src/commands/visual.mjs
  *
- * Implements `testnux visual` — visual regression testing.
+ * Implements `trunknux visual` — visual regression testing.
  *
  * Sub-commands:
- *   testnux visual baseline <slug>
+ *   trunknux visual baseline <slug>
  *     Capture full-page screenshots for all TCs in <slug>/ as baseline images.
  *     Stored at: <folder>/visual-baseline/<TC-ID>.png
  *
- *   testnux visual compare <slug>
+ *   trunknux visual compare <slug>
  *     Capture current screenshots, diff against baseline using pixelmatch.
  *     Current stored at: <folder>/visual-current/<TC-ID>.png
  *     Diffs stored at:   <folder>/visual-diff/<TC-ID>-diff.png
@@ -25,7 +25,7 @@
  *     If missing, compare runs in screenshot-only mode and prints an install notice.
  *     npm install --save-dev pixelmatch pngjs
  *
- * Configuration (testnux.config.mjs):
+ * Configuration (trunknux.config.mjs):
  *   export default {
  *     visual: {
  *       diffThreshold: 0.05,   // 5% — fraction of pixels allowed to differ
@@ -53,7 +53,7 @@
 import fs from 'fs';
 import path from 'path';
 
-// Default visual configuration — overridable via testnux.config.mjs
+// Default visual configuration — overridable via trunknux.config.mjs
 const DEFAULT_VISUAL_CONFIG = {
   diffThreshold: 0.05,
   maskSelectors: [],
@@ -185,7 +185,7 @@ export async function runVisualBaseline(slug, opts = {}) {
       console.log('  Tip: ensure the app is running at ' + effectiveBaseUrl);
     }
     console.log('');
-    console.log('  Next: run `testnux visual compare ' + slug + '` to diff against these baselines.');
+    console.log('  Next: run `trunknux visual compare ' + slug + '` to diff against these baselines.');
     console.log('');
   }
 
@@ -245,7 +245,7 @@ export async function runVisualCompare(slug, opts = {}) {
   if (!fs.existsSync(baselineDir)) {
     const msg =
       `No baseline found at ${baselineDir}.\n` +
-      `  Run \`testnux visual baseline ${slug}\` first to capture baselines.`;
+      `  Run \`trunknux visual baseline ${slug}\` first to capture baselines.`;
     printError(json, msg);
     const err = new Error('Missing baseline directory');
     err.exitCode = 1;
@@ -472,7 +472,7 @@ async function requirePlaywright(json) {
       '  To enable visual regression screenshot capture, install it:\n\n' +
       '    npm install --save-dev @playwright/test\n' +
       '    npx playwright install chromium\n\n' +
-      '  Then re-run: testnux visual baseline <slug>',
+      '  Then re-run: trunknux visual baseline <slug>',
   );
   const err = new Error('@playwright/test not installed');
   err.exitCode = 1;
@@ -815,15 +815,15 @@ function readTcIds(planPath) {
 }
 
 /**
- * Load visual config from testnux.config.mjs if it exists.
+ * Load visual config from trunknux.config.mjs if it exists.
  * Returns merged config with defaults.
  *
  * @param {string} outDir
  * @returns {Promise<typeof DEFAULT_VISUAL_CONFIG>}
  */
 async function loadVisualConfig(outDir) {
-  const configPath = path.resolve(outDir, '..', 'testnux.config.mjs');
-  const altConfigPath = path.resolve(process.cwd(), 'testnux.config.mjs');
+  const configPath = path.resolve(outDir, '..', 'trunknux.config.mjs');
+  const altConfigPath = path.resolve(process.cwd(), 'trunknux.config.mjs');
 
   for (const cfgPath of [configPath, altConfigPath]) {
     if (fs.existsSync(cfgPath)) {

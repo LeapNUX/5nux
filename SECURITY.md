@@ -16,7 +16,7 @@ Use ONE of these private channels:
 
 ### Option 1 — GitHub Private Vulnerability Reporting (preferred)
 
-Go to https://github.com/StillNotBald/testnux/security/advisories/new and
+Go to https://github.com/StillNotBald/trunknux/security/advisories/new and
 submit your report. GitHub routes it privately to maintainers; you can
 collaborate on the fix in a private fork before public disclosure.
 
@@ -29,7 +29,7 @@ This is the modern standard for OSS vulnerability reporting. It gives you:
 ### Option 2 — Email
 
 Send a report to **ccling1998@gmail.com** with the subject line
-`[testnux] Security Vulnerability`.
+`[trunknux] Security Vulnerability`.
 
 ### What to include (either channel)
 
@@ -46,4 +46,4 @@ Send a report to **ccling1998@gmail.com** with the subject line
 - Credit will be given in the CHANGELOG and release notes unless you prefer to
   remain anonymous.
 
-Thank you for helping keep testnux and its users safe.
+Thank you for helping keep trunknux and its users safe.

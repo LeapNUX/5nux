@@ -1,10 +1,10 @@
-// Copyright (c) 2026 TestNUX Contributors
+// Copyright (c) 2026 TrunkNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * test/plan.test.mjs
  *
- * Unit tests for `testnux plan` (src/commands/plan.mjs).
+ * Unit tests for `trunknux plan` (src/commands/plan.mjs).
  *
  * All Anthropic API calls are mocked via vi.mock — no real API key required.
  * All file system side-effects write to a temp directory per test.
@@ -59,7 +59,7 @@ function makeMockScenarios(slug = 'login', tcCount = 3) {
   const frontmatter = `---
 slug: ${slug}
 url: https://example.com/${slug}
-generated_by: testnux discover v0.2
+generated_by: trunknux discover v0.2
 generated_at: 2026-04-26T12:00:00.000Z
 tc_count: ${tcCount}
 review_required: true
@@ -250,7 +250,7 @@ describe('plan — missing @anthropic-ai/sdk guard (source inspection)', () => {
 });
 
 describe('plan — missing scenarios.md', () => {
-  it('throws exitCode 1 with a message suggesting testnux discover', async () => {
+  it('throws exitCode 1 with a message suggesting trunknux discover', async () => {
     process.env.CLAUDE_API_KEY = 'sk-ant-test-key';
 
     // Do NOT write a scenarios.md — use a slug with no file present

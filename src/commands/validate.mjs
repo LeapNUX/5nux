@@ -4,7 +4,7 @@
 /**
  * src/commands/validate.mjs
  *
- * Implements `testnux validate <folder>`.
+ * Implements `trunknux validate <folder>`.
  *
  * Walks all *.md files inside <folder>, extracts YAML frontmatter (using
  * gray-matter), and validates against the rules defined in
@@ -51,7 +51,7 @@ const ALLOWED_STATUS = [
 const R_ID_RE = /^R-\d+$/;
 // Placeholder R-IDs that scaffolded templates ship with — meant to be
 // replaced by users with real R-IDs (R-01, R-42, etc). We treat these
-// as WARNINGS instead of ERRORS so `testnux init` → `testnux validate`
+// as WARNINGS instead of ERRORS so `trunknux init` → `trunknux validate`
 // doesn't immediately fail before users have a chance to fill them in.
 // Pattern: R- followed by 1-3 uppercase letters (R-XX, R-YY, R-ZZ, R-ABC).
 const R_ID_PLACEHOLDER_RE = /^R-[A-Z]{1,3}$/;
@@ -217,7 +217,7 @@ export async function runValidate(folder, opts = {}) {
     findings.warnings.push({
       file: 'spec.ts',
       rule: 'folder.spec',
-      message: 'spec.ts not found — run `testnux init` to scaffold, or create manually',
+      message: 'spec.ts not found — run `trunknux init` to scaffold, or create manually',
     });
   }
 

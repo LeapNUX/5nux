@@ -1,4 +1,4 @@
-// Copyright (c) 2026 TestNUX Contributors
+// Copyright (c) 2026 TrunkNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
@@ -11,7 +11,7 @@
  *   - assessment-log.entries  (one OSCAL log entry per uat-log entry)
  *   - subjects[]  (one subject per TC referenced in uat-log)
  *
- * UUIDs use the same TESTNUX_OSCAL_NAMESPACE as src/lib/oscal.mjs (v5 SHA-1).
+ * UUIDs use the same TRUNKNUX_OSCAL_NAMESPACE as src/lib/oscal.mjs (v5 SHA-1).
  * The namespace constant is imported, never duplicated.
  *
  * Public API:
@@ -30,10 +30,11 @@ import { v5 as uuidv5 } from 'uuid';
 // ── Constants ────────────────────────────────────────────────────────────────
 
 /**
- * Stable namespace UUID — MUST match src/lib/oscal.mjs TESTNUX_OSCAL_NAMESPACE.
+ * Stable namespace UUID — MUST match src/lib/oscal.mjs TRUNKNUX_OSCAL_NAMESPACE.
  * Do not change. Changing it invalidates all previously-generated OSCAL UUIDs.
+ * UUID value intentionally preserved across the brand rename at v0.2.2.
  */
-const TESTNUX_OSCAL_NAMESPACE = 'b0ab198a-bced-48a9-ae15-e5c4ca770a79';
+const TRUNKNUX_OSCAL_NAMESPACE = 'b0ab198a-bced-48a9-ae15-e5c4ca770a79';
 
 // RFC-4122 UUID pattern — same regex used by validateOSCAL in oscal.mjs
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -79,7 +80,7 @@ export function buildAssessmentLogExtension(uatLogPath) {
       props: [
         {
           name: 'role',
-          ns: 'http://testnux.dev/oscal/props',
+          ns: 'http://trunknux.dev/oscal/props',
           value: role ?? 'reviewer',
         },
       ],
@@ -117,17 +118,17 @@ export function buildAssessmentLogExtension(uatLogPath) {
       props: [
         {
           name: 'tc-id',
-          ns: 'http://testnux.dev/oscal/props',
+          ns: 'http://trunknux.dev/oscal/props',
           value: e.tc_id,
         },
         {
           name: 'attestation-status',
-          ns: 'http://testnux.dev/oscal/props',
+          ns: 'http://trunknux.dev/oscal/props',
           value: e.status,
         },
         {
           name: 'chain-hash',
-          ns: 'http://testnux.dev/oscal/props',
+          ns: 'http://trunknux.dev/oscal/props',
           value: (e.signature ?? '').slice(0, 16) + '…',
           remarks: 'Truncated HMAC-SHA256 signature from uat-log.jsonl for chain linkage.',
         },
@@ -149,7 +150,7 @@ export function buildAssessmentLogExtension(uatLogPath) {
         props: [
           {
             name: 'tc-id',
-            ns: 'http://testnux.dev/oscal/props',
+            ns: 'http://trunknux.dev/oscal/props',
             value: e.tc_id,
           },
         ],
@@ -333,13 +334,13 @@ function readUatLog(jsonlPath) {
 
 /**
  * Generate a deterministic UUID v5 from a seed string.
- * Uses the same TESTNUX_OSCAL_NAMESPACE — MUST NOT use a different namespace.
+ * Uses the same TRUNKNUX_OSCAL_NAMESPACE — MUST NOT use a different namespace.
  */
 function deterministicUUID(seed) {
   if (typeof seed !== 'string' || seed.length === 0) {
     throw new TypeError('deterministicUUID requires a non-empty string seed');
   }
-  return uuidv5(seed, TESTNUX_OSCAL_NAMESPACE);
+  return uuidv5(seed, TRUNKNUX_OSCAL_NAMESPACE);
 }
 
 /**

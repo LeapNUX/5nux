@@ -1,17 +1,17 @@
 {
-  "name": "testnux",
-  "version": "0.2.1",
+  "name": "trunknux",
+  "version": "0.2.2",
   "description": "Generate auditor-ready test artifacts from markdown test plans and Playwright evidence. OSS evidence-chain for regulated software (test plans → RTM → SCA).",
   "private": false,
   "license": "Apache-2.0",
   "author": "Chu Ling",
   "repository": {
     "type": "git",
-    "url": "https://github.com/StillNotBald/testnux.git"
+    "url": "https://github.com/StillNotBald/trunknux.git"
   },
-  "homepage": "https://github.com/StillNotBald/testnux#readme",
+  "homepage": "https://github.com/StillNotBald/trunknux#readme",
   "bugs": {
-    "url": "https://github.com/StillNotBald/testnux/issues"
+    "url": "https://github.com/StillNotBald/trunknux/issues"
   },
   "keywords": [
     "testing",
@@ -33,7 +33,7 @@
   ],
   "type": "module",
   "bin": {
-    "testnux": "bin/testnux.mjs"
+    "trunknux": "bin/trunknux.mjs"
   },
   "files": [
     "bin/",

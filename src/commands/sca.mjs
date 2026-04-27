@@ -4,19 +4,19 @@
 /**
  * src/commands/sca.mjs
  *
- * Implements the `testnux sca` subcommand group:
+ * Implements the `trunknux sca` subcommand group:
  *
- *   testnux sca init <surface> [--industry general|fintech|healthcare|malaysia-banking]
+ *   trunknux sca init <surface> [--industry general|fintech|healthcare|malaysia-banking]
  *     Scaffold requirements/validations/<surface>/v1.0_<DATE>.md from the
  *     canonical 8-section SCA template.
  *
- *   testnux sca generate <surface>
+ *   trunknux sca generate <surface>
  *     Fill per-control evidence rows from current test results + R-IDs.
  *     Cells that require LLM judgment are stubbed with [VERIFY] markers.
  *     Human-edited Operational notes + Open Items survive regeneration via
- *     the <!-- testnux:section ... --> marker convention.
+ *     the <!-- trunknux:section ... --> marker convention.
  *
- *   testnux sca pdf <surface>
+ *   trunknux sca pdf <surface>
  *     Render the latest SCA version to PDF via puppeteer-core (optional dep).
  *     Informs the user if puppeteer-core is not installed.
  *
@@ -28,7 +28,7 @@
  *
  * Flags (all subcommands):
  *   --dry-run                   print to stdout, do not write
- *   --config <path>             testnux.config.mjs path
+ *   --config <path>             trunknux.config.mjs path
  *   --standards-version <ver>   recorded in frontmatter (default: "1.0.0")
  */
 
@@ -142,9 +142,9 @@ export async function runScaInit(surface, opts = {}) {
     console.log('');
     console.log('Next steps:');
     console.log(`  1. Fill in Executive Summary placeholders`);
-    console.log(`  2. Run: testnux sca generate ${surface}`);
+    console.log(`  2. Run: trunknux sca generate ${surface}`);
     console.log(`  3. Review [VERIFY] markers — these need human judgment`);
-    console.log(`  4. Run: testnux sca pdf ${surface}`);
+    console.log(`  4. Run: trunknux sca pdf ${surface}`);
     console.log('');
   }
 }
@@ -184,7 +184,7 @@ export async function runScaGenerate(surface, opts = {}) {
   if (!existingFile) {
     throw exitError(
       `No SCA file found for surface "${surface}" in ${validationsDir}.\n` +
-        `Run: testnux sca init ${surface}`,
+        `Run: trunknux sca init ${surface}`,
       2,
     );
   }
@@ -284,7 +284,7 @@ export async function runScaPdf(surface, opts = {}) {
   if (!existingFile) {
     throw exitError(
       `No SCA file found for surface "${surface}" in ${validationsDir}.\n` +
-        `Run: testnux sca init ${surface}`,
+        `Run: trunknux sca init ${surface}`,
       2,
     );
   }
@@ -437,7 +437,7 @@ function _renderScaGenerate({
   lines.push('');
 
   // ── Section 1: Executive Summary ──────────────────────────────────────────
-  lines.push('<!-- testnux:section exec-summary begin -->');
+  lines.push('<!-- trunknux:section exec-summary begin -->');
   const existingExec = humanSections.get('exec-summary');
   if (existingExec) {
     lines.push(existingExec);
@@ -451,11 +451,11 @@ function _renderScaGenerate({
     lines.push('');
     lines.push('> [VERIFY] — Summarise overall risk posture once controls are reviewed.');
   }
-  lines.push('<!-- testnux:section exec-summary end -->');
+  lines.push('<!-- trunknux:section exec-summary end -->');
   lines.push('');
 
   // ── Section 2: Methodology ────────────────────────────────────────────────
-  lines.push('<!-- testnux:section methodology begin -->');
+  lines.push('<!-- trunknux:section methodology begin -->');
   const existingMeth = humanSections.get('methodology');
   if (existingMeth) {
     lines.push(existingMeth);
@@ -472,7 +472,7 @@ function _renderScaGenerate({
     lines.push('');
     lines.push(`Standards profile: \`${industry}\` (version ${standardsVersion})`);
   }
-  lines.push('<!-- testnux:section methodology end -->');
+  lines.push('<!-- trunknux:section methodology end -->');
   lines.push('');
 
   // ── Section 3: Per-Control Inventory ─────────────────────────────────────
@@ -501,11 +501,11 @@ function _renderScaGenerate({
 
     const existingCtrlNote = humanSections.get(`ctrl-note-${ctrl.id}`) ?? '';
 
-    lines.push(`<!-- testnux:row ctrl-${ctrl.id} begin -->`);
+    lines.push(`<!-- trunknux:row ctrl-${ctrl.id} begin -->`);
     lines.push(
       `| ${ctrl.id} | ${ctrl.name} | ${ctrl.description.slice(0, 80)}… | ${implCell} | ${testsCell} | ${(ctrl.references ?? []).join(', ')} | ${existingCtrlNote || '[VERIFY]'} |`,
     );
-    lines.push(`<!-- testnux:row ctrl-${ctrl.id} end -->`);
+    lines.push(`<!-- trunknux:row ctrl-${ctrl.id} end -->`);
   }
 
   lines.push('');
@@ -530,7 +530,7 @@ function _renderScaGenerate({
   lines.push('');
 
   // ── Section 5: Threat Coverage Matrix ────────────────────────────────────
-  lines.push('<!-- testnux:section threat-matrix begin -->');
+  lines.push('<!-- trunknux:section threat-matrix begin -->');
   const existingThreat = humanSections.get('threat-matrix');
   if (existingThreat) {
     lines.push(existingThreat);
@@ -547,11 +547,11 @@ function _renderScaGenerate({
     lines.push('');
     lines.push('> [VERIFY] — Map attack scenarios to test evidence from testing-log/.');
   }
-  lines.push('<!-- testnux:section threat-matrix end -->');
+  lines.push('<!-- trunknux:section threat-matrix end -->');
   lines.push('');
 
   // ── Section 6: Declined-by-Design ────────────────────────────────────────
-  lines.push('<!-- testnux:section declined begin -->');
+  lines.push('<!-- trunknux:section declined begin -->');
   const existingDeclined = humanSections.get('declined');
   if (existingDeclined) {
     lines.push(existingDeclined);
@@ -564,11 +564,11 @@ function _renderScaGenerate({
     lines.push('|---------|-----------|----------------------|');
     lines.push('| *(none identified)* | — | — |');
   }
-  lines.push('<!-- testnux:section declined end -->');
+  lines.push('<!-- trunknux:section declined end -->');
   lines.push('');
 
   // ── Section 7: Open Items ─────────────────────────────────────────────────
-  lines.push('<!-- testnux:section open-items begin -->');
+  lines.push('<!-- trunknux:section open-items begin -->');
   const existingOpen = humanSections.get('open-items');
   if (existingOpen) {
     lines.push(existingOpen);
@@ -591,11 +591,11 @@ function _renderScaGenerate({
     lines.push('');
     lines.push('> [VERIFY] — Identify gaps that span multiple surfaces (e.g., shared auth layer).');
   }
-  lines.push('<!-- testnux:section open-items end -->');
+  lines.push('<!-- trunknux:section open-items end -->');
   lines.push('');
 
   // ── Section 8: Sign-Off ───────────────────────────────────────────────────
-  lines.push('<!-- testnux:section sign-off begin -->');
+  lines.push('<!-- trunknux:section sign-off begin -->');
   const existingSignOff = humanSections.get('sign-off');
   if (existingSignOff) {
     lines.push(existingSignOff);
@@ -609,13 +609,13 @@ function _renderScaGenerate({
     lines.push('| General Counsel | [VERIFY — required pre-pilot] | | |');
     lines.push('| External Auditor | [VERIFY — required pre-pilot] | | |');
   }
-  lines.push('<!-- testnux:section sign-off end -->');
+  lines.push('<!-- trunknux:section sign-off end -->');
   lines.push('');
 
   lines.push('---');
   lines.push('');
-  lines.push('*Generated by `testnux sca generate`. Re-run to update evidence columns.*');
-  lines.push('*Human-edited sections (marked with `<!-- testnux:section ... -->`) survive regeneration.*');
+  lines.push('*Generated by `trunknux sca generate`. Re-run to update evidence columns.*');
+  lines.push('*Human-edited sections (marked with `<!-- trunknux:section ... -->`) survive regeneration.*');
   lines.push('*`[VERIFY]` marks cells that require human review. LLM auto-fill is planned for v0.2.*');
 
   return lines.join('\n');
@@ -658,14 +658,14 @@ function _extractHumanSections(content) {
   const map = new Map();
   if (!content) return map;
 
-  const sectionRe = /<!-- testnux:section ([\w-]+) begin -->\n([\s\S]*?)<!-- testnux:section \1 end -->/g;
+  const sectionRe = /<!-- trunknux:section ([\w-]+) begin -->\n([\s\S]*?)<!-- trunknux:section \1 end -->/g;
   let m;
   while ((m = sectionRe.exec(content)) !== null) {
     map.set(m[1], m[2].trimEnd());
   }
 
   // Also extract control-level notes from row markers
-  const rowRe = /<!-- testnux:row ctrl-([\w.-]+) begin -->\n\|(.+)\|\n<!-- testnux:row ctrl-\1 end -->/g;
+  const rowRe = /<!-- trunknux:row ctrl-([\w.-]+) begin -->\n\|(.+)\|\n<!-- trunknux:row ctrl-\1 end -->/g;
   while ((m = rowRe.exec(content)) !== null) {
     const ctrlId = m[1];
     const cells = m[2].split('|');

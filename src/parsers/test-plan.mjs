@@ -48,8 +48,8 @@ const TC_ID_RE = /^[A-Z][A-Z0-9]*(?:-[A-Z][A-Z0-9]*)*-\d+$/;
 const SECTION_HEADING_RE = /^#{2,3} ([A-Z][A-Z0-9]*(?:-[A-Z][A-Z0-9]*)*-\d+)\s*(?:[—:-]+\s*)(.*)$/;
 
 /** open-items fenced region */
-const OPEN_ITEMS_BEGIN = '<!-- testnux:open-items begin -->';
-const OPEN_ITEMS_END = '<!-- testnux:open-items end -->';
+const OPEN_ITEMS_BEGIN = '<!-- trunknux:open-items begin -->';
+const OPEN_ITEMS_END = '<!-- trunknux:open-items end -->';
 
 // ── Category heuristic ────────────────────────────────────────────────────────
 

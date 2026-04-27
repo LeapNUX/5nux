@@ -1,82 +1,140 @@
-# v0.2.1 — manual step for you
+# v0.2.2 — brand rename + publish steps for you
 
 **Date:** 2026-04-27
-**Status:** v0.2.1 stable is tagged on GitHub, marked Latest. Code, README, CHANGELOG, tests, lint all green. **Only one thing left: publish to npm.**
+**Status:** Rename complete. `bin/trunknux.mjs`, `package.json`, all source, docs, and templates updated.
+370/370 tests pass. 0 lint errors. Working tree dirty — **do not commit yet.** Follow the steps below in order.
 
-## TL;DR
+## The TrunkNuX rename — why
 
-- ✅ **Code:** v0.2.1 on `main`, 370/370 tests pass, 0 lint errors.
-- ✅ **GitHub:** `v0.2.1` tagged + released, marked **Latest** (replaces v0.2.0 as the visible release).
-- ✅ **What's in v0.2.1 vs v0.2.0:** wired `testnux demo` (was a stub), shipped `examples/` in the npm package, stripped stale alpha/stub tags from CLI help, plus 4 major-version dependency bumps verified safe (anthropic-sdk, marked, commander, eslint+@eslint/js).
-- ⏳ **npm:** Currently `latest` = `0.1.1`, `alpha` = `0.2.0-alpha.1`. You need to publish `0.2.1` (needs OTP).
+TrunkNuX reframes the brand around its foundational purpose: the trunk of the Yggdrasil tree.
 
-## What you need to do
+The testing-to-audit journey — test plan → execution log → RTM → SCA → OSCAL → sign-off — is the **trunk**: the structural core that holds everything together and that every branch must pass through. From that trunk, new artifact verbs grow as branches: `attest`, `comply`, `respond`, each connecting a different stakeholder (compliance officer, auditor, regulator, vendor-DD team) back to the same evidence spine.
 
-### 1. Verify locally
+Eventually the trunk becomes a world-tree: a single evidence chain connecting engineering, compliance, audit, regulator, and vendor due-diligence across firm sizes. The name carries that architecture forward.
+
+## What changed in this rename
+
+| Item | Before | After |
+|---|---|---|
+| Binary filename | `bin/testnux.mjs` | `bin/trunknux.mjs` |
+| npm package name | `testnux` | `trunknux` |
+| CLI command | `testnux` | `trunknux` |
+| `package.json` version | `0.2.1` | `0.2.2` |
+| `package.json` bin | `"testnux": "bin/testnux.mjs"` | `"trunknux": "bin/trunknux.mjs"` |
+| Repository URLs | `StillNotBald/testnux` | `StillNotBald/trunknux` |
+| OSCAL namespace constant | `TESTNUX_OSCAL_NAMESPACE` | `TRUNKNUX_OSCAL_NAMESPACE` |
+| Env var in docs | `TESTNUX_INDUSTRY` | `TRUNKNUX_INDUSTRY` |
+| Brand prose | `TestNUX` | `TrunkNuX` |
+| Trademark form | `TestNUX™` | `TrunkNuX™` |
+
+**UUID preserved:** `TRUNKNUX_OSCAL_NAMESPACE` = `b0ab198a-bced-48a9-ae15-e5c4ca770a79` — unchanged. All previously-generated OSCAL documents remain valid.
+
+## What you must do manually (in order)
+
+### Step 1 — Update CHANGELOG.md
+
+Add a new `[0.2.2]` entry at the top of the releases section. Suggested text:
+
+```markdown
+## [0.2.2] — 2026-04-27
+
+### Changed
+- **Brand rename: TestNUX → TrunkNuX.** The package is now published as `trunknux`;
+  the CLI command is `trunknux`. All source, docs, and templates updated.
+- Binary renamed from `bin/testnux.mjs` to `bin/trunknux.mjs`.
+- OSCAL namespace constant renamed `TESTNUX_OSCAL_NAMESPACE` → `TRUNKNUX_OSCAL_NAMESPACE`
+  (UUID value unchanged — all previously-issued OSCAL records remain valid).
+- `TESTNUX_INDUSTRY` env var renamed `TRUNKNUX_INDUSTRY` in docs.
+- Version bump to 0.2.2 (rename-only patch; no functional changes).
+
+### Notes
+- Historical npm package `testnux` will be deprecated pointing to `trunknux`.
+- CHANGELOG.md historical entries (v0.1.x–v0.2.1) are intentionally left with
+  the old name — they accurately describe what shipped under that name.
+```
+
+### Step 2 — Rename the GitHub repo
+
+```bash
+gh repo rename trunknux --repo StillNotBald/testnux
+```
+
+GitHub will set up a redirect from the old URL automatically.
+
+### Step 3 — Update your local git remote
+
+```bash
+git remote set-url origin https://github.com/StillNotBald/trunknux.git
+git remote -v   # verify
+```
+
+### Step 4 — Create the signed commit
+
+Stage everything and commit:
 
 ```bash
 cd "C:/Users/Chu Ling/Desktop/Projects/testnux"
-git log --oneline -7              # should show v0.2.1 commits at top
-git tag -l 'v0.2*'                 # should print v0.2.0, v0.2.0-alpha.1, v0.2.1
-node bin/testnux.mjs --version     # should print "0.2.1"
-node bin/testnux.mjs demo --no-open  # should print real demo info, not stub message
-npm test                           # 370 passed
+git add -A
+git commit -S -m "chore: rename testnux → trunknux (v0.2.2)
+
+Brand rename only. No functional changes.
+- bin/trunknux.mjs (was bin/testnux.mjs)
+- package name: trunknux, version: 0.2.2
+- OSCAL namespace constant renamed; UUID preserved
+- TRUNKNUX_INDUSTRY env var (was TESTNUX_INDUSTRY)
+- All source, docs, templates, examples updated"
 ```
 
-GitHub release page: <https://github.com/StillNotBald/testnux/releases/tag/v0.2.1>
-
-### 2. Publish 0.2.1 to npm as `latest`
+### Step 5 — Tag and push v0.2.2
 
 ```bash
-cd "C:/Users/Chu Ling/Desktop/Projects/testnux"
-npm publish --otp=<6-digit-code-from-authenticator-or-recovery>
+git tag -s v0.2.2 -m "v0.2.2 — Renamed to TrunkNuX"
+git push origin main
+git push origin v0.2.2
 ```
 
-**Notes:**
-
-- **No `--tag` flag.** Without it, npm publishes to the `latest` dist-tag (default behavior). This is what we want — `npm install testnux` (no tag) becomes 0.2.1.
-- After publish: `npm view testnux version` should return `0.2.1` (was `0.1.1`).
-- After publish: `npm view testnux dist-tags` should show `{ latest: '0.2.1', alpha: '0.2.0-alpha.1' }`.
-- Note: **0.2.0 is intentionally skipped on npm**. v0.2.0 was tagged on GitHub but had three smoke-test polish issues (demo stub, missing examples in package, stale CLI tags) that were caught + fixed before publishing. v0.2.1 is the first 0.2.x version that goes to npm.
-
-### 3. Smoke test before announcing (recommended)
+### Step 6 — Publish trunknux to npm
 
 ```bash
-mkdir /tmp/testnux-021-smoke && cd /tmp/testnux-021-smoke
-npm install testnux           # no tag → gets 0.2.1
-npx testnux --version         # should print 0.2.1
-npx testnux demo --no-open    # should print path to bundled demo HTML (no longer a stub)
-npx testnux init my-page --industry malaysia-banking
-ls testing-log/               # should have 2026-04-27_my-page/
+npm publish --otp=<6-digit-code>
 ```
 
-If anything breaks, you can publish a `0.2.2` patch quickly.
+This publishes `trunknux@0.2.2` as `latest`. After publish, verify:
 
-### 4. Optional: announce
+```bash
+npm view trunknux version       # should return 0.2.2
+npm view trunknux dist-tags     # should show { latest: '0.2.2' }
+```
 
-- GitHub release page: <https://github.com/StillNotBald/testnux/releases/tag/v0.2.1>
-- The README disclaimer block is intentionally prominent: "TestNUX automates the mechanics. Humans own the decisions."
+### Step 7 — Deprecate the old testnux package on npm
 
-## What's in v0.2.1
+```bash
+npm deprecate testnux@* "Renamed to trunknux: npm install trunknux" --otp=<6-digit-code>
+```
 
-See [CHANGELOG.md](CHANGELOG.md) for the full diff. Highlights:
+This leaves the old package installable but warns users to migrate.
 
-**Fixed (smoke-test polish caught after v0.2.0 was tagged):**
-- `testnux demo` is now a real implementation. The v0.1 stub that printed "demo target is coming in the next release" is replaced with a cross-platform browser launcher that opens the bundled execution-report HTML (real `testnux report` output, 13 PASS / 2 BLOCKED-CONFIG, 13 embedded screenshots). New `--no-open` flag for CI.
-- `examples/demo-dashboard/output/` now ships in the npm package (added to `package.json` `files`). Without this, README's "see it live" link was broken for npm-installed users.
-- `[v0.2 ALPHA]` / `[v0.2 stub]` tags stripped from CLI descriptions for discover/plan/codify/enrich/batch-plan. Help text now matches the stable framing.
+### Step 8 — Create the GitHub release
 
-**Changed (dependency bumps, all verified safe by independent triage):**
-- `@anthropic-ai/sdk` 0.39.0 → 0.91.1 (load-bearing for v0.2 LLM agents)
-- `marked` 12.0.2 → 18.0.2 (HTML rendering — call sites use dynamic import)
-- `commander` 12.1.0 → 14.0.3 (CLI flag parsing — no breakage in usage)
-- `eslint` 9 → 10 + `@eslint/js` 9 → 10 (combined; flat-config drop-in)
-- `sharp`, `actions/checkout`, `actions/setup-node` (CI hygiene)
+```bash
+gh release create v0.2.2 \
+  --title "v0.2.2 — Renamed to TrunkNuX" \
+  --notes "Brand rename: testnux → trunknux. No functional changes. See CHANGELOG.md for full entry." \
+  --latest
+```
 
-**Tests:** 370/370 passing. 0 lint errors.
+## Smoke test after publish
 
-## Still on the to-do list (v0.2.x patch releases)
+```bash
+mkdir /tmp/trunknux-022-smoke && cd /tmp/trunknux-022-smoke
+npm install trunknux
+npx trunknux --version          # should print 0.2.2
+npx trunknux --help | head -5   # should show "trunknux" and "TrunkNuX"
+npx trunknux demo --no-open
+```
+
+## Still on the to-do list (v0.2.x)
 
 - Eval harness coverage expansion: 3 fixture pages today, target 10+ real customer pages
-- gstack `/testnux` skill bundle for the official catalog (planned v0.3)
-- Industry pack: `--industry malaysia-banking` already shipped in 0.2.0; potential additions in 0.3+ (UK FCA, EU DORA, India RBI)
+- gstack `/trunknux` skill bundle for the official catalog (planned v0.3)
+- Industry pack additions: UK FCA, EU DORA, India RBI (planned v0.3+)

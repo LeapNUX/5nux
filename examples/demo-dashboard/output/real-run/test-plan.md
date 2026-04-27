@@ -6,7 +6,7 @@ industry: general
 standards:
   - OWASP-ASVS-4.0
   - WCAG-2.2-AA
-author: TestNUX reference example
+author: TrunkNuX reference example
 review_required: false
 coverage_summary:
   total: 15

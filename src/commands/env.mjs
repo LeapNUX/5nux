@@ -4,15 +4,15 @@
 /**
  * src/commands/env.mjs
  *
- * Implements per-environment test passes for TestNUX.
+ * Implements per-environment test passes for TrunkNuX.
  *
  * Sub-commands:
- *   testnux run <slug> --env staging|prod|local|qa|ci|dev|<custom>
+ *   trunknux run <slug> --env staging|prod|local|qa|ci|dev|<custom>
  *     Scaffolds an env-suffixed test-pass folder and wraps `runReport`
  *     from report.mjs to generate XLSX + HTML deliverables.
  *     Folder convention: testing-log/<date>_<slug>-<env>/
  *
- *   testnux compare <slug> <env-a> <env-b>
+ *   trunknux compare <slug> <env-a> <env-b>
  *     Diffs TC results between two environment passes for the same slug.
  *     Uses the real execution-log parser (src/parsers/execution-log.mjs).
  *     Outputs a markdown table with MATCH / PROMOTION / REGRESSION / DIVERGE /
@@ -110,7 +110,7 @@ export async function runEnvRun(slug, opts = {}) {
   logEvent(json, { event: 'env.run.start', slug, env, folderPath });
   if (!json) {
     console.log('');
-    console.log(C.bold(`testnux run — ${slug} [${env.toUpperCase()}]`));
+    console.log(C.bold(`trunknux run — ${slug} [${env.toUpperCase()}]`));
     console.log(C.dim(`  folder: ${folderPath}`));
     console.log('');
   }
@@ -205,7 +205,7 @@ export async function runEnvCompare(slug, envA, envB, opts = {}) {
     logEvent(json, { event: 'env.compare.error', error: msg, code: 2 });
     if (!json) {
       console.error(C.red(`  ✗ ${msg}`));
-      console.error(C.dim(`    Run: testnux run ${slug} --env ${envA}`));
+      console.error(C.dim(`    Run: trunknux run ${slug} --env ${envA}`));
     }
     process.exit(2);
   }
@@ -214,7 +214,7 @@ export async function runEnvCompare(slug, envA, envB, opts = {}) {
     logEvent(json, { event: 'env.compare.error', error: msg, code: 2 });
     if (!json) {
       console.error(C.red(`  ✗ ${msg}`));
-      console.error(C.dim(`    Run: testnux run ${slug} --env ${envB}`));
+      console.error(C.dim(`    Run: trunknux run ${slug} --env ${envB}`));
     }
     process.exit(2);
   }

@@ -1,10 +1,10 @@
-// Copyright (c) 2026 TestNUX Contributors
+// Copyright (c) 2026 TrunkNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * test/batch.test.mjs
  *
- * Unit tests for `testnux batch-plan` (src/commands/batch.mjs).
+ * Unit tests for `trunknux batch-plan` (src/commands/batch.mjs).
  *
  * Mocking strategy:
  *   batch.mjs dynamically imports sub-commands (discover/plan/codify/enrich)
@@ -118,9 +118,9 @@ vi.mock('../src/commands/enrich.mjs', () => ({
     }) + '\n');
   }),
   // Re-export marker constants consumed by other modules
-  ENRICH_START_MARKER: '<!-- testnux:enrich:start -->',
+  ENRICH_START_MARKER: '<!-- trunknux:enrich:start -->',
   ENRICH_GUARD_MARKER: '<!-- DO NOT MODIFY ABOVE THIS LINE — human-curated content -->',
-  ENRICH_END_MARKER:   '<!-- testnux:enrich:end -->',
+  ENRICH_END_MARKER:   '<!-- trunknux:enrich:end -->',
 }));
 
 // ── Setup / teardown ──────────────────────────────────────────────────────────

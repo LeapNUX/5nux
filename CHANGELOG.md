@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.2] - 2026-04-27
+
+**Brand rename: `testnux` → `trunknux` / `TestNUX` → `TrunkNuX`.** No functional changes. Lane B commitment from the same-day CEO review surfaced that the product had outgrown the "Test" prefix; v0.2.2 is the rename-only patch that aligns the brand with the lane B thesis (testing-to-audit journey, with the trunk metaphor as the structural backbone of the audit chain).
+
+### Changed
+
+- **Package name** on npm: `testnux` → `trunknux`. New v0.2.2 publishes as `trunknux@0.2.2` on npm; the old `testnux` package is deprecated with a pointer to `trunknux`.
+- **Brand name** in all docs and CLI output: `TestNUX` → `TrunkNuX` (104 files updated across README, docs, templates, generated HTML reports, CLI help text).
+- **Binary**: `bin/testnux.mjs` → `bin/trunknux.mjs`. The CLI is invoked as `trunknux` instead of `testnux`.
+- **Constant** `TESTNUX_OSCAL_NAMESPACE` → `TRUNKNUX_OSCAL_NAMESPACE` in `src/lib/oscal.mjs` and `src/lib/oscal-signoff.mjs`. The UUID value is unchanged for backward compatibility — existing OSCAL exports still validate.
+- **Env variable** `TESTNUX_INDUSTRY` → `TRUNKNUX_INDUSTRY` in docs and code.
+- **Repository URL**: `github.com/StillNotBald/testnux` → `github.com/StillNotBald/trunknux`. GitHub auto-redirects existing links.
+- **Roadmap**: `docs/roadmap.md` now leads with the three strategic lanes from the CEO review (Lane A focused, Lane B committed, Lane C aspirational), maps to the version roadmap, and explains the trunk-to-Yggdrasil narrative.
+- **README**: header tagline reframed around the testing-to-audit journey. New trunk metaphor block explains the structural backbone framing and signals the long-term aspiration toward a Yggdrasil-scale audit-content infrastructure.
+
+### Notes
+
+- Tests: 370/370 passing. 0 lint errors.
+- The npm `testnux` package will be deprecated after `trunknux@0.2.2` publishes. Existing users on `npm install testnux` will see a deprecation warning pointing to the new name.
+- Historical CHANGELOG entries below (v0.1.x, v0.2.0, v0.2.0-alpha.1, v0.2.1) describe what shipped under the prior `testnux` name. They are left intact for historical accuracy.
+
+---
+
 ## [0.2.1] - 2026-04-27
 
 A same-day patch on top of v0.2.0 stable. Bundles the smoke-test polish that surfaced after the v0.2.0 tag was cut plus four major-version dependency bumps that were verified safe by independent triage. **This is the first 0.2.x version published to npm** — v0.2.0 was tagged on GitHub but never published to the registry.

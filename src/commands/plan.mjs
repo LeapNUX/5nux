@@ -1,20 +1,20 @@
-// Copyright (c) 2026 TestNUX Contributors
+// Copyright (c) 2026 TrunkNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * src/commands/plan.mjs
  *
- * Implements `testnux plan <slug>`.
+ * Implements `trunknux plan <slug>`.
  *
  * v0.2 ALPHA — wired to Claude API (claude-sonnet-4-6 by default).
  *
- * Reads scenarios.md (produced by `testnux discover`), sends it to the
+ * Reads scenarios.md (produced by `trunknux discover`), sends it to the
  * Anthropic Messages API with a structured prompt, and writes a test-plan.md
- * conforming to the TestNUX schema (YAML frontmatter + TC table format).
+ * conforming to the TrunkNuX schema (YAML frontmatter + TC table format).
  * Every LLM-generated cell is tagged [VERIFY].
  *
  * Usage:
- *   testnux plan <slug> [--url <url>] [--industry <industry>]
+ *   trunknux plan <slug> [--url <url>] [--industry <industry>]
  *                       [--out <path>] [--model <model>]
  *                       [--max-tokens <n>] [--dry-run] [--max-spend <n>]
  *
@@ -37,7 +37,7 @@
  *
  * SYSTEM:
  *   You are a senior QA engineer who writes structured test plans for regulated
- *   web applications. Your output must conform exactly to the TestNUX
+ *   web applications. Your output must conform exactly to the TrunkNuX
  *   test-plan.md schema (YAML frontmatter + markdown body). You write
  *   deterministically: same input → same structure every time.
  *   You never invent requirements. If you cannot map a scenario to an R-ID,
@@ -57,7 +57,7 @@
  *   DOM context (optional — omit if not captured):
  *   {{dom_snapshot_or_NONE}}
  *
- *   TASK: Convert the scenarios above into a TestNUX test-plan.md.
+ *   TASK: Convert the scenarios above into a TrunkNuX test-plan.md.
  *
  *   OUTPUT REQUIREMENTS:
  *
@@ -168,7 +168,7 @@ export async function runPlan(slug, opts = {}) {
 
   if (!json) {
     console.log('');
-    console.log('  testnux plan — v0.2 ALPHA');
+    console.log('  trunknux plan — v0.2 ALPHA');
     console.log('  ─────────────────────────────────────────────────────────');
     console.log(`  Slug     : ${slug}`);
     console.log(`  Industry : ${industry}`);
@@ -190,7 +190,7 @@ export async function runPlan(slug, opts = {}) {
       '    export CLAUDE_API_KEY=sk-ant-...\n\n' +
       '  Or add it to .env.local:\n\n' +
       '    echo "CLAUDE_API_KEY=sk-ant-..." >> .env.local\n\n' +
-      '  Run without an API key: testnux init <slug>  (scaffolds templates manually)',
+      '  Run without an API key: trunknux init <slug>  (scaffolds templates manually)',
     );
     const err = new Error('CLAUDE_API_KEY not set');
     err.exitCode = 1;
@@ -210,7 +210,7 @@ export async function runPlan(slug, opts = {}) {
           '@anthropic-ai/sdk is not installed.\n\n' +
           '  Install with:\n\n' +
           '    npm install @anthropic-ai/sdk\n\n' +
-          '  Then re-run: testnux plan ' + slug,
+          '  Then re-run: trunknux plan ' + slug,
         );
         const err = new Error('@anthropic-ai/sdk not installed');
         err.exitCode = 1;
@@ -229,7 +229,7 @@ export async function runPlan(slug, opts = {}) {
     printError(json, slug,
       `No scenarios file found for slug "${slug}".\n\n` +
       '  Run discover first to generate one:\n\n' +
-      `    testnux discover <url>   # creates scenarios.md for "${slug}"\n\n` +
+      `    trunknux discover <url>   # creates scenarios.md for "${slug}"\n\n` +
       '  Or place one manually at any of these paths:\n' +
       `    ./${slug}-scenarios.md\n` +
       `    ./scenarios/${slug}.md\n` +
@@ -403,7 +403,7 @@ export async function runPlan(slug, opts = {}) {
       `LLM response could not be parsed as test-plan.md:\n\n  ${parseErr.message}\n\n` +
       `  Raw response saved to: ${rawPath}\n` +
       '  Review the raw file and re-run, or file a bug at:\n' +
-      '  https://github.com/StillNotBald/testnux/issues',
+      '  https://github.com/StillNotBald/trunknux/issues',
     );
     const err = new Error('LLM response parse error');
     err.exitCode = 3;
@@ -456,7 +456,7 @@ export async function runPlan(slug, opts = {}) {
     console.log('');
     console.log('  Next steps:');
     console.log(`    1. Review ${outFile} — remove [VERIFY] as you confirm each TC`);
-    console.log(`    2. Run: testnux codify ${slug}`);
+    console.log(`    2. Run: trunknux codify ${slug}`);
     console.log('');
   }
 }
@@ -478,7 +478,7 @@ export async function runPlan(slug, opts = {}) {
 function buildPrompt({ slug, industry, rIds, scenariosMd, tcPrefix }) {
   const systemPrompt =
     `You are a senior QA engineer who writes structured test plans for regulated\n` +
-    `web applications. Your output must conform exactly to the TestNUX\n` +
+    `web applications. Your output must conform exactly to the TrunkNuX\n` +
     `test-plan.md schema (YAML frontmatter + markdown body). You write\n` +
     `deterministically: same input → same structure every time.\n` +
     `You never invent requirements. If you cannot map a scenario to an R-ID,\n` +
@@ -497,7 +497,7 @@ function buildPrompt({ slug, industry, rIds, scenariosMd, tcPrefix }) {
     `${scenariosMd}\n` +
     `---\n` +
     `\n` +
-    `TASK: Convert the scenarios above into a TestNUX test-plan.md.\n` +
+    `TASK: Convert the scenarios above into a TrunkNuX test-plan.md.\n` +
     `\n` +
     `OUTPUT REQUIREMENTS:\n` +
     `\n` +
@@ -612,7 +612,7 @@ function handleApiError(err, json, slug) {
       `Rate limit exceeded (429 Too Many Requests).\n\n` +
       `  Retry after: ${retryAfter}s\n\n` +
       '  Options:\n' +
-      '    - Wait and re-run: testnux plan ' + slug + '\n' +
+      '    - Wait and re-run: trunknux plan ' + slug + '\n' +
       '    - Use --max-tokens to reduce response size\n' +
       '    - Spread requests across multiple sessions',
     );
