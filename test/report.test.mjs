@@ -1,4 +1,4 @@
-// Copyright (c) 2026 TrunkNuX Contributors
+// Copyright (c) 2026 BranchNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**

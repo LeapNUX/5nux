@@ -2,7 +2,7 @@
 
 **The graph is the product. The CLI verbs are surface area on the graph.**
 
-TrunkNuX's core is a directed in-memory graph assembled from markdown files, code, and test results. The renderers (XLSX, HTML, TRACEABILITY.md, SCA.md, OSCAL JSON) are all projections of this graph onto different output formats.
+BranchNuX's core is a directed in-memory graph assembled from markdown files, code, and test results. The renderers (XLSX, HTML, TRACEABILITY.md, SCA.md, OSCAL JSON) are all projections of this graph onto different output formats.
 
 ---
 
@@ -180,7 +180,7 @@ The following schemas are published in `docs/schema/`:
 | `findings.schema.json` | `findings.json` emitted by v0.2 enrichment agents |
 | `controls.schema.json` | Per-control YAML in `src/config/industry-standards/` |
 
-Use these schemas to validate inputs programmatically or to integrate TrunkNuX data into Jira, Linear, or ServiceNow.
+Use these schemas to validate inputs programmatically or to integrate BranchNuX data into Jira, Linear, or ServiceNow.
 
 ---
 
@@ -189,9 +189,9 @@ Use these schemas to validate inputs programmatically or to integrate TrunkNuX d
 The RTM and SCA generators re-run on each invocation. Without a merge strategy, human-authored notes get clobbered. v0.2 introduces human-edit markers:
 
 ```markdown
-<!-- trunknux:row R-42 begin -->
+<!-- branchnux:row R-42 begin -->
 | R-42 | TOTP authentication | DONE | sprint-log/2026-04-15_auth/ | src/lib/totp.ts | LOGIN-10, LOGIN-11 | <!-- human:notes -->Verified against RFC 6238 §4.1<!-- /human:notes --> |
-<!-- trunknux:row R-42 end -->
+<!-- branchnux:row R-42 end -->
 ```
 
 The generator owns the row; humans own the content within `<!-- human:notes -->...<!-- /human:notes -->` spans. On regeneration, the generator extracts existing `human:notes` content and re-inserts it. The same pattern applies to SCA "Operational notes" and "Open items" sections.

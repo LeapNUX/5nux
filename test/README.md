@@ -1,4 +1,4 @@
-# TrunkNuX — Unit Test Suite
+# BranchNuX — Unit Test Suite
 
 ## What is tested
 
@@ -22,7 +22,7 @@ All tamper tests assert `valid: false` and a specific `brokenAt` line number.
 
 ## What is NOT tested here
 
-- **CLI integration tests** (`appendEntry` / `verifyChain` invoked via the `trunknux` binary) — these live in `test/cli.test.mjs` (parallel agent scope).
+- **CLI integration tests** (`appendEntry` / `verifyChain` invoked via the `branchnux` binary) — these live in `test/cli.test.mjs` (parallel agent scope).
 - **OSCAL round-trip via `sca-oscal` command** — covered in `test/commands.test.mjs`.
 - **Playwright E2E tests** — run separately via `npm run test:e2e`.
 - **Full JSON Schema validation against the NIST OSCAL metaschema** — `validateOSCAL()` performs minimal required-field checks only; full schema validation requires the `oscal-cli` tool (see `docs/integrations.md`).

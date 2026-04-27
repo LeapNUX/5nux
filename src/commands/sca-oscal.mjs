@@ -1,19 +1,19 @@
-// Copyright (c) 2026 TrunkNuX Contributors
+// Copyright (c) 2026 BranchNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * src/commands/sca-oscal.mjs
  *
- * Implements `trunknux sca oscal <surface>`.
+ * Implements `branchnux sca oscal <surface>`.
  *
  * Reads the latest SCA markdown from requirements/validations/<surface>/v*.md,
  * parses it into a minimal SCA graph, emits an OSCAL 1.1.2 assessment-results
  * JSON document alongside the source file.
  *
  * Usage:
- *   trunknux sca oscal login
- *   trunknux sca oscal login --validate
- *   trunknux sca oscal login --out ./my-output/
+ *   branchnux sca oscal login
+ *   branchnux sca oscal login --validate
+ *   branchnux sca oscal login --out ./my-output/
  *
  * Flags:
  *   --validate    Run schema check on the emitted OSCAL JSON; exit 1 if invalid
@@ -241,7 +241,7 @@ export async function runScaOscal(surface, opts = {}) {
 // ── SCA Markdown Parser ──────────────────────────────────────────────────────
 
 /**
- * Parse a TrunkNuX SCA markdown document into a minimal SCA object.
+ * Parse a BranchNuX SCA markdown document into a minimal SCA object.
  *
  * Parsing strategy:
  *   - Frontmatter (gray-matter) → surface, version, published, signOff

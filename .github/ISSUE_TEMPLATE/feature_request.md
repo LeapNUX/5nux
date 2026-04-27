@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Propose a new feature or enhancement for trunknux
+about: Propose a new feature or enhancement for branchnux
 title: '[Feature] '
 labels: enhancement
 assignees: ''

@@ -1,7 +1,7 @@
 ---
 slug: easy-login
 url: file://fixtures/easy-login.html
-generated_by: trunknux eval harness (hand-curated)
+generated_by: branchnux eval harness (hand-curated)
 tc_count: 9
 review_required: false
 ---

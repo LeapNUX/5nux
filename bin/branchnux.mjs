@@ -3,9 +3,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * bin/trunknux.mjs
+ * bin/branchnux.mjs
  *
- * CLI entry point for TrunkNuX.
+ * CLI entry point for BranchNuX.
  *
  * Verbs:
  *   init <slug>      — scaffold a per-page test-pass folder from templates
@@ -70,8 +70,8 @@ const { runBatchPlan } = await import('../src/commands/batch.mjs');
 const program = new Command();
 
 program
-  .name('trunknux')
-  .description('TrunkNuX — structured test-pass documentation for regulated web apps')
+  .name('branchnux')
+  .description('BranchNuX — structured test-pass documentation for regulated web apps')
   .version(version)
   .option('--json', 'emit all output as newline-delimited JSON records');
 
@@ -140,7 +140,7 @@ program
   .command('demo')
   .description(
     'Open the bundled demo execution report in your default browser. ' +
-    'A real trunknux report output (13 PASS / 2 BLOCKED-CONFIG, 13 embedded ' +
+    'A real branchnux report output (13 PASS / 2 BLOCKED-CONFIG, 13 embedded ' +
     'screenshots, standards-alignment matrix, threat coverage). ' +
     'The fastest path to "aha" for first-time users.',
   )
@@ -184,7 +184,7 @@ program
 program
   .command('mcp')
   .description(
-    'Start the TrunkNuX MCP server on stdio. ' +
+    'Start the BranchNuX MCP server on stdio. ' +
     'Mount this in Claude Code via .claude/settings.json mcpServers. ' +
     'Requires @modelcontextprotocol/sdk — install separately: ' +
     'npm install @modelcontextprotocol/sdk',
@@ -192,9 +192,9 @@ program
   .action(async () => {
     // The MCP server is planned for v0.3 and is not yet shipped in this release.
     console.error(
-      '\nThe TrunkNuX MCP server is on the roadmap for v0.3 and has not yet shipped.\n\n' +
+      '\nThe BranchNuX MCP server is on the roadmap for v0.3 and has not yet shipped.\n\n' +
         'In the meantime, use the standalone CLI:\n\n' +
-        '  npx trunknux <command>\n\n' +
+        '  npx branchnux <command>\n\n' +
         'See docs/integrations.md for the v0.3 integration roadmap.\n',
     );
     process.exit(1);
@@ -211,7 +211,7 @@ program
   )
   .option('--dry-run', 'print generated content to stdout without writing the file')
   .option('--strict', 'exit 1 if any R-ID has no code or test evidence')
-  .option('--config <path>', 'path to trunknux.config.mjs for glob overrides')
+  .option('--config <path>', 'path to branchnux.config.mjs for glob overrides')
   .action(async (opts, cmd) => {
     const global = cmd.parent.opts();
     try {
@@ -245,7 +245,7 @@ scaCmd
   )
   .option('--industry <industry>', 'industry standards profile (general|fintech|healthcare|malaysia-banking)', 'general')
   .option('--dry-run', 'print generated content to stdout without writing the file')
-  .option('--config <path>', 'path to trunknux.config.mjs')
+  .option('--config <path>', 'path to branchnux.config.mjs')
   .option('--standards-version <version>', 'standards snapshot version recorded in frontmatter', '1.0.0')
   .action(async (surface, opts, cmd) => {
     const global = cmd.parent.parent.opts();
@@ -271,7 +271,7 @@ scaCmd
     'test results and R-ID mappings. [VERIFY] marks cells needing human or LLM review.',
   )
   .option('--dry-run', 'print updated content to stdout without writing the file')
-  .option('--config <path>', 'path to trunknux.config.mjs')
+  .option('--config <path>', 'path to branchnux.config.mjs')
   .option('--standards-version <version>', 'standards snapshot version recorded in frontmatter', '1.0.0')
   .action(async (surface, opts, cmd) => {
     const global = cmd.parent.parent.opts();
@@ -296,7 +296,7 @@ scaCmd
     'Set CHROME_PATH env var if Chrome is not auto-detected.',
   )
   .option('--dry-run', 'show what would be rendered without writing the file')
-  .option('--config <path>', 'path to trunknux.config.mjs')
+  .option('--config <path>', 'path to branchnux.config.mjs')
   .action(async (surface, opts, cmd) => {
     const global = cmd.parent.parent.opts();
     try {
@@ -563,22 +563,22 @@ brCmd
 // ── sign ──────────────────────────────────────────────────────────────────────
 //
 // Subcommand group:
-//   trunknux sign <surface>              — record an attestation (existing)
-//   trunknux sign pdf <surface>          — render PDF ledger (S1)
-//   trunknux sign stale-check <surface>  — check entry ages (S2)
+//   branchnux sign <surface>              — record an attestation (existing)
+//   branchnux sign pdf <surface>          — render PDF ledger (S1)
+//   branchnux sign stale-check <surface>  — check entry ages (S2)
 //
 // Commander routes to a subcommand when the first positional arg matches a
 // registered subcommand name ('pdf', 'stale-check'). Otherwise the group's
-// own action handler fires, preserving the legacy `trunknux sign <surface>`
+// own action handler fires, preserving the legacy `branchnux sign <surface>`
 // invocation.
 
 const signCmd = program
   .command('sign')
   .description(
     'UAT sign-off commands.\n' +
-    '  trunknux sign <surface>             — record an attestation\n' +
-    '  trunknux sign pdf <surface>         — render sign-off ledger to PDF\n' +
-    '  trunknux sign stale-check <surface> — flag entries older than threshold',
+    '  branchnux sign <surface>             — record an attestation\n' +
+    '  branchnux sign pdf <surface>         — render sign-off ledger to PDF\n' +
+    '  branchnux sign stale-check <surface> — flag entries older than threshold',
   )
   .argument('[surface]', 'test-pass surface folder (required for direct attestation)')
   .option('--reject <tc-id>', 'batch-reject a specific TC-ID (status set to rejected)')
@@ -762,7 +762,7 @@ const visualCmd = program
   .description(
     'Visual regression testing. Subcommands: baseline, compare. ' +
     'Optional dep: npm install pixelmatch pngjs. ' +
-    'Configurable via trunknux.config.mjs visual.diffThreshold (default 5%).',
+    'Configurable via branchnux.config.mjs visual.diffThreshold (default 5%).',
   );
 
 visualCmd
@@ -801,7 +801,7 @@ visualCmd
   .description(
     'Compare current screenshots against baseline. ' +
     'Diffs stored at <slug>/visual-diff/<TC-ID>-diff.png. ' +
-    'Threshold configurable in trunknux.config.mjs (default 5%). ' +
+    'Threshold configurable in branchnux.config.mjs (default 5%). ' +
     'Optional: npm install --save-dev pixelmatch pngjs for pixel diff.',
   )
   .option('--strict', 'exit 2 if any TC exceeds the diff threshold')

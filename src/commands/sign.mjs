@@ -4,24 +4,24 @@
 /**
  * src/commands/sign.mjs
  *
- * Implements `trunknux sign` — stakeholder sign-off with e-signature.
+ * Implements `branchnux sign` — stakeholder sign-off with e-signature.
  *
  * Usage:
- *   trunknux sign <surface>
+ *   branchnux sign <surface>
  *     Interactive prompt: reviewer name, role, TC-ID, status, justification.
  *     Computes HMAC-SHA256 signature using UAT_SECRET env var.
  *     Appends entry to <surface>/uat-log.jsonl (hash-chained).
  *     Writes sign-off record into requirements/validations/<surface>/.
  *
- *   trunknux sign <surface> --reject <TC-ID>
+ *   branchnux sign <surface> --reject <TC-ID>
  *     Batch-reject a specific TC-ID (still prompts for name, role, justification).
  *
- *   trunknux sign <surface> --justify-with-llm   (S4)
+ *   branchnux sign <surface> --justify-with-llm   (S4)
  *     Before prompting for justification, calls Claude API to draft a 2-3 sentence
  *     justification. Requires CLAUDE_API_KEY + @anthropic-ai/sdk (optional peer dep).
  *     Falls back to manual prompt if API key or SDK is missing. Cost ~$0.003/justify.
  *
- *   trunknux sign <surface> --revoke --tc <TC-ID> --role <role>   (S5)
+ *   branchnux sign <surface> --revoke --tc <TC-ID> --role <role>   (S5)
  *     Append a revocation entry to <folder>/br-attestations.jsonl for the given TC+role.
  *     Does NOT delete existing entries (append-only chain preserved).
  *
@@ -82,7 +82,7 @@ export async function runSign(surface, opts = {}) {
   if (!fs.existsSync(surfaceDir)) {
     const err = new Error(
       `Surface folder not found: ${surfaceDir}\n` +
-      `  Run \`trunknux init ${surface.replace(/^\d{4}-\d{2}-\d{2}_/, '')}\` first.`
+      `  Run \`branchnux init ${surface.replace(/^\d{4}-\d{2}-\d{2}_/, '')}\` first.`
     );
     err.exitCode = 2;
     throw err;
@@ -94,7 +94,7 @@ export async function runSign(surface, opts = {}) {
     if (!revokeTcId || !revokeRole) {
       const err = new Error(
         '--revoke requires --tc <TC-ID> and --role <role>.\n' +
-        '  Example: trunknux sign <surface> --revoke --tc LOGIN-01 --role QA'
+        '  Example: branchnux sign <surface> --revoke --tc LOGIN-01 --role QA'
       );
       err.exitCode = 2;
       throw err;
@@ -408,7 +408,7 @@ function wordWrap(text, width) {
 function writeValidationRecord(validationsDir, entry, surface) {
   const recordFile = path.join(validationsDir, `sign-off.md`);
 
-  const HEADER_MARKER = '<!-- trunknux: sign-off log -->';
+  const HEADER_MARKER = '<!-- branchnux: sign-off log -->';
   const entryBlock = [
     '',
     `### ${entry.ts} — ${entry.tc_id}`,
@@ -436,7 +436,7 @@ function writeValidationRecord(validationsDir, entry, surface) {
       '',
       HEADER_MARKER,
       '',
-      '<!-- Entries appended by `trunknux sign`. Do not hand-edit. -->',
+      '<!-- Entries appended by `branchnux sign`. Do not hand-edit. -->',
       '',
     ].join('\n');
     fs.writeFileSync(recordFile, header, 'utf-8');

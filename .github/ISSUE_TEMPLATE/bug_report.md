@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a problem with trunknux
+about: Report a problem with branchnux
 title: '[Bug] '
 labels: bug
 assignees: ''
@@ -24,7 +24,7 @@ assignees: ''
 
 | Field | Value |
 |---|---|
-| trunknux version | <!-- e.g. 0.1.0 — run `trunknux --version` --> |
+| branchnux version | <!-- e.g. 0.1.0 — run `branchnux --version` --> |
 | Node.js version | <!-- e.g. v20.12.0 — run `node --version` --> |
 | OS | <!-- e.g. macOS 14.4, Ubuntu 22.04, Windows 11 --> |
 

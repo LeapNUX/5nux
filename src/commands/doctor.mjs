@@ -4,7 +4,7 @@
 /**
  * src/commands/doctor.mjs
  *
- * Implements `trunknux doctor`.
+ * Implements `branchnux doctor`.
  *
  * Runs preflight checks and emits ✅/⚠️/❌ per check with an actionable message.
  *
@@ -69,7 +69,7 @@ export async function runDoctor(opts = {}) {
     );
   } else {
     console.log('');
-    console.log('TrunkNuX — Doctor');
+    console.log('BranchNuX — Doctor');
     console.log('═'.repeat(50));
     for (const r of results) {
       const icon = r.level === 'ok' ? '✅' : r.level === 'warn' ? '⚠️ ' : '❌';
@@ -214,7 +214,7 @@ async function checkSupabase(projectRef) {
     return {
       level: 'warn',
       message: 'SUPABASE_MANAGEMENT_TOKEN is set but --project-ref is not provided',
-      fix: 'Re-run with: trunknux doctor --check supabase --project-ref <your-project-ref>',
+      fix: 'Re-run with: branchnux doctor --check supabase --project-ref <your-project-ref>',
     };
   }
 
@@ -360,7 +360,7 @@ function checkConventions() {
     level: 'warn',
     message: `Convention folder(s) missing: ${missing.join(', ')}`,
     detail:
-      'TrunkNuX expects three discipline tracks: requirements/, sprint-log/, testing-log/. ' +
+      'BranchNuX expects three discipline tracks: requirements/, sprint-log/, testing-log/. ' +
       'See README for the three-track pattern.',
     fix: `mkdir -p ${missing.map((d) => path.join(cwd, d)).join(' ')}`,
   };

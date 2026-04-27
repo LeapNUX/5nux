@@ -1,7 +1,7 @@
 ---
 slug: medium-checkout
 url: file://fixtures/medium-checkout.html
-generated_by: trunknux eval harness (hand-curated)
+generated_by: branchnux eval harness (hand-curated)
 tc_count: 12
 review_required: false
 ---

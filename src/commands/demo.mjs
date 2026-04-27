@@ -4,11 +4,11 @@
 /**
  * src/commands/demo.mjs
  *
- * Implements `trunknux demo`.
+ * Implements `branchnux demo`.
  *
  * The demo command is the "aha moment" for first-time users:
  *   1. Run npx playwright test against examples/demo-dashboard/spec.ts
- *   2. Call `trunknux report` on the resulting folder
+ *   2. Call `branchnux report` on the resulting folder
  *   3. Open the generated HTML in the default browser
  *
  * v0.1 STUB — demo-dashboard content ships in the next agent run.
@@ -44,21 +44,21 @@ export async function runDemo(opts = {}) {
     );
   } else {
     console.log('');
-    console.log('🚀  TrunkNuX — Demo');
+    console.log('🚀  BranchNuX — Demo');
     console.log('');
     console.log('   v0.1 demo target is coming in the next release.');
     console.log('');
-    console.log('   When ready, `trunknux demo` will:');
+    console.log('   When ready, `branchnux demo` will:');
     console.log('     1. Spin up the bundled widgetly demo app');
     console.log('     2. Run the full Playwright test suite (examples/demo-dashboard/spec.ts)');
     console.log('     3. Generate XLSX + HTML report automatically');
     console.log('     4. Open the HTML report in your default browser');
     console.log('');
     console.log('   In the meantime, try the manual quickstart:');
-    console.log('     trunknux init my-first-page --industry general');
+    console.log('     branchnux init my-first-page --industry general');
     console.log('     # edit test-plan.md + spec.ts');
     console.log('     npx playwright test');
-    console.log('     trunknux report testing-log/<date>_my-first-page/');
+    console.log('     branchnux report testing-log/<date>_my-first-page/');
     console.log('');
   }
 

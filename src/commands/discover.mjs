@@ -1,10 +1,10 @@
-// Copyright (c) 2026 TrunkNuX Contributors
+// Copyright (c) 2026 BranchNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * src/commands/discover.mjs
  *
- * Implements `trunknux discover <url>`.
+ * Implements `branchnux discover <url>`.
  *
  * v0.2 ALPHA — wired to Claude API (claude-sonnet-4-6 by default).
  *
@@ -14,7 +14,7 @@
  * Given/When/Then test cases — every LLM-generated cell tagged [VERIFY].
  *
  * Usage:
- *   trunknux discover <url> [--output <path>] [--model <model>]
+ *   branchnux discover <url> [--output <path>] [--model <model>]
  *                               [--max-tokens <n>] [--dry-run]
  *
  * Requires:
@@ -119,7 +119,7 @@ export async function runDiscover(url, opts = {}) {
       '    export CLAUDE_API_KEY=sk-ant-...\n\n' +
       '  Or add it to .env.local:\n\n' +
       '    echo "CLAUDE_API_KEY=sk-ant-..." >> .env.local\n\n' +
-      '  Run without an API key: trunknux init <slug>  (scaffolds templates manually)',
+      '  Run without an API key: branchnux init <slug>  (scaffolds templates manually)',
     );
     const err = new Error('CLAUDE_API_KEY not set');
     err.exitCode = 1;
@@ -139,7 +139,7 @@ export async function runDiscover(url, opts = {}) {
           '@anthropic-ai/sdk is not installed.\n\n' +
           '  Install with:\n\n' +
           '    npm install @anthropic-ai/sdk\n\n' +
-          '  Then re-run: trunknux discover ' + url,
+          '  Then re-run: branchnux discover ' + url,
         );
         const err = new Error('@anthropic-ai/sdk not installed');
         err.exitCode = 1;
@@ -153,7 +153,7 @@ export async function runDiscover(url, opts = {}) {
 
   if (!json) {
     console.log('');
-    console.log('  trunknux discover — v0.2 ALPHA');
+    console.log('  branchnux discover — v0.2 ALPHA');
     console.log('  ─────────────────────────────────────────────────────────');
     console.log(`  URL   : ${url}`);
     console.log(`  Slug  : ${slug}`);
@@ -308,7 +308,7 @@ export async function runDiscover(url, opts = {}) {
       `LLM response could not be parsed as scenarios.md:\n\n  ${parseErr.message}\n\n` +
       `  Raw response saved to: ${rawPath}\n` +
       '  Review the raw file and re-run, or file a bug at:\n' +
-      '  https://github.com/StillNotBald/trunknux/issues',
+      '  https://github.com/StillNotBald/branchnux/issues',
     );
     const err = new Error('LLM response parse error');
     err.exitCode = 3;
@@ -360,7 +360,7 @@ export async function runDiscover(url, opts = {}) {
     console.log('');
     console.log('  Next steps:');
     console.log(`    1. Review ${outFile} — remove [VERIFY] as you confirm each TC`);
-    console.log(`    2. Run: trunknux plan ${slug}`);
+    console.log(`    2. Run: branchnux plan ${slug}`);
     console.log('');
   }
 }
@@ -382,7 +382,7 @@ async function fetchHtml(url) {
     resp = await fetch(url, {
       signal: controller.signal,
       headers: {
-        'User-Agent': 'trunknux/0.0.1 (+https://github.com/StillNotBald/trunknux)',
+        'User-Agent': 'branchnux/0.0.1 (+https://github.com/StillNotBald/branchnux)',
         'Accept':     'text/html,application/xhtml+xml',
       },
     });
@@ -684,7 +684,7 @@ OUTPUT FORMAT: Pure markdown. Start with this YAML frontmatter block:
 ---
 slug: ${slug}
 url: ${url}
-generated_by: trunknux discover v0.2
+generated_by: branchnux discover v0.2
 generated_at: ${timestamp}
 tc_count: [TOTAL NUMBER — fill in before outputting]
 review_required: true
@@ -749,7 +749,7 @@ function handleApiError(err, json, url) {
       `Rate limit exceeded (429 Too Many Requests).\n\n` +
       `  Retry after: ${retryAfter}s\n\n` +
       '  Options:\n' +
-      '    - Wait and re-run: trunknux discover ' + url + '\n' +
+      '    - Wait and re-run: branchnux discover ' + url + '\n' +
       '    - Use --max-tokens to reduce response size\n' +
       '    - Spread requests across multiple sessions',
     );

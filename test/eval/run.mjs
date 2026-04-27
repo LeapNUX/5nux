@@ -1,10 +1,10 @@
-// Copyright (c) 2026 TrunkNuX Contributors
+// Copyright (c) 2026 BranchNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * test/eval/run.mjs
  *
- * CLI runner for the TrunkNuX eval harness.
+ * CLI runner for the BranchNuX eval harness.
  *
  * Usage:
  *   node test/eval/run.mjs
@@ -63,7 +63,7 @@ for (const fix of fixtures) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 console.log('');
-console.log('  trunknux eval harness');
+console.log('  branchnux eval harness');
 console.log('  ─────────────────────────────────────────────────────────');
 console.log(`  Fixtures  : ${fixtures.join(', ')}`);
 console.log(`  Threshold : ${threshold}`);
@@ -230,7 +230,7 @@ async function runDiscoverOnFixture(fixtureName, _htmlPath) {
 
   try {
     const url = `http://localhost:8080/${fixtureName}.html`;
-    const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'trunknux-eval-'));
+    const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'branchnux-eval-'));
     await runDiscover(url, { slug: fixtureName, output: outDir, json: true });
 
     const outFile = path.join(outDir, 'scenarios.md');

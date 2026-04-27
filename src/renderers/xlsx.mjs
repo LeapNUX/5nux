@@ -144,7 +144,7 @@ function buildTcMatrixSheet(wb, tcs, slug, planOnly) {
   // ── Subtitle row ───────────────────────────────────────────────────────────
   ws.mergeCells('A2:I2');
   const subtitleCell = ws.getCell('A2');
-  subtitleCell.value = `Generated ${new Date().toISOString().split('T')[0]} · ${tcs.length} test case${tcs.length !== 1 ? 's' : ''} · TrunkNuX v0.2.0-alpha`;
+  subtitleCell.value = `Generated ${new Date().toISOString().split('T')[0]} · ${tcs.length} test case${tcs.length !== 1 ? 's' : ''} · BranchNuX v0.2.0-alpha`;
   subtitleCell.font = { size: 10, italic: true, color: { argb: 'FF6B7280' } };
   subtitleCell.alignment = { horizontal: 'center', vertical: 'middle' };
   ws.getRow(2).height = 18;
@@ -355,7 +355,7 @@ export async function buildXlsx(tcs, opts = {}) {
   const { slug = 'test-report', planOnly = false } = opts;
 
   const wb = new ExcelJS.Workbook();
-  wb.creator = 'TrunkNuX v0.2.0-alpha';
+  wb.creator = 'BranchNuX v0.2.0-alpha';
   wb.created = new Date();
   wb.modified = new Date();
 

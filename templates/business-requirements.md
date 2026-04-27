@@ -4,7 +4,7 @@ owner: TBD
 stakeholders: []
 approval_required: true
 # required_reviewers — optional; remove this block for single-reviewer sign-off (backward compat).
-# When present, `trunknux br rtm` tracks N-of-M attestation progress per role.
+# When present, `branchnux br rtm` tracks N-of-M attestation progress per role.
 # Attestations stored in <surface>/br-attestations.jsonl (HMAC-chained, append-only).
 # required_reviewers:
 #   - role: QA
@@ -17,8 +17,8 @@ approval_required: true
 
 # Business Requirements — {{br_id}}
 
-<!-- trunknux: business-requirements-template v1 -->
-<!-- Fill in each section. Run `trunknux br rtm` to regenerate the UAT traceability matrix. -->
+<!-- branchnux: business-requirements-template v1 -->
+<!-- Fill in each section. Run `branchnux br rtm` to regenerate the UAT traceability matrix. -->
 
 ## {{br_id}}
 
@@ -39,15 +39,15 @@ Each criterion is a verifiable, binary condition.
 ### Linked R-IDs
 
 <!-- br:linked-r-ids:{{br_id}} -->
-_(none yet — run `trunknux br link {{br_id}} R-01,R-02`)_
+_(none yet — run `branchnux br link {{br_id}} R-01,R-02`)_
 
 ### Linked TC-IDs
 
-_(populated automatically via RTM — run `trunknux br rtm`)_
+_(populated automatically via RTM — run `branchnux br rtm`)_
 
 ### Stakeholder Sign-Off Matrix
 
-<!-- Updated by `trunknux sign`. Do not hand-edit. -->
+<!-- Updated by `branchnux sign`. Do not hand-edit. -->
 
 | Reviewer | Role | Status | Date | Signature (truncated) |
 |----------|------|--------|------|-----------------------|
@@ -60,4 +60,4 @@ _Any additional context, regulatory references, or audit trail links._
 ---
 
 **Stale acceptance:** Entries older than 90 days must be re-attested.
-Run `trunknux validate --check stale-uat` to detect expired sign-offs.
+Run `branchnux validate --check stale-uat` to detect expired sign-offs.

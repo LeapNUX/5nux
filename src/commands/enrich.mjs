@@ -1,10 +1,10 @@
-// Copyright (c) 2026 TrunkNuX Contributors
+// Copyright (c) 2026 BranchNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * src/commands/enrich.mjs
  *
- * Implements `trunknux enrich <slug>`.
+ * Implements `branchnux enrich <slug>`.
  *
  * v0.2 ALPHA — wired to Claude API (claude-sonnet-4-6 by default).
  *
@@ -26,21 +26,21 @@
  *     files in the same testing-log/ folder as context.
  *
  * Marker convention (REPLACE-on-rerun, not append):
- *   <!-- trunknux:enrich:design-review begin -->
- *   <!-- trunknux:enrich:design-review end -->
+ *   <!-- branchnux:enrich:design-review begin -->
+ *   <!-- branchnux:enrich:design-review end -->
  *
- *   <!-- trunknux:enrich:qa-structural begin -->
- *   <!-- trunknux:enrich:qa-structural end -->
+ *   <!-- branchnux:enrich:qa-structural begin -->
+ *   <!-- branchnux:enrich:qa-structural end -->
  *
- *   <!-- trunknux:enrich:graph-context begin -->
- *   <!-- trunknux:enrich:graph-context end -->
+ *   <!-- branchnux:enrich:graph-context begin -->
+ *   <!-- branchnux:enrich:graph-context end -->
  *
  * APPEND-ONLY discipline:
  *   All enriched TCs live INSIDE the per-pass marker blocks only.
  *   Content outside those blocks is NEVER touched.
  *
  * Usage:
- *   trunknux enrich <slug> [--folder <path>] [--pass design-review|qa-structural|graph-context|all]
+ *   branchnux enrich <slug> [--folder <path>] [--pass design-review|qa-structural|graph-context|all]
  *                         [--model <model>] [--max-tokens <n>] [--max-spend <usd>]
  *                         [--dry-run] [--json]
  *
@@ -80,12 +80,12 @@ const PRICING = {
 
 /** @param {string} passName */
 function beginMarker(passName) {
-  return `<!-- trunknux:enrich:${passName} begin -->`;
+  return `<!-- branchnux:enrich:${passName} begin -->`;
 }
 
 /** @param {string} passName */
 function endMarker(passName) {
-  return `<!-- trunknux:enrich:${passName} end -->`;
+  return `<!-- branchnux:enrich:${passName} end -->`;
 }
 
 // ── Public API ───────────────────────────────────────────────────────────────
@@ -117,7 +117,7 @@ export async function runEnrich(slug, opts = {}) {
 
   if (!json) {
     console.log('');
-    console.log('  trunknux enrich — v0.2 ALPHA');
+    console.log('  branchnux enrich — v0.2 ALPHA');
     console.log('  ─────────────────────────────────────────────────────────');
     console.log(`  Slug     : ${slug}`);
     console.log(`  Pass     : ${pass}`);
@@ -149,7 +149,7 @@ export async function runEnrich(slug, opts = {}) {
       `No test-plan.md found for slug "${slug}" under ${path.resolve(folder)}\n\n` +
       '  Expected a folder matching: testing-log/<date>_<slug>/test-plan.md\n\n' +
       '  Create one with:\n' +
-      `    trunknux init ${slug}`,
+      `    branchnux init ${slug}`,
     );
     const err = new Error('test-plan.md not found');
     err.exitCode = 1;
@@ -169,7 +169,7 @@ export async function runEnrich(slug, opts = {}) {
       '    export CLAUDE_API_KEY=sk-ant-...\n\n' +
       '  Or add it to .env.local:\n\n' +
       '    echo "CLAUDE_API_KEY=sk-ant-..." >> .env.local\n\n' +
-      '  Inspect prompts without an API key: trunknux enrich ' + slug + ' --dry-run',
+      '  Inspect prompts without an API key: branchnux enrich ' + slug + ' --dry-run',
     );
     const err = new Error('CLAUDE_API_KEY not set');
     err.exitCode = 1;
@@ -189,7 +189,7 @@ export async function runEnrich(slug, opts = {}) {
           '@anthropic-ai/sdk is not installed.\n\n' +
           '  Install with:\n\n' +
           '    npm install @anthropic-ai/sdk\n\n' +
-          '  Then re-run: trunknux enrich ' + slug,
+          '  Then re-run: branchnux enrich ' + slug,
         );
         const err = new Error('@anthropic-ai/sdk not installed');
         err.exitCode = 1;
@@ -304,7 +304,7 @@ export async function runEnrich(slug, opts = {}) {
         `  ${parseErr.message}\n\n` +
         `  Raw response saved to: ${rawPath}\n` +
         '  Review the raw file and re-run, or file a bug at:\n' +
-        '  https://github.com/StillNotBald/trunknux/issues',
+        '  https://github.com/StillNotBald/branchnux/issues',
       );
       const err = new Error('LLM response parse error');
       err.exitCode = 3;
@@ -382,7 +382,7 @@ export async function runEnrich(slug, opts = {}) {
     console.log('  Next steps:');
     console.log(`    1. Review the [VERIFY]-tagged TCs in ${testPlanFile}`);
     console.log('    2. Remove [VERIFY] from each TC once you confirm it is correct');
-    console.log(`    3. Run: trunknux validate ${slug}`);
+    console.log(`    3. Run: branchnux validate ${slug}`);
     console.log('');
   }
 }
@@ -848,7 +848,7 @@ function validateAndTagResponse(text, passName) {
 function wrapInMarkers(passName, content, timestamp) {
   return [
     beginMarker(passName),
-    `<!-- Generated: ${timestamp} by trunknux enrich pass=${passName} -->`,
+    `<!-- Generated: ${timestamp} by branchnux enrich pass=${passName} -->`,
     '<!-- All cells in this block carry [VERIFY] markers; review before treating as canonical -->',
     '',
     content.trim(),
@@ -991,7 +991,7 @@ function handleApiError(err, json, slug, passName) {
       `Rate limit exceeded (429 Too Many Requests) ${ctx}.\n\n` +
       `  Retry after: ${retryAfter}s\n\n` +
       '  Options:\n' +
-      `    - Wait and re-run: trunknux enrich ${slug}\n` +
+      `    - Wait and re-run: branchnux enrich ${slug}\n` +
       '    - Use --max-tokens to reduce response size\n' +
       '    - Use --pass to re-run only the failed pass',
     );
@@ -1017,7 +1017,7 @@ function handleApiError(err, json, slug, passName) {
       '  Try:\n' +
       '    - Reducing --max-tokens to shorten the response\n' +
       '    - Re-running when the API is less loaded\n' +
-      `    - Targeting only the failing pass: trunknux enrich ${slug} --pass ${passName}`,
+      `    - Targeting only the failing pass: branchnux enrich ${slug} --pass ${passName}`,
     );
     const e = new Error('API call timed out');
     e.exitCode = 2;
@@ -1054,6 +1054,6 @@ function printError(json, slug, message) {
  * @deprecated Use per-pass beginMarker()/endMarker() instead.
  * Kept for backwards compat with any callers that import the v0.1 constants.
  */
-export const ENRICH_START_MARKER = '<!-- trunknux:enrich:start -->';
+export const ENRICH_START_MARKER = '<!-- branchnux:enrich:start -->';
 export const ENRICH_GUARD_MARKER = '<!-- DO NOT MODIFY ABOVE THIS LINE — human-curated content -->';
-export const ENRICH_END_MARKER   = '<!-- trunknux:enrich:end -->';
+export const ENRICH_END_MARKER   = '<!-- branchnux:enrich:end -->';

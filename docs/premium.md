@@ -1,4 +1,4 @@
-# TrunkNuX Premium
+# BranchNuX Premium
 
 > The OSS gives you the SKILL. Premium gives you the SaaS, the service,
 > the assurance, and the relationships when you need them.
@@ -50,7 +50,7 @@ Pricing is TBD and will be finalized after OSS validation. Numbers above are ind
 The OSS CLI runs Playwright on your machine. The Pro tier runs it in the cloud so you don't need to maintain browsers, Playwright versions, or a CI machine.
 
 - Cloud-hosted Playwright execution — no local browser setup, no machine maintenance
-- Trigger from CI: `trunknux run --hosted` posts results back to your dashboard
+- Trigger from CI: `branchnux run --hosted` posts results back to your dashboard
 - Trigger from web UI: paste a URL, select an industry bundle, get results
 - **100 page-test-passes/month included**; $0.40/pass overage
 - Evidence screenshots captured and stored automatically in your cloud vault
@@ -127,13 +127,13 @@ The current OSS workflow for sharing evidence with auditors: export a PDF, email
 
 - Your company branding: logo, color palette, custom CSS, domain
 - Custom footer text for legal disclaimers, contact information, and engagement reference numbers
-- Report header shows your company name, not "TrunkNuX"
+- Report header shows your company name, not "BranchNuX"
 - Use case: send to enterprise customers as your security posture proof, or to auditors with your firm branding
 
 ### Priority support
 
 - 24-hour first response SLA (vs community best-effort)
-- Dedicated Slack channel with the TrunkNuX team
+- Dedicated Slack channel with the BranchNuX team
 - Monthly office hours call (30 minutes, scheduled)
 - Issue escalation path for audit-critical blockers
 
@@ -155,7 +155,7 @@ The 4 must-do adoption tasks in `docs/adoption-checklist.md` take approximately 
 
 **Day 1 — R-ID extraction and RTM scaffold:**
 - We review your existing requirements docs (PRD, BRD, Jira export, regulatory obligations matrix)
-- We draft R-IDs in TrunkNuX format and walk them with your product/compliance lead
+- We draft R-IDs in BranchNuX format and walk them with your product/compliance lead
 - We write the final set to `requirements/REQUIREMENTS.md` with provenance tags
 - We stub `requirements/TRACEABILITY.md`
 
@@ -175,8 +175,8 @@ The 4 must-do adoption tasks in `docs/adoption-checklist.md` take approximately 
 
 ### Custom training (per-day rate, $5K–15K/day)
 
-- **"TrunkNuX for compliance leads" (4-hour workshop, $5K):** what the discipline produces and why, how to read an RTM, how to interpret SCA sections, how to use the auditor portal, what `[VERIFY]` markers mean and why they matter
-- **"TrunkNuX for engineering teams" (full day, $10K):** R-ID origination, status taxonomy, test plan authoring, Playwright evidence capture, the 6-phase pipeline, CI integration, OSCAL emit
+- **"BranchNuX for compliance leads" (4-hour workshop, $5K):** what the discipline produces and why, how to read an RTM, how to interpret SCA sections, how to use the auditor portal, what `[VERIFY]` markers mean and why they matter
+- **"BranchNuX for engineering teams" (full day, $10K):** R-ID origination, status taxonomy, test plan authoring, Playwright evidence capture, the 6-phase pipeline, CI integration, OSCAL emit
 - **"Auditor handoff workshop" (2-day, $15K, includes mock audit):** full simulation of the auditor review cycle — running the Zoom, fielding questions, demonstrating the artifact chain, responding to follow-up requests
 - Recorded sessions become your internal training library (rights assigned to you)
 - Remote delivery standard; on-site available at travel cost
@@ -204,20 +204,20 @@ The 4 must-do adoption tasks in `docs/adoption-checklist.md` take approximately 
 - Quarterly strategy calls (1 hour each; your compliance lead + our team)
 - Real-time Slack access for compliance questions during your active audit or policy drafting work
 - Heads-up on regulatory changes affecting your industry: NYDFS amendments, HIPAA Safe Harbor updates, PCI DSS revisions, sector-specific guidance
-- Industry-specific SCA template extensions developed for your engagement (delivered as TrunkNuX marker files; compatible with OSS CLI)
+- Industry-specific SCA template extensions developed for your engagement (delivered as BranchNuX marker files; compatible with OSS CLI)
 - Suitable for: fintech (NYDFS 500, PSD2), healthcare (HIPAA / HITECH), defense contractors (CMMC 2.0), financial services (SEC cyber rules, DORA)
 
 ### Insurance partnership tier (planned; timeline depends on traction)
 
-- We are in early conversations with Coalition, At-Bay, and Resilience to offer cyber insurance premium discounts to TrunkNuX users
+- We are in early conversations with Coalition, At-Bay, and Resilience to offer cyber insurance premium discounts to BranchNuX users
 - Rationale: a well-attested SCA package is actuarially better risk than an undocumented posture — insurers should price that difference
 - Exact discount structure depends on underwriter agreements (not yet signed)
-- TrunkNuX customers who opt in will share their SCA attestation summary (not full evidence) with the insurer as part of their application
+- BranchNuX customers who opt in will share their SCA attestation summary (not full evidence) with the insurer as part of their application
 - This is not yet active; we are listing it here because multiple early conversations have raised it as a buying signal
 
 ### Auditor introductions (when relationships develop)
 
-We don't yet have formal partnerships with audit firms. Once we have one or two reference engagements completed, we'll publish which firms have used TrunkNuX-produced evidence in their assessments. For now, your auditor will read the SCA + OSCAL output without us needing to introduce them — the artifacts are designed to be self-explanatory.
+We don't yet have formal partnerships with audit firms. Once we have one or two reference engagements completed, we'll publish which firms have used BranchNuX-produced evidence in their assessments. For now, your auditor will read the SCA + OSCAL output without us needing to introduce them — the artifacts are designed to be self-explanatory.
 
 ---
 
@@ -234,7 +234,7 @@ These features are further out than the tier launch. Listed here for enterprise 
 
 ### Auditor partner program
 
-- Audit firms (A-LIGN, Schellman, Coalfire, and others) use TrunkNuX Premium internally for their own evidence review workflow
+- Audit firms (A-LIGN, Schellman, Coalfire, and others) use BranchNuX Premium internally for their own evidence review workflow
 - Benefit to firms: native interface for reviewing artifacts instead of PDF review
 - Benefit to you: your auditor is already familiar with the tool before your engagement starts
 - Reseller margin for certified partners (to be announced)
@@ -247,7 +247,7 @@ These features are further out than the tier launch. Listed here for enterprise 
 
 ### Solution provider program
 
-- Implementation partners (Big 4, mid-tier advisory, regional GRC consultants) certified to deliver TrunkNuX onboarding
+- Implementation partners (Big 4, mid-tier advisory, regional GRC consultants) certified to deliver BranchNuX onboarding
 - Training and certification program (2-day, $5K per practitioner)
 - Partner portal: access to pre-release bundles, early access to new industry standards, co-marketing
 
@@ -257,7 +257,7 @@ These features are further out than the tier launch. Listed here for enterprise 
 
 | Tier | Path | Timeline |
 |---|---|---|
-| Solo / Pro | Self-serve via trunknux.dev when launched | Q3 2026 target (once v0.1 validates) |
+| Solo / Pro | Self-serve via branchnux.dev when launched | Q3 2026 target (once v0.1 validates) |
 | Team | Sales-assisted: intro Zoom + 14-day trial | once usage justifies it post-v0.1 |
 | Service add-ons | Statement of work; 2-week kickoff | Available now (limited capacity) |
 

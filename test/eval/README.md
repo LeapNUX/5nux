@@ -1,7 +1,7 @@
-# TrunkNuX Eval Harness
+# BranchNuX Eval Harness
 
 The eval harness detects **LLM regression** — cases where a prompt or model
-change causes `trunknux discover`, `plan`, or `codify` to produce materially
+change causes `branchnux discover`, `plan`, or `codify` to produce materially
 worse output on known inputs.
 
 It works by running the three core commands against hand-curated HTML fixtures
@@ -94,7 +94,7 @@ instead of calling the Claude API. This lets CI gates run without an API key.
 
 ### Live mode (default, requires API key and a fixture server)
 
-Live mode calls the real commands. Because `trunknux discover` only accepts
+Live mode calls the real commands. Because `branchnux discover` only accepts
 `http://` URLs, you need to serve the fixtures:
 
 ```bash

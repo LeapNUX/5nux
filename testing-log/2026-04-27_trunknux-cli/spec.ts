@@ -4,7 +4,7 @@
 /**
  * templates/spec.ts
  *
- * TrunkNuX — Playwright spec template.
+ * BranchNuX — Playwright spec template.
  *
  * Replace all {{placeholder}} tokens before committing.
  *
@@ -211,10 +211,10 @@ test.afterAll(async () => {
   const ts = new Date().toISOString();
 
   const md = [
-    `# trunknux-cli — Execution Log (Auto)`,
+    `# branchnux-cli — Execution Log (Auto)`,
     ``,
     `**Run at:** ${ts}`,
-    `**Spec:** \`2026-04-27_trunknux-cli/spec.ts\``,
+    `**Spec:** \`2026-04-27_branchnux-cli/spec.ts\``,
     `**Tester:** Playwright + Chromium (automated)`,
     ``,
     `> This file is machine-generated. Do not edit. For narrative analysis, see`,
@@ -256,7 +256,7 @@ test.afterAll(async () => {
  *
  * Still required even on prod build for slow networks / CI machines.
  */
-async function gotoPage(page: Page, url = '/trunknux-cli'): Promise<void> {
+async function gotoPage(page: Page, url = '/branchnux-cli'): Promise<void> {
   await page.goto(url);
   await expect(page).toHaveURL(new RegExp(url.replace(/\//g, '\\/')));
   await page.waitForLoadState('networkidle');
@@ -331,14 +331,14 @@ test.describe('TRUN-CLI — full test suite', () => {
       .then(() => true)
       .catch(() => false);
 
-    if (errorVisible && page.url().includes('/trunknux-cli')) {
+    if (errorVisible && page.url().includes('/branchnux-cli')) {
       record('TRUN-CLI-02', 'PASS', 'Error alert visible, stayed on page');
     } else {
       record('TRUN-CLI-02', 'FAIL', `errorVisible=${errorVisible}, url=${page.url()}`);
     }
 
     expect(errorVisible).toBe(true);
-    expect(page.url()).toContain('/trunknux-cli');
+    expect(page.url()).toContain('/branchnux-cli');
   });
 
   // ─── TRUN-CLI-03 ─────────────────────────────────────────────────────
@@ -358,7 +358,7 @@ test.describe('TRUN-CLI — full test suite', () => {
       .locator('#email')
       .evaluate((el: HTMLInputElement) => !el.validity.valid);
 
-    if (isInvalid && page.url().includes('/trunknux-cli')) {
+    if (isInvalid && page.url().includes('/branchnux-cli')) {
       record('TRUN-CLI-03', 'PASS', 'HTML5 validation prevented submission');
     } else {
       record('TRUN-CLI-03', 'FAIL', `validity.valid=${!isInvalid}, url=${page.url()}`);
@@ -420,7 +420,7 @@ test.describe('TRUN-CLI — full test suite', () => {
     });
     const page = await ctx.newPage();
 
-    await page.goto('/trunknux-cli');
+    await page.goto('/branchnux-cli');
 
     const hasOverflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth,

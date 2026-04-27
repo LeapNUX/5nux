@@ -1,8 +1,8 @@
 # Roadmap
 
-> **Pacing reality:** TrunkNuX is a side-project as of 2026-04-26. The 60-day decision date (2026-06-25) determines whether v0.2 ships in Q3 2026 (full-time pace) or Q4 2026 (sustainable side-project pace). Either way, v0.1 ships first; everything else flows from there.
+> **Pacing reality:** BranchNuX is a side-project as of 2026-04-26. The 60-day decision date (2026-06-25) determines whether v0.2 ships in Q3 2026 (full-time pace) or Q4 2026 (sustainable side-project pace). Either way, v0.1 ships first; everything else flows from there.
 
-> **Brand history:** the project shipped as `testnux` through v0.2.1 and was renamed to `trunknux` in v0.2.2 (2026-04-27). The rename reflects the strategic lane decision below: the product is a trunk, not a test reporter. See CHANGELOG for the rename details.
+> **Brand history:** the project shipped as `testnux` through v0.2.1, renamed to `trunknux` in v0.2.2 (2026-04-27), and renamed again to `branchnux` in v0.3.0-alpha.1 (2026-04-27). The final rename reflects the 6-NUX framework positioning: BranchNuX is the verification branch, not the trunk. See CHANGELOG for the full rename history.
 
 ---
 
@@ -18,7 +18,7 @@ The product can grow in three directions. The 2026-04-27 CEO review evaluated al
 
 ### Lane B — Regulated-content engineering (CURRENT, picked 2026-04-27)
 
-**What it looks like:** keep the testing wedge as the public face, expand the underlying capability to cover non-testing artifact types under the same git-native + `[VERIFY]` + HMAC-chained discipline. Each new artifact verb (attest, comply, respond) is a branch growing from the trunk. Two-way door: revert toward Lane A by pruning, advance toward Lane C if traction proves the thesis.
+**What it looks like:** keep the testing wedge as the public face, expand the underlying capability to cover non-testing artifact types under the same git-native + `[VERIFY]` + HMAC-chained discipline. Each new artifact verb (attest, comply, respond) produces a new fruit from the same branch. Two-way door: revert toward Lane A by pruning, advance toward Lane C if traction proves the thesis.
 
 **Concrete shape:**
 
@@ -32,11 +32,11 @@ The product can grow in three directions. The 2026-04-27 CEO review evaluated al
 
 **How buyers see Lane B:** the engineering lead at a regulated fintech still gets the testing wedge they wanted. The compliance officer / GRC analyst / vendor-DD lead / audit committee gets explicit recognition in the README + audience-to-artifact map. Procurement decisions made by compliance side become tractable.
 
-**Brand:** TrunkNuX (renamed from testnux in v0.2.2). The trunk metaphor maps directly to the lane: the deterministic core is the trunk, each artifact verb is a branch, the audit-defensible discipline is the root system.
+**Brand:** BranchNuX (renamed from trunknux in v0.3.0-alpha.1). The 6-NUX metaphor maps directly to the lane: BranchNuX is the verification branch in the rootnux → trunknux → branchnux → leafnux → fruitnux → soilnux chain. Each new artifact verb produces a fruit; the three-track discipline (requirements/ + sprint-log/ + testing-log/) is the root system.
 
 ### Lane C — Audit-defensibility platform (12+ month aspiration)
 
-**What it would look like:** TrunkNuX becomes a category-creator. The `[VERIFY]` marker convention + HMAC-chained ledger + git-native discipline become a horizontal pattern any AI-content workflow needs (legal docs, financial reports, board governance, regulatory filings). Testing is one sample app among many. The brand grows into the Yggdrasil-scale world tree connecting every regulated content workflow.
+**What it would look like:** BranchNuX becomes a category-creator. The `[VERIFY]` marker convention + HMAC-chained ledger + git-native discipline become a horizontal pattern any AI-content workflow needs (legal docs, financial reports, board governance, regulatory filings). Testing is one sample app among many. The brand grows into the Yggdrasil-scale world tree connecting every regulated content workflow.
 
 **Why this is aspirational, not committed:**
 - Category-creation requires partnerships, conference circuits, design partners at scale. Hard for a side-project to credibly drive.
@@ -49,7 +49,7 @@ The product can grow in three directions. The 2026-04-27 CEO review evaluated al
 - Conference or analyst recognition of the `[VERIFY]` convention as an emerging standard pattern.
 - Founder full-time decision (the 60-day pacing reality at the top of this doc).
 
-If those happen, the brand framing shifts from "trunk of your audit chain" to "the world tree of regulated AI authoring." Until then, Lane C is the long-term aspiration that informs feature decisions but doesn't drive marketing.
+If those happen, the brand framing shifts from "verification branch" to "the world tree of regulated AI authoring" — with BranchNuX as the active verification node in a fully realized 6-NUX platform. Until then, Lane C is the long-term aspiration that informs feature decisions but doesn't drive marketing.
 
 ### How the version roadmap maps to the lanes
 
@@ -58,8 +58,8 @@ If those happen, the brand framing shifts from "trunk of your audit chain" to "t
 | v0.1.x | A or B | Deterministic pipeline (testing wedge) |
 | v0.2.0 | A or B | LLM agent suite + signoff suite + per-env + visual regression |
 | v0.2.1 | A or B | Smoke-test polish + dependency hygiene |
-| v0.2.2 | B (lane committed) | Brand rename testnux → TrunkNuX, no functional change |
-| v0.3 | B | Three new artifact verbs (attest, comply, respond) — Lane B feature commitment |
+| v0.2.2 | B (lane committed) | Brand rename testnux → trunknux, no functional change |
+| v0.3.0-alpha.1 | B | Brand rename trunknux → branchnux (6-NUX positioning); three new artifact verbs (attest, comply, respond) |
 | v0.4+ | B with C signaling | Eval harness expansion, gstack catalog skill, more industry bundles, premium tier scoping |
 | v1.0 | B mature, C trigger conditions met | Stable artifact verbs, design-partner case studies, Lane C decision |
 
@@ -67,15 +67,15 @@ If those happen, the brand framing shifts from "trunk of your audit chain" to "t
 
 ## Guiding principle
 
-TrunkNuX's scope follows the 8-step regulator-evidence chain:
+BranchNuX's scope follows the 8-step regulator-evidence chain:
 
 ```
 1. Requirements (R-XX)           ← project owns
 2. Sprint log (build)            ← git owns
-3. Testing log (test plans + evidence + reports)   ← TrunkNuX v0.1
-4. Traceability matrix (RTM)                       ← TrunkNuX v0.2
-5. Security Control Assessments (SCA)              ← TrunkNuX v0.2
-6. UAT sign-off layer (BR-XX + e-signature)        ← TrunkNuX v0.3
+3. Testing log (test plans + evidence + reports)   ← BranchNuX v0.1
+4. Traceability matrix (RTM)                       ← BranchNuX v0.2
+5. Security Control Assessments (SCA)              ← BranchNuX v0.2
+6. UAT sign-off layer (BR-XX + e-signature)        ← BranchNuX v0.3
 7. External audit / pen test     ← vendor owns
 8. Production launch             ← deploy owns
 ```
@@ -94,11 +94,11 @@ The deterministic pipeline (markdown → HTML + XLSX) ships in v0.1 and does not
 
 | Feature | Description |
 |---------|-------------|
-| `trunknux init` | Scaffold a test-pass folder with templates |
-| `trunknux report` | Generate self-contained HTML + XLSX from markdown inputs |
-| `trunknux validate` | Lint test-plan.md against JSON Schema; CI-safe exit codes |
-| `trunknux demo` | Run bundled fixture, open report in browser, delete fixture — <90 seconds to first "aha" |
-| `trunknux doctor` | Preflight check: Node version, Playwright, dev-vs-prod server detection, config discovery |
+| `branchnux init` | Scaffold a test-pass folder with templates |
+| `branchnux report` | Generate self-contained HTML + XLSX from markdown inputs |
+| `branchnux validate` | Lint test-plan.md against JSON Schema; CI-safe exit codes |
+| `branchnux demo` | Run bundled fixture, open report in browser, delete fixture — <90 seconds to first "aha" |
+| `branchnux doctor` | Preflight check: Node version, Playwright, dev-vs-prod server detection, config discovery |
 | `--industry general` | OWASP ASVS 4.0 + WCAG 2.2 AA standards alignment out of the box |
 | `--plan-only` mode | Render a report without an execution log; "PLAN ONLY" badge in header |
 | `[VERIFY]` markers | Every LLM-generated cell renders with a `[VERIFY]` tag until human-attested |
@@ -125,21 +125,21 @@ The deterministic pipeline (markdown → HTML + XLSX) ships in v0.1 and does not
 
 ## v0.2 — Q3 2026 target (depends on traction + founder full-time decision per launch plan)
 
-**Theme:** LLM acceleration + RTM + SCA. Close the manual gaps; extend TrunkNuX to steps 4 and 5 of the regulator-evidence chain.
+**Theme:** LLM acceleration + RTM + SCA. Close the manual gaps; extend BranchNuX to steps 4 and 5 of the regulator-evidence chain.
 
 **New CLI verbs:**
 
 | Command | Description |
 |---------|-------------|
-| `trunknux rtm` | Generate `requirements/TRACEABILITY.md` from REQUIREMENTS.md + sprint log + code grep |
-| `trunknux sca init <surface>` | Scaffold a per-surface SCA from the 8-section template |
-| `trunknux sca generate <surface>` | Auto-fill per-control evidence rows from current test results |
-| `trunknux sca pdf <surface>` | Render latest SCA version to PDF (Chromium headless, no Pandoc required) |
-| `trunknux discover <url>` | LLM agent browses the target page, emits draft scenarios.md |
-| `trunknux plan <slug>` | LLM agent converts scenarios + DOM into test-plan.md |
-| `trunknux codify <slug>` | LLM agent converts test-plan.md into spec.ts |
-| `trunknux enrich <slug>` | LLM agent appends structural-context, a11y, and exploratory TCs to an existing plan |
-| `trunknux batch-plan` | Parallel LLM agents for multi-page plan generation |
+| `branchnux rtm` | Generate `requirements/TRACEABILITY.md` from REQUIREMENTS.md + sprint log + code grep |
+| `branchnux sca init <surface>` | Scaffold a per-surface SCA from the 8-section template |
+| `branchnux sca generate <surface>` | Auto-fill per-control evidence rows from current test results |
+| `branchnux sca pdf <surface>` | Render latest SCA version to PDF (Chromium headless, no Pandoc required) |
+| `branchnux discover <url>` | LLM agent browses the target page, emits draft scenarios.md |
+| `branchnux plan <slug>` | LLM agent converts scenarios + DOM into test-plan.md |
+| `branchnux codify <slug>` | LLM agent converts test-plan.md into spec.ts |
+| `branchnux enrich <slug>` | LLM agent appends structural-context, a11y, and exploratory TCs to an existing plan |
+| `branchnux batch-plan` | Parallel LLM agents for multi-page plan generation |
 
 **New features:**
 
@@ -161,7 +161,7 @@ Run the OSCAL feasibility spike (1 day). FedRAMP RFC-0024 mandates machine-reada
 
 ## v0.3 — Q4 2026 target if v0.2 + paying customers happen on schedule
 
-**Theme:** UAT layer, multi-industry, ecosystem integrations. Make TrunkNuX CISO-buyable.
+**Theme:** UAT layer, multi-industry, ecosystem integrations. Make BranchNuX CISO-buyable.
 
 **New features:**
 
@@ -169,19 +169,19 @@ Run the OSCAL feasibility spike (1 day). FedRAMP RFC-0024 mandates machine-reada
 |---------|-------------|
 | UAT sign-off workflow | Per-TC `uat_status` field (pending/accepted/rejected/needs-rework); stakeholder HTML dropdown; HMAC e-signature; `uat-log.jsonl` hash-chained audit trail |
 | Business requirements (BR-XX) | BR-XX layer above R-XX; RTM gains a column; HTML report gains a Business Requirements tab |
-| Per-environment test passes | `trunknux run <slug> --env staging`; `trunknux compare <slug> staging prod` cross-env diff |
+| Per-environment test passes | `branchnux run <slug> --env staging`; `branchnux compare <slug> staging prod` cross-env diff |
 | Visual regression | Per-TC baseline screenshots; pixel-diff flagging; `<TC-ID>-diff.png` alongside evidence |
 | Cypress + Vitest adapters | Adapter pattern for non-Playwright test runners; one test plan, three possible spec languages |
 | `--industry gov` | FedRAMP + FISMA + NIST 800-53 standards |
-| gstack skill bundle | `/trunknux` as a first-class gstack skill; browser-coupled discovery via claude-in-chrome MCP |
-| MCP server for Claude Code | TrunkNuX as a Claude Code tool; inline plan generation, RTM queries, report access |
+| gstack skill bundle | `/branchnux` as a first-class gstack skill; browser-coupled discovery via claude-in-chrome MCP |
+| MCP server for Claude Code | BranchNuX as a Claude Code tool; inline plan generation, RTM queries, report access |
 | `--industry edu` | FERPA + COPPA standards |
 
 ---
 
 ## What won't change
 
-Three things in TrunkNuX's design are intentional and will be defended against well-meaning scope creep:
+Three things in BranchNuX's design are intentional and will be defended against well-meaning scope creep:
 
 1. **The artifact format.** Markdown plan + Playwright spec + per-TC screenshot + self-contained HTML + XLSX is the product. It will not become "configurable output formats" or "flexible templates."
 
@@ -193,4 +193,4 @@ Three things in TrunkNuX's design are intentional and will be defended against w
 
 ## Versioning policy
 
-TrunkNuX follows semver. Breaking changes to the test-plan.md schema or the folder convention require a major version bump. Minor versions add features; patch versions fix bugs. The JSON Schema files are versioned independently and backward-compatible within a major version.
+BranchNuX follows semver. Breaking changes to the test-plan.md schema or the folder convention require a major version bump. Minor versions add features; patch versions fix bugs. The JSON Schema files are versioned independently and backward-compatible within a major version.

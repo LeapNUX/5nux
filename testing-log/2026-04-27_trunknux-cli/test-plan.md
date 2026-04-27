@@ -1,5 +1,5 @@
 ---
-slug: trunknux-cli
+slug: branchnux-cli
 date: 2026-04-27
 industry: general
 status: IN-PROGRESS
@@ -67,10 +67,10 @@ _review_required: true
 author: Chu Ling
 ---
 
-# trunknux-cli — Test Plan (Dogfood Pass)
+# branchnux-cli — Test Plan (Dogfood Pass)
 
-**Surface:** trunknux-cli (CLI binary + library)
-**Source:** bin/trunknux.mjs, src/commands/*, src/lib/*, src/parsers/*, src/renderers/*
+**Surface:** branchnux-cli (CLI binary + library)
+**Source:** bin/branchnux.mjs, src/commands/*, src/lib/*, src/parsers/*, src/renderers/*
 **Surface type:** CLI / Node.js library
 **Last updated:** 2026-04-27
 **TC prefix:** TRUNK
@@ -88,7 +88,7 @@ R-ID mapping (REQUIREMENTS.md uses grouped IDs; the frontmatter uses sequential 
 
 ## What this surface does
 
-TrunkNuX is a CLI tool that generates audit-defensible evidence chains for software testing passes. It scaffolds test-plan folders, generates XLSX + HTML reports, lints frontmatter, runs environment preflight checks, generates NIST OSCAL output, manages HMAC-chained UAT sign-off ledgers, and integrates with the Claude API for AI-assisted test planning.
+BranchNuX is a CLI tool that generates audit-defensible evidence chains for software testing passes. It scaffolds test-plan folders, generates XLSX + HTML reports, lints frontmatter, runs environment preflight checks, generates NIST OSCAL output, manages HMAC-chained UAT sign-off ledgers, and integrates with the Claude API for AI-assisted test planning.
 
 ## Test Case Matrix
 
@@ -159,7 +159,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 
 | Feature / element | Reason deferred | Requirement ref |
 |---|---|---|
-| trunknux mcp stdio server | Not yet shipped in v0.2.x; exits code 1 with stub message | R-06 (R-CMD-06) |
+| branchnux mcp stdio server | Not yet shipped in v0.2.x; exits code 1 with stub message | R-06 (R-CMD-06) |
 | GRC platform export (Vanta, Drata, Secureframe) | Planned for v0.3 | R-51 (R-AUDIT-07) |
 | Playwright visual evidence screenshots | CLI surface; no UI to screenshot | R-48 (R-AUDIT-04) |
 | CI matrix (Windows / macOS / Linux) | Cross-platform CI not yet configured | R-58 (R-QA-07) |
@@ -176,8 +176,8 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **TC type:** prescribed
 **R-IDs:** R-01
 **Source:** test/cli.test.mjs — describe("help + version")
-**Given:** Node.js >= 20 and the trunknux binary are available.
-**When:** `node bin/trunknux.mjs --version` and `node bin/trunknux.mjs --help` are executed.
+**Given:** Node.js >= 20 and the branchnux binary are available.
+**When:** `node bin/branchnux.mjs --version` and `node bin/branchnux.mjs --help` are executed.
 **Then:** Both exit 0. --version emits a semver string. --help lists all top-level commands including init, report, validate, demo, doctor, rtm, sca, discover, plan, codify, enrich, batch-plan, br, sign, run, compare, visual.
 **Pass criteria:**
 - Exit code 0 for both invocations
@@ -193,7 +193,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-01
 **Source:** test/cli.test.mjs — describe("init") — "creates folder + test-plan.md + spec.ts + README.md"
 **Given:** A clean temporary directory. `--industry general` and `--out <tmp>` are provided.
-**When:** `trunknux init test-pass-a --industry general --out <tmp>` is executed.
+**When:** `branchnux init test-pass-a --industry general --out <tmp>` is executed.
 **Then:** A folder named `<YYYY-MM-DD>_test-pass-a` is created. test-plan.md, spec.ts, README.md, and evidence/ are all present inside it.
 **Pass criteria:**
 - Exit code 0
@@ -224,7 +224,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-01
 **Source:** test/cli.test.mjs — describe("init") — "unknown --industry value exits non-zero with descriptive error"
 **Given:** An unrecognized industry string is passed (e.g. "unknownindustry999").
-**When:** `trunknux init bad-industry-test --industry unknownindustry999 --out <tmp>` is executed.
+**When:** `branchnux init bad-industry-test --industry unknownindustry999 --out <tmp>` is executed.
 **Then:** Process exits with code 0, 1, or 2. No uncaught TypeError or stack trace appears in stderr.
 **Pass criteria:**
 - Exit code in [0, 1, 2]
@@ -239,7 +239,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-03
 **Source:** test/cli.test.mjs — describe("validate") — "exits 2 when folder is missing"
 **Given:** A path that does not exist on disk.
-**When:** `trunknux validate <nonexistent-path>` is executed.
+**When:** `branchnux validate <nonexistent-path>` is executed.
 **Then:** Exit code 2. stderr contains a message matching /not found|missing|does-not-exist/i.
 **Pass criteria:**
 - Exit code 2
@@ -254,7 +254,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-03
 **Source:** test/cli.test.mjs — describe("validate") — "exits 0 for a folder with a valid test-plan.md"
 **Given:** A folder containing a test-plan.md with valid frontmatter (status: READY, valid r_ids array, valid tc_prefix).
-**When:** `trunknux validate <folder>` is executed.
+**When:** `branchnux validate <folder>` is executed.
 **Then:** Exit code 0.
 **Pass criteria:**
 - Exit code 0
@@ -269,7 +269,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-03
 **Source:** test/cli.test.mjs — describe("validate") — "exits 3 for a folder with malformed frontmatter"
 **Given:** A test-plan.md with an invalid status value and non-array r_ids.
-**When:** `trunknux validate <folder>` is executed.
+**When:** `branchnux validate <folder>` is executed.
 **Then:** Exit code 3 (parse/validation error).
 **Pass criteria:**
 - Exit code 3
@@ -283,7 +283,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-03, R-37
 **Source:** test/cli.test.mjs — describe("validate") — "--json flag produces parseable JSON output"
 **Given:** A valid test-plan.md folder.
-**When:** `trunknux --json validate <folder>` is executed.
+**When:** `branchnux --json validate <folder>` is executed.
 **Then:** stdout contains at least one line of valid JSON. Parsed JSON has an "event" key.
 **Pass criteria:**
 - Exit code 0
@@ -299,7 +299,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-05
 **Source:** test/cli.test.mjs — describe("doctor") — "exits 0 even when some checks warn"
 **Given:** Standard CI environment with Node >= 20.
-**When:** `trunknux doctor` is executed.
+**When:** `branchnux doctor` is executed.
 **Then:** Exit code 0 or 1. No uncaught TypeError or "Cannot read properties" in stderr.
 **Pass criteria:**
 - Exit code in [0, 1]
@@ -314,7 +314,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-05, R-37
 **Source:** test/cli.test.mjs — describe("doctor") — "--json flag outputs valid JSON with expected shape"
 **Given:** Standard environment.
-**When:** `trunknux doctor --json` is executed.
+**When:** `branchnux doctor --json` is executed.
 **Then:** First JSON line has event "doctor.result", a "checks" array, and a "passed" boolean.
 **Pass criteria:**
 - At least one parseable JSON line
@@ -329,7 +329,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-02
 **Source:** test/cli.test.mjs — describe("report") — "exits 1 with helpful error when test-plan.md is missing"
 **Given:** A folder with no test-plan.md.
-**When:** `trunknux report <folder>` is executed.
+**When:** `branchnux report <folder>` is executed.
 **Then:** Exit code 1. Combined stdout/stderr matches /test-plan\.md|not found|missing/i.
 **Pass criteria:**
 - Exit code 1
@@ -344,7 +344,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-02
 **Source:** test/cli.test.mjs — describe("report v0.2 real generator") — "generates xlsx + html when test-plan.md is present"
 **Given:** A folder with a valid test-plan.md (SMK TC matrix, standard frontmatter).
-**When:** `trunknux report <folder> --plan-only` is executed.
+**When:** `branchnux report <folder> --plan-only` is executed.
 **Then:** Exit code 0. A .xlsx file and a .html file appear in the folder.
 **Pass criteria:**
 - Exit code 0
@@ -360,7 +360,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-07
 **Source:** test/cli.test.mjs — describe("rtm") — "exits 2 with descriptive error when requirements/ folder is missing"
 **Given:** A directory with no requirements/ folder.
-**When:** `trunknux rtm --dry-run` is executed.
+**When:** `branchnux rtm --dry-run` is executed.
 **Then:** Exit code 2. stderr matches /requirements|not found|REQUIREMENTS\.md/i.
 **Pass criteria:**
 - Exit code 2
@@ -375,7 +375,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-07
 **Source:** test/cli.test.mjs — describe("rtm") — "--dry-run prints RTM to stdout and exits 0 with a valid requirements file"
 **Given:** A requirements/REQUIREMENTS.md with at least two R-ID entries.
-**When:** `trunknux rtm --dry-run` is executed.
+**When:** `branchnux rtm --dry-run` is executed.
 **Then:** Exit code 0. stdout contains "Traceability", "R-01", and "R-02".
 **Pass criteria:**
 - Exit code 0
@@ -390,7 +390,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-37
 **Source:** test/cli.test.mjs — describe("global flags") — "--json on validate produces parseable JSON even on validation failure"
 **Given:** A folder with no markdown files (will produce a validation warning/error).
-**When:** `trunknux --json validate <folder>` is executed.
+**When:** `branchnux --json validate <folder>` is executed.
 **Then:** Combined stdout+stderr contains at least one parseable JSON line with an "event" key.
 **Pass criteria:**
 - At least one JSON line parseable
@@ -529,7 +529,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 **R-IDs:** R-36
 **Source:** test/report.test.mjs — plan-only mode tests
 **Given:** A folder with test-plan.md but no execution-log.md.
-**When:** `trunknux report <folder> --plan-only` is executed.
+**When:** `branchnux report <folder> --plan-only` is executed.
 **Then:** Exit code 0. Report renders with "PLAN ONLY" badge. Execution result columns absent or empty.
 **Pass criteria:**
 - Exit code 0
@@ -1081,7 +1081,7 @@ TrunkNuX is a CLI tool that generates audit-defensible evidence chains for softw
 
 ## Evidence
 
-TrunkNuX is a CLI, not a web application. Per-TC visual evidence (screenshots) is not applicable. Test results are captured via vitest console output and persisted to the execution-log.md in this folder. The `trunknux report` command runs in `--plan-only` mode for this pass.
+BranchNuX is a CLI, not a web application. Per-TC visual evidence (screenshots) is not applicable. Test results are captured via vitest console output and persisted to the execution-log.md in this folder. The `branchnux report` command runs in `--plan-only` mode for this pass.
 
 ---
 

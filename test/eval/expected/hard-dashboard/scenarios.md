@@ -1,7 +1,7 @@
 ---
 slug: hard-dashboard
 url: file://fixtures/hard-dashboard.html
-generated_by: trunknux eval harness (hand-curated)
+generated_by: branchnux eval harness (hand-curated)
 tc_count: 14
 review_required: false
 ---

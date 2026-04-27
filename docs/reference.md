@@ -1,6 +1,6 @@
 # CLI Reference
 
-All commands follow the pattern: `trunknux <command> [arguments] [flags]`
+All commands follow the pattern: `branchnux <command> [arguments] [flags]`
 
 ---
 
@@ -12,19 +12,19 @@ These flags work on every command.
 |------|------|---------|-------------|
 | `--json` | boolean | false | Emit all output as newline-delimited JSON. Useful for CI/CD pipelines and tool integrations. Exit codes are unchanged. |
 | `--dry-run` | boolean | false | Print the actions that would be taken without executing them. Especially important for commands that call paid LLM APIs (v0.2+). |
-| `--version` | boolean | — | Print the TrunkNuX version and exit. |
+| `--version` | boolean | — | Print the BranchNuX version and exit. |
 | `--help` | boolean | — | Print command help and exit. |
 
 ---
 
-## `trunknux init`
+## `branchnux init`
 
 Scaffold a new test-pass folder.
 
 ### Synopsis
 
 ```
-trunknux init <slug> [--industry <industry>] [--target-url <url>] [--out <dir>]
+branchnux init <slug> [--industry <industry>] [--target-url <url>] [--out <dir>]
 ```
 
 ### Arguments
@@ -66,36 +66,36 @@ testing-log/<date>_<slug>/
 
 ```bash
 # Scaffold a login test pass with general industry standards
-trunknux init login --industry general
+branchnux init login --industry general
 
 # Target a specific URL and output to a custom directory
-trunknux init dashboard --target-url http://localhost:3737/dashboard --out qa/passes
+branchnux init dashboard --target-url http://localhost:3737/dashboard --out qa/passes
 
 # JSON output for CI (parses the created path)
-trunknux init checkout --json
+branchnux init checkout --json
 # → {"slug":"checkout","path":"testing-log/2026-05-01_checkout","industry":"general"}
 
 # Dry run — see what would be created without creating it
-trunknux init login --dry-run
+branchnux init login --dry-run
 ```
 
 ---
 
-## `trunknux report`
+## `branchnux report`
 
 Generate XLSX and self-contained HTML from a test-pass folder.
 
 ### Synopsis
 
 ```
-trunknux report <folder> [--open] [--plan-only] [--out <dir>]
+branchnux report <folder> [--open] [--plan-only] [--out <dir>]
 ```
 
 ### Arguments
 
 | Argument | Required | Description |
 |----------|----------|-------------|
-| `folder` | yes | Path to the test-pass folder, or just the slug if the folder is under the default `testing-log/` root. Both `trunknux report login` and `trunknux report testing-log/2026-05-01_login` are accepted. |
+| `folder` | yes | Path to the test-pass folder, or just the slug if the folder is under the default `testing-log/` root. Both `branchnux report login` and `branchnux report testing-log/2026-05-01_login` are accepted. |
 
 ### Flags
 
@@ -112,7 +112,7 @@ trunknux report <folder> [--open] [--plan-only] [--out <dir>]
 |------|---------|
 | `0` | Report generated successfully |
 | `2` | Folder not found or contains no `test-plan.md` |
-| `3` | `test-plan.md` parse error — run `trunknux validate <folder>` first |
+| `3` | `test-plan.md` parse error — run `branchnux validate <folder>` first |
 | `4` | Render failed — run with `--json` for structured error details |
 
 ### Output
@@ -129,32 +129,32 @@ Generated files are written into the test-pass folder (or `--out` if specified):
 
 ```bash
 # Generate report (opens browser automatically)
-trunknux report login
+branchnux report login
 
 # Generate without opening the browser (CI mode)
-trunknux report login --no-open
+branchnux report login --no-open
 
 # Generate from a plan with no execution log yet
-trunknux report login --plan-only
+branchnux report login --plan-only
 
 # JSON output for CI pipeline integration
-trunknux report login --json --no-open
+branchnux report login --json --no-open
 # → {"pass":"PARTIAL","total":15,"pass_count":12,"fail_count":2,"skip_count":1,"blocked_count":0,"html":"testing-log/2026-05-01_login/login-execution-report.html"}
 
 # Write outputs to a separate artifacts directory
-trunknux report login --out artifacts/login
+branchnux report login --out artifacts/login
 ```
 
 ---
 
-## `trunknux validate`
+## `branchnux validate`
 
 Lint a test-pass folder against the JSON Schema and structural rules.
 
 ### Synopsis
 
 ```
-trunknux validate <folder> [--strict] [--fix]
+branchnux validate <folder> [--strict] [--fix]
 ```
 
 ### Arguments
@@ -195,29 +195,29 @@ trunknux validate <folder> [--strict] [--fix]
 
 ```bash
 # Validate a folder before reporting
-trunknux validate login
+branchnux validate login
 
 # Strict mode — fail on any finding (recommended in CI)
-trunknux validate login --strict
+branchnux validate login --strict
 
 # Auto-fix trivial issues, then validate
-trunknux validate login --fix
+branchnux validate login --fix
 
 # JSON output (one finding object per line)
-trunknux validate login --json
+branchnux validate login --json
 # → {"level":"error","rule":"tc-id-format","tc":"LOGIN-1","message":"TC ID must be zero-padded: LOGIN-01"}
 ```
 
 ---
 
-## `trunknux demo`
+## `branchnux demo`
 
 Run the bundled demo-dashboard fixture and open the generated report.
 
 ### Synopsis
 
 ```
-trunknux demo [--keep] [--no-open]
+branchnux demo [--keep] [--no-open]
 ```
 
 ### Flags
@@ -249,25 +249,25 @@ The demo uses a pre-recorded fixture so it does not require a running server. To
 
 ```bash
 # Run the demo (fastest path to seeing a report)
-trunknux demo
+branchnux demo
 
 # Keep the files so you can inspect them
-trunknux demo --keep
+branchnux demo --keep
 
 # CI mode — generate without opening browser
-trunknux demo --no-open --keep
+branchnux demo --no-open --keep
 ```
 
 ---
 
-## `trunknux doctor`
+## `branchnux doctor`
 
 Run preflight checks and report on environment health.
 
 ### Synopsis
 
 ```
-trunknux doctor [--fix]
+branchnux doctor [--fix]
 ```
 
 ### Flags
@@ -284,7 +284,7 @@ trunknux doctor [--fix]
 | Playwright chromium | Yes (`--fix`) | Downloads browsers if missing |
 | `CLAUDE_API_KEY` | No | Warns if absent (required for v0.2 LLM features, not for v0.1 core) |
 | Prod-build detection | No | Warns if a dev server (`npm run dev`) is running on the target port; tests should run against `npm run build && npm start` |
-| Config discovery | No | Reports which `trunknux.config.mjs` (if any) will be used |
+| Config discovery | No | Reports which `branchnux.config.mjs` (if any) will be used |
 | Git hooks | No | Warns if a pre-commit hook might interfere with test artefact commits |
 | Windows line endings | No | Warns if git `core.autocrlf=true` (can corrupt evidence screenshots) |
 
@@ -299,13 +299,13 @@ trunknux doctor [--fix]
 
 ```bash
 # Run all preflight checks
-trunknux doctor
+branchnux doctor
 
 # Run checks and attempt auto-fixes
-trunknux doctor --fix
+branchnux doctor --fix
 
 # JSON output for automated environment validation
-trunknux doctor --json
+branchnux doctor --json
 # → [{"check":"node-version","status":"pass","value":"20.11.0"},...]
 ```
 
@@ -313,16 +313,16 @@ trunknux doctor --json
 
 ## Configuration
 
-TrunkNuX looks for a config file in the following order:
+BranchNuX looks for a config file in the following order:
 
-1. `trunknux.config.mjs` in the current directory
-2. `trunknux.config.mjs` in the git repo root
+1. `branchnux.config.mjs` in the current directory
+2. `branchnux.config.mjs` in the git repo root
 3. Built-in defaults
 
 Config file example:
 
 ```js
-// trunknux.config.mjs
+// branchnux.config.mjs
 export default {
   testingLogRoot: "testing-log",       // default: "testing-log"
   requirementsRoot: "requirements",    // default: "requirements"

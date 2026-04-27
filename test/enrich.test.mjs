@@ -1,10 +1,10 @@
-// Copyright (c) 2026 TrunkNuX Contributors
+// Copyright (c) 2026 BranchNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * test/enrich.test.mjs
  *
- * Unit tests for `trunknux enrich` (src/commands/enrich.mjs).
+ * Unit tests for `branchnux enrich` (src/commands/enrich.mjs).
  *
  * All Anthropic API calls are mocked via vi.mock — no real API key required.
  * All file system side-effects write to a per-test temp directory.
@@ -89,7 +89,7 @@ function makeMockEnrichResponse(passPrefix, tcCount = 2, usage = { input_tokens:
 function makeBasicTestPlan(slug = 'login', extraContent = '') {
   return `---
 slug: ${slug}
-generated_by: trunknux discover v0.2
+generated_by: branchnux discover v0.2
 ---
 
 # Test Plan: ${slug}
@@ -237,7 +237,7 @@ describe('enrich — missing test-plan.md', () => {
     expect(mockMessageCreate).not.toHaveBeenCalled();
   });
 
-  it('error message includes trunknux init suggestion', async () => {
+  it('error message includes branchnux init suggestion', async () => {
     process.env.CLAUDE_API_KEY = 'sk-ant-test';
 
     const errorLines = [];
@@ -251,7 +251,7 @@ describe('enrich — missing test-plan.md', () => {
       // expected
     }
 
-    expect(errorLines.join('')).toContain('trunknux init');
+    expect(errorLines.join('')).toContain('branchnux init');
   });
 });
 
@@ -335,11 +335,11 @@ describe('enrich — --pass design-review', () => {
     expect(mockMessageCreate).toHaveBeenCalledTimes(1);
 
     const written = fs.readFileSync(planPath, 'utf-8');
-    expect(written).toContain('<!-- trunknux:enrich:design-review begin -->');
-    expect(written).toContain('<!-- trunknux:enrich:design-review end -->');
+    expect(written).toContain('<!-- branchnux:enrich:design-review begin -->');
+    expect(written).toContain('<!-- branchnux:enrich:design-review end -->');
     // qa-structural and graph-context markers should NOT be present
-    expect(written).not.toContain('trunknux:enrich:qa-structural');
-    expect(written).not.toContain('trunknux:enrich:graph-context');
+    expect(written).not.toContain('branchnux:enrich:qa-structural');
+    expect(written).not.toContain('branchnux:enrich:graph-context');
   });
 });
 
@@ -362,12 +362,12 @@ describe('enrich — --pass all (default)', () => {
     expect(mockMessageCreate).toHaveBeenCalledTimes(3);
 
     const written = fs.readFileSync(planPath, 'utf-8');
-    expect(written).toContain('<!-- trunknux:enrich:design-review begin -->');
-    expect(written).toContain('<!-- trunknux:enrich:design-review end -->');
-    expect(written).toContain('<!-- trunknux:enrich:qa-structural begin -->');
-    expect(written).toContain('<!-- trunknux:enrich:qa-structural end -->');
-    expect(written).toContain('<!-- trunknux:enrich:graph-context begin -->');
-    expect(written).toContain('<!-- trunknux:enrich:graph-context end -->');
+    expect(written).toContain('<!-- branchnux:enrich:design-review begin -->');
+    expect(written).toContain('<!-- branchnux:enrich:design-review end -->');
+    expect(written).toContain('<!-- branchnux:enrich:qa-structural begin -->');
+    expect(written).toContain('<!-- branchnux:enrich:qa-structural end -->');
+    expect(written).toContain('<!-- branchnux:enrich:graph-context begin -->');
+    expect(written).toContain('<!-- branchnux:enrich:graph-context end -->');
   });
 
   it('emits enrich.done JSON event with totalTCs, passesRun, and costUsd after all 3 passes', async () => {
@@ -412,8 +412,8 @@ describe('enrich — marker block REPLACE on rerun', () => {
   it('replaces existing design-review marker block instead of duplicating it', async () => {
     process.env.CLAUDE_API_KEY = 'sk-ant-test';
 
-    const existingMarkerBlock = `<!-- trunknux:enrich:design-review begin -->
-<!-- Generated: 2026-04-26T10:00:00.000Z by trunknux enrich pass=design-review -->
+    const existingMarkerBlock = `<!-- branchnux:enrich:design-review begin -->
+<!-- Generated: 2026-04-26T10:00:00.000Z by branchnux enrich pass=design-review -->
 <!-- All cells in this block carry [VERIFY] markers; review before treating as canonical -->
 
 ## TC-LOGIN-DR-01 — Old accessibility test
@@ -427,7 +427,7 @@ describe('enrich — marker block REPLACE on rerun', () => {
 
 > [VERIFY] Old verify notice.
 
-<!-- trunknux:enrich:design-review end -->
+<!-- branchnux:enrich:design-review end -->
 `;
 
     const planContent = makeBasicTestPlan('login') + '\n' + existingMarkerBlock;
@@ -444,8 +444,8 @@ describe('enrich — marker block REPLACE on rerun', () => {
     expect(written).not.toContain('Old verify notice');
 
     // Exactly ONE begin/end pair — not two
-    const beginCount = (written.match(/<!-- trunknux:enrich:design-review begin -->/g) ?? []).length;
-    const endCount   = (written.match(/<!-- trunknux:enrich:design-review end -->/g) ?? []).length;
+    const beginCount = (written.match(/<!-- branchnux:enrich:design-review begin -->/g) ?? []).length;
+    const endCount   = (written.match(/<!-- branchnux:enrich:design-review end -->/g) ?? []).length;
     expect(beginCount).toBe(1);
     expect(endCount).toBe(1);
 
@@ -488,7 +488,7 @@ describe('enrich — append-only outside markers', () => {
     expect(written).toContain('Manually validated 2026-04-27');
 
     // Enriched content is ALSO present
-    expect(written).toContain('<!-- trunknux:enrich:design-review begin -->');
+    expect(written).toContain('<!-- branchnux:enrich:design-review begin -->');
   });
 });
 
@@ -585,8 +585,8 @@ describe('enrich — graph-context with no sibling plans', () => {
 
     // Output file should have graph-context marker
     const written = fs.readFileSync(planPath, 'utf-8');
-    expect(written).toContain('<!-- trunknux:enrich:graph-context begin -->');
-    expect(written).toContain('<!-- trunknux:enrich:graph-context end -->');
+    expect(written).toContain('<!-- branchnux:enrich:graph-context begin -->');
+    expect(written).toContain('<!-- branchnux:enrich:graph-context end -->');
   });
 });
 
@@ -639,8 +639,8 @@ describe('enrich — [VERIFY] auto-injection', () => {
 
     // Both TC blocks in the enriched section should now have [VERIFY]
     // Extract just the marker block content
-    const beginMarker = '<!-- trunknux:enrich:design-review begin -->';
-    const endMarker   = '<!-- trunknux:enrich:design-review end -->';
+    const beginMarker = '<!-- branchnux:enrich:design-review begin -->';
+    const endMarker   = '<!-- branchnux:enrich:design-review end -->';
     const blockStart  = written.indexOf(beginMarker);
     const blockEnd    = written.indexOf(endMarker) + endMarker.length;
     const markerBlock = written.slice(blockStart, blockEnd);

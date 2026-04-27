@@ -1,4 +1,4 @@
-# TrunkNuX CLI — Execution Log
+# BranchNuX CLI — Execution Log
 
 **Run date:** 2026-04-27
 **Test framework:** vitest 4.1.5
@@ -11,7 +11,7 @@
 
 ## Visual evidence note
 
-TrunkNuX is a CLI, not a web app. Per-TC visual evidence (screenshots) is not applicable. Test results are captured via vitest console output and persisted to this execution log. The `trunknux report` command runs in `--plan-only` mode for this pass since there is no UI surface to screenshot. The `evidence/` folder is intentionally empty.
+BranchNuX is a CLI, not a web app. Per-TC visual evidence (screenshots) is not applicable. Test results are captured via vitest console output and persisted to this execution log. The `branchnux report` command runs in `--plan-only` mode for this pass since there is no UI surface to screenshot. The `evidence/` folder is intentionally empty.
 
 ---
 
