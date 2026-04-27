@@ -9,15 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.2.0-alpha.1] - 2026-04-27
+## [0.2.0] - 2026-04-27
 
-The "v0.2 capability-parity" alpha. Wires up the LLM agent suite (`plan`, `codify`, `enrich`, `batch-plan`), ports the deterministic report generator (`testnux report` is no longer a stub), adds the signoff suite (`sign pdf`, `sign stale-check`, multi-reviewer N-of-M, OSCAL assessment-log, optional LLM-drafted justification), and ships real implementations of `run`/`compare` (per-env testing) and `visual baseline`/`visual compare` (pixel-diff regression).
+The "v0.2 capability-parity" stable release. Wires up the LLM agent suite (`plan`, `codify`, `enrich`, `batch-plan`), ports the deterministic report generator (`testnux report` is no longer a stub), adds the signoff suite (`sign pdf`, `sign stale-check`, multi-reviewer N-of-M, OSCAL assessment-log, optional LLM-drafted justification), and ships real implementations of `run`/`compare` (per-env testing) and `visual baseline`/`visual compare` (pixel-diff regression).
 
 189 new tests added (152 → 365). All green.
 
-> **alpha** because the v0.2 LLM agents are wired but not yet hardened with eval-set regression testing across many real customer pages. Use in preview; expect prompt-quality iteration before 0.2.0 stable.
-
 ### Added
+
+**Industry standards:**
+- `--industry malaysia-banking` — new 30-control bundle covering PDPA 2010 (Act 709) + Personal Data Protection (Amendment) Act 2024, BNM RMiT 2020 with 2023 amendments (Risk Management in Technology, mandatory for licensed banks/insurers/takaful operators), Cyber Security Act 2024 (Act 854) for NCII obligations, and BNM Guidelines on Provision of Electronic Banking Services. All controls scoped to testable obligations on web/auth surfaces. File: `src/config/industry-standards/malaysia-banking.json`.
 
 **LLM agent suite (real Claude API):**
 - `testnux plan <slug>` — converts `scenarios.md` → `test-plan.md` with frontmatter, R-ID mapping, [VERIFY] markers. Mirrors the proven `discover.mjs` pattern (dry-run, --max-spend, --json, exit codes 0/1/2/3).
@@ -53,6 +54,7 @@ The "v0.2 capability-parity" alpha. Wires up the LLM agent suite (`plan`, `codif
 
 ### Changed
 
+- Promoted from `0.2.0-alpha.1` to `0.2.0` stable. The eval-harness scaffold (3 fixture pages with golden outputs) ships in 0.2.0; coverage will expand in 0.2.x patch releases as the tool soaks against more real-world surfaces.
 - `bin/testnux.mjs` — `sign` is now a parent command with `pdf` and `stale-check` subcommands (legacy `testnux sign <surface>` invocation preserved).
 - `report.mjs` exit code on missing `test-plan.md` is now 1 (was 0 with stub message); `cli.test.mjs` updated to match.
 
@@ -60,6 +62,14 @@ The "v0.2 capability-parity" alpha. Wires up the LLM agent suite (`plan`, `codif
 
 - `src/parsers/execution-log.mjs` — emoji status regex now uses `u` flag (no-misleading-character-class).
 - Multi-agent merge of `bin/testnux.mjs` (Wave 1 had 5 agents touching it concurrently) — coordinated through subcommand grouping.
+
+### Documentation
+
+- README — added `### ⚠️ Important` disclaimer block making it explicit that TestNUX reduces manual workload but does not replace human judgment. Every output (LLM-drafted artifacts, test plans, specs, reports, SCAs, signoff PDFs, OSCAL exports) is a starting point requiring human review. Auditors hold the user's organization accountable, not the tool.
+- README — new "Which output do I read?" section mapping each artifact to its primary audience (engineering lead, QA engineer, external auditor, UAT reviewer, CISO, legal, GRC platform).
+- README — TL;DR reframed: TestNUX is a multi-phase test discipline (DISCOVER → PLAN → CODIFY → EXECUTE → REPORT → DOC), not just a report generator. Honest scope on headcount reduction (administrative half only — does not replace QA exploration or compliance interpretation).
+- README — flipped alpha → stable framing throughout (install, roadmap, FAQ).
+- README — industry standards section now lists all 7 bundled configs (general, ecommerce, edu, fintech, gov, healthcare, malaysia-banking) instead of incorrectly stating only "general" ships.
 
 ### Security
 
@@ -76,7 +86,6 @@ The "v0.2 capability-parity" alpha. Wires up the LLM agent suite (`plan`, `codif
 
 ### Notes
 
-- **Not yet on npm**. v0.1.1 remains "Latest" on npm and `latest` tag on GitHub. Install this alpha via `npm install testnux@0.2.0-alpha.1` once published.
 - **CLAUDE_API_KEY required** for `plan`, `codify`, `enrich`, `batch-plan`, and `sign --justify-with-llm`. All other commands work without it.
 - **@anthropic-ai/sdk** is an optional peer dep — install only if using LLM agents.
 - **@playwright/test** is an optional peer dep — install only if using `visual baseline`/`compare` or running generated specs.
@@ -125,8 +134,8 @@ The "v0.2 capability-parity" alpha. Wires up the LLM agent suite (`plan`, `codif
 ### Added
 - Initial project scaffold: CLI entry point, command structure, templates, schemas, and docs. (Internal pre-publish version; not on npm.)
 
-[Unreleased]: https://github.com/StillNotBald/testnux/compare/v0.2.0-alpha.1...HEAD
-[0.2.0-alpha.1]: https://github.com/StillNotBald/testnux/releases/tag/v0.2.0-alpha.1
+[Unreleased]: https://github.com/StillNotBald/testnux/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/StillNotBald/testnux/releases/tag/v0.2.0
 [0.1.1]: https://github.com/StillNotBald/testnux/releases/tag/v0.1.1
 [0.1.0]: https://github.com/StillNotBald/testnux/releases/tag/v0.1.0
 [0.0.1]: https://github.com/StillNotBald/testnux/releases/tag/v0.0.1
