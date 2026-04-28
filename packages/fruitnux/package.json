@@ -18,6 +18,8 @@
   },
   "files": [
     "bin/",
+    "LICENSE",
+    "NOTICE",
     "README.md"
   ],
   "engines": {
