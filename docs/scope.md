@@ -33,16 +33,18 @@ For each, `--json` mode is available for agent-driven workflows.
 
 ## What 5-NUX is NOT
 
-By design, 5-NUX does NOT replace these. **It pairs with them, and you don't have to use them either** — but if you want the capabilities below, here's where they live:
+By design, 5-NUX does NOT replace these. **It pairs with them, and you don't have to use them either.** For each capability outside 5-NUX OSS scope, you have three orthogonal options — pick the one that fits your team:
 
-| If you want... | Use this instead |
-|---|---|
-| **Active task tracking + kanban boards** | GitHub Issues / Linear / Jira / Asana / Trello |
-| **Visual roadmap / Gantt timeline** | Productboard / Aha! / GitHub Projects / roadmap.io |
-| **Real-time team chat + notifications** | Slack / Discord / Microsoft Teams |
-| **Build + deploy pipelines** | GitHub Actions / CircleCI / Jenkins / Fly.io / Vercel |
-| **GUI for non-technical stakeholders** (compliance officers, executives, board) | Build it yourself, **or engage LeapNuX 6-NUX premium when shipped** |
-| **Multi-user hosted dashboards / signed evidence portal / account-bound access** | Build it yourself, **or engage LeapNuX 6-NUX premium when shipped** |
+| If you want... | A: Existing market apps | B: Build yourself | C: Engage LeapNuX premium |
+|---|---|---|---|
+| **Active task tracking + kanban boards** | GitHub Issues, Linear, Jira, Asana, Trello | Custom kanban over your `requirements/` + sprint-log/ | LeapNuX 6-NUX hosted board *(future)* |
+| **Visual roadmap / Gantt timeline** | Productboard, Aha!, GitHub Projects, roadmap.io | Render a Gantt from sprint-log/ folder dates | LeapNuX 6-NUX roadmap view *(future)* |
+| **Real-time team chat + notifications** | Slack, Discord, Microsoft Teams | Self-host Mattermost / Rocket.Chat | LeapNuX 6-NUX notification hub *(future)* |
+| **Build + deploy pipelines** | GitHub Actions, CircleCI, Jenkins, Fly.io, Vercel | Self-host Drone, Concourse, Buildkite agents | Out of scope (use existing tooling — pipelines aren't where 6-NUX competes) |
+| **GUI for non-technical stakeholders** (compliance officers, executives, board) | None that surface RTM/SCA/OSCAL natively | Render `--json` outputs into your own React/Vue dashboard | LeapNuX 6-NUX premium GUI *(future)* — purpose-built for compliance officers + executives + board |
+| **Multi-user hosted dashboards / signed evidence portal** | None that map cleanly to OSCAL + HMAC ledger | Stand up a signed-portal yourself with the JSON outputs | LeapNuX 6-NUX premium evidence portal *(future)* — account-bound access, per-stakeholder views |
+| **Account-bound auditor access + per-firm scoping** | DocuSign Rooms, ShareFile (generic, not artifact-aware) | Build access control on top of your repo + cloud storage | LeapNuX 6-NUX premium audit-room *(future)* |
+| **Professional support contract + SLA** | None for OSS RTM tooling | Hire a freelance compliance engineer | LeapNuX 6-NUX premium support tier *(future)* |
 
 ## What's actually enough
 
