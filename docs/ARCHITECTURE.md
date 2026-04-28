@@ -18,7 +18,7 @@ LeapNuX (org / company)             ← leapnux.com
 │   ├── @leapnux/fruitnux           ← deliverables (active scope — verbs in design)
 │   ├── @leapnux/6nux-core          ← shared internals
 │   └── @leapnux/5nux               ← meta-package
-└── 6-NUX (Product 2, premium)      ← future, commercial license
+└── 6-NUX (Product 2, premium)      ← commercial license
     └── adds soilnux + hosting + onboarding + training + backend + accounts
 ```
 
@@ -173,7 +173,7 @@ packages/<nux>/
 - Cryptographic guarantees on output (signing is optional, key management is the user's)
 - Runtime protection of in-memory state (single-process, short-lived)
 
-If you need stronger guarantees, the future **6-NUX premium** ships with a hosted backend, signed evidence chain, and account-bound access control.
+If you need stronger guarantees, **6-NUX premium** ships with a hosted backend, signed evidence chain, and account-bound access control.
 
 ---
 

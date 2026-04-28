@@ -40,7 +40,7 @@ Plus 5+ more verbs per package. Run `<verb> --help` for full surface.
 
 ## What about the 6th node?
 
-The 6-NUX taxonomy includes a **soilnux** node (infrastructure, vendors, IaC, on-call, multi-user workflows). That ships as a separate **commercial product** under a future 6-NUX commercial license — not part of the OSS 5-NUX stack. See [docs/MOTTO.md](https://github.com/leapnux/5nux/blob/main/docs/MOTTO.md) for the OSS / Premium split.
+The 6-NUX taxonomy includes a **soilnux** node (infrastructure, vendors, IaC, on-call, multi-user workflows). That ships as a separate **commercial product** under the 6-NUX commercial license — not part of the OSS 5-NUX stack. See [docs/MOTTO.md](https://github.com/leapnux/5nux/blob/main/docs/MOTTO.md) for the OSS / Premium split.
 
 ## Part of the 5-NUX family
 

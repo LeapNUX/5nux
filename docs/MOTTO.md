@@ -11,7 +11,7 @@ decisions defer to this line.
 **branch** (verification), **leaf** (continuous health signals fed back into the loop),
 **fruit** (external audit-ready handoffs). All five nodes are OSS. The sixth node —
 **soil** (your hosting, your vendors, your multi-user backend) — is premium territory
-in the future 6-NUX commercial product. The act of shipping (your CI, your release
+in the 6-NUX commercial product. The act of shipping (your CI, your release
 pipeline) is yours.
 
 The OSS/Premium boundary is sharp: anything local + single-user + file-native = OSS.
@@ -38,7 +38,7 @@ toolchain (`gh`, `npm publish`, your own CI). They are not part of 5-NUX.
 
 Install everything in one command: `npm install -g @leapnux/5nux`.
 
-## Premium — `6-NUX` and beyond (commercial license, future)
+## Premium — `6-NUX` and beyond (commercial license)
 
 Everything that requires a hosted service, an account, human-in-the-loop work, or
 operational responsibility on someone else's infrastructure. Out of scope for the

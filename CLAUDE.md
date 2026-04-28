@@ -1,6 +1,6 @@
 # CLAUDE.md — LeapNuX 5-NUX
 
-This is an OSS PM tool chain. 7 packages in a monorepo, one per node of the 6-NUX taxonomy plus a shared core and a meta-package. ESM-only, Node 20+, Apache 2.0. Anchor not revenue (premium = future 6-NUX, see `docs/MOTTO.md`).
+This is an OSS PM tool chain. 7 packages in a monorepo, one per node of the 6-NUX taxonomy plus a shared core and a meta-package. ESM-only, Node 20+, Apache 2.0. Anchor not revenue (premium = 6-NUX, see `docs/MOTTO.md`).
 
 If you're an AI assistant arriving fresh, read [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for the full implementation spec and [docs/6-NUX.md](./docs/6-NUX.md) for the taxonomy. This file is the short list of things you must NOT do.
 
