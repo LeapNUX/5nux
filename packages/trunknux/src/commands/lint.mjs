@@ -3,10 +3,13 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { DATE_SLUG_RE, KEBAB_RE } from '@leapnux/6nux-core/conventions';
+import { readFileWithSizeCap } from '@leapnux/6nux-core/utils';
 
-const DATE_SLUG_RE = /^(\d{4}-\d{2}-\d{2})_(.+)$/;
-const KEBAB_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const YEAR_RE = /^(19|20)\d{2}$/;
+
+// Maximum sprint folders before emitting a warning (SEC F-07 / ARCH guard)
+const MAX_SPRINT_FOLDERS = 1000;
 
 function isValidDate(dateStr) {
   // Must be YYYY-MM-DD with year in 1900-2099
@@ -73,8 +76,18 @@ export function lint(opts = {}) {
 
   const results = [];
   let hasError = false;
+  const topLevelWarnings = [];
 
-  for (const name of entries.sort()) {
+  // Cap at MAX_SPRINT_FOLDERS (SEC F-07)
+  let entriesToCheck = entries;
+  if (entries.length > MAX_SPRINT_FOLDERS) {
+    topLevelWarnings.push(
+      `sprint-log/ has ${entries.length} folders — only first ${MAX_SPRINT_FOLDERS} checked (cap). Consider archiving old sprints.`
+    );
+    entriesToCheck = entries.sort().slice(0, MAX_SPRINT_FOLDERS);
+  }
+
+  for (const name of entriesToCheck.sort()) {
     const folderResult = {
       folder: name,
       errors: [],
@@ -117,8 +130,23 @@ export function lint(opts = {}) {
       });
       hasError = true;
     } else {
+      // Read with size cap (SEC F-07)
+      let content;
+      try {
+        content = readFileWithSizeCap(readmePath);
+      } catch (err) {
+        if (err.code === 'EFILETOOLARGE') {
+          folderResult.warnings.push({
+            type: 'file-too-large',
+            message: `README.md in "${name}" is too large to lint (${err.message}).`,
+          });
+          results.push(folderResult);
+          continue;
+        }
+        throw err;
+      }
+
       // Check frontmatter
-      const content = fs.readFileSync(readmePath, 'utf8');
       const fm = parseFrontmatter(content);
       if (!fm) {
         folderResult.warnings.push({
@@ -146,7 +174,10 @@ export function lint(opts = {}) {
 
   if (opts.json) {
     const allErrors = results.flatMap((r) => r.errors);
-    const allWarnings = results.flatMap((r) => r.warnings);
+    const allWarnings = [
+      ...topLevelWarnings.map(m => ({ type: 'folder-cap', message: m })),
+      ...results.flatMap((r) => r.warnings),
+    ];
     console.log(
       JSON.stringify({
         ok: !hasError,
@@ -159,6 +190,9 @@ export function lint(opts = {}) {
       2
     ));
   } else {
+    for (const w of topLevelWarnings) {
+      console.warn(`WARN    ${w}`);
+    }
     for (const r of results) {
       for (const e of r.errors) {
         console.error(`ERROR   ${e.message}`);
@@ -168,7 +202,7 @@ export function lint(opts = {}) {
       }
     }
     if (!hasError) {
-      const totalWarnings = results.reduce((s, r) => s + r.warnings.length, 0);
+      const totalWarnings = topLevelWarnings.length + results.reduce((s, r) => s + r.warnings.length, 0);
       console.log(
         `OK — ${results.length} sprint folder(s) checked, 0 errors` +
           (totalWarnings ? `, ${totalWarnings} warning(s)` : '') +

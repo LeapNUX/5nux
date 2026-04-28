@@ -4,29 +4,35 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { DATE_SLUG_RE } from '@leapnux/6nux-core/conventions';
+import { todayISO } from '@leapnux/6nux-core/ids';
+import { assertDateFormat } from '@leapnux/6nux-core/utils';
 
-/** Validate a date string is strictly YYYY-MM-DD */
-const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-function assertDateFormat(value, label) {
-  if (!DATE_RE.test(value)) {
-    console.error(
-      `ERROR: ${label} "${value}" is not a valid YYYY-MM-DD date. ` +
-        'Refusing to run git log.'
-    );
-    process.exit(2);
+// ── Secret pattern scan (SEC F-08) ───────────────────────────────────────────
+// Best-effort; NOT a substitute for a real secret-scanner (e.g. truffleHog, gitleaks).
+const SECRET_PATTERNS = [
+  { name: 'GitHub PAT (ghp_)', re: /ghp_[A-Za-z0-9]{20,}/ },
+  { name: 'GitHub OAuth (gho_)', re: /gho_[A-Za-z0-9]{20,}/ },
+  { name: 'AWS Access Key', re: /AKIA[0-9A-Z]{16}/ },
+  { name: 'Slack Bot Token', re: /xoxb-[A-Za-z0-9-]{20,}/ },
+  { name: 'password assignment', re: /password\s*=\s*\S+/i },
+  { name: 'api key assignment', re: /api[_-]?key\s*=\s*\S+/i },
+];
+
+function scanForSecrets(commits) {
+  for (const { hash, subject } of commits) {
+    for (const { name, re } of SECRET_PATTERNS) {
+      if (re.test(subject)) {
+        console.warn(
+          `WARN: possible secret in commit ${hash} — matched pattern "${name}". ` +
+          'Subject not echoed. Review this commit manually.'
+        );
+      }
+    }
   }
 }
 
-const DATE_SLUG_RE = /^(\d{4}-\d{2}-\d{2})_(.+)$/;
-
-function todayISO() {
-  // Use local date (not UTC) to match git's local-time commit dates.
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
+// ── Date helpers ──────────────────────────────────────────────────────────────
 
 /** Return YYYY-MM-DD for the day after the given ISO date string. */
 function addOneDay(dateStr) {
@@ -148,8 +154,16 @@ export function summarize(opts = {}) {
   const until = opts.until ?? todayISO();
 
   // Validate both dates BEFORE touching git — prevents command injection.
-  assertDateFormat(since, '--since');
-  assertDateFormat(until, '--until');
+  // assertDateFormat throws with EINVALIDDATE; convert to exit 2.
+  try {
+    assertDateFormat(since, '--since');
+    assertDateFormat(until, '--until');
+  } catch (err) {
+    console.error(
+      `ERROR: ${err.message || 'not a valid YYYY-MM-DD date'}. Refusing to run git log.`
+    );
+    process.exit(2);
+  }
 
   // git treats --until=YYYY-MM-DD as midnight (start of that day), which
   // excludes commits made on that date. Use the next day so "until today"
@@ -159,7 +173,6 @@ export function summarize(opts = {}) {
   // Use spawnSync with an array — no shell interpolation, no injection risk.
   // Field delimiter is ASCII Unit Separator (\x1f) so subjects containing "|"
   // are parsed correctly (Fix 5).
-  let rawLog;
   const result = spawnSync(
     'git',
     [
@@ -172,7 +185,12 @@ export function summarize(opts = {}) {
     { cwd, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
   );
 
+  // ── Distinguish git error types (ARCH F-03) ──────────────────────────────
   if (result.error) {
+    if (result.error.code === 'ENOENT') {
+      console.error('Error: git not installed or not in PATH.');
+      process.exit(2);
+    }
     console.error(`Error: could not spawn git — ${result.error.message}`);
     process.exit(2);
   }
@@ -185,9 +203,21 @@ export function summarize(opts = {}) {
       );
       process.exit(2);
     }
-    // git may return non-zero on empty range; treat output as empty
+    if (result.status === 128) {
+      // non-repo or other fatal git error
+      console.error(
+        `Error: git exited with status 128.\n${stderr}`
+      );
+      process.exit(2);
+    }
+    // Other non-zero exit — print stderr and exit 1
+    if (stderr) {
+      console.error(`git error (exit ${result.status}): ${stderr}`);
+    }
+    process.exit(1);
   }
-  rawLog = (result.stdout ?? '').trim();
+
+  const rawLog = (result.stdout ?? '').trim();
 
   const commits = rawLog
     ? rawLog.split('\n').map((line) => {
@@ -196,6 +226,9 @@ export function summarize(opts = {}) {
         return { hash: hash ?? '', subject: subject ?? '', author: author ?? '', date: date ?? '' };
       })
     : [];
+
+  // Secret scan (SEC F-08) — warn only, never block
+  scanForSecrets(commits);
 
   // Group
   const groups = {

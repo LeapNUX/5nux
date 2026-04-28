@@ -15,6 +15,9 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { slugify } from '@leapnux/6nux-core/ids';
+import { yamlQuote } from '@leapnux/6nux-core/utils';
+import { PATHS } from '@leapnux/6nux-core/conventions';
 
 // ── Public API ───────────────────────────────────────────────────────────────
 
@@ -38,7 +41,7 @@ export async function runAdrNew(title, opts = {}) {
 
   // ── Find next ADR number ──────────────────────────────────────────────────
 
-  const adrDir = path.join(cwd, 'docs', 'adr');
+  const adrDir = path.join(cwd, PATHS.adrs);
   fs.mkdirSync(adrDir, { recursive: true });
 
   const existing = fs.readdirSync(adrDir)
@@ -55,13 +58,7 @@ export async function runAdrNew(title, opts = {}) {
 
   // ── Generate slug ─────────────────────────────────────────────────────────
 
-  const slug = title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')   // strip non-alphanumeric (keep spaces and hyphens)
-    .trim()
-    .replace(/\s+/g, '-')           // spaces → hyphens
-    .replace(/-+/g, '-')            // collapse multiple hyphens
-    .replace(/^-|-$/g, '');         // trim leading/trailing hyphens
+  const slug = slugify(title);
 
   // Fix 8: empty slug guard — title had no alphanumeric content
   if (!slug) {
@@ -89,7 +86,7 @@ export async function runAdrNew(title, opts = {}) {
 
   const content = `---
 adr: ${nnnn}
-title: ${title}
+title: ${yamlQuote(title)}
 status: proposed
 date: ${today}
 ---

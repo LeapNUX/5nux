@@ -11,11 +11,13 @@
  *
  * Exit codes:
  *   0 — row appended
+ *   1 — register full at R-99, or write error
  *   2 — risks.md does not exist (run rootnux init first)
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { PATHS } from '@leapnux/6nux-core/conventions';
 
 // ── Public API ───────────────────────────────────────────────────────────────
 
@@ -25,7 +27,7 @@ import path from 'node:path';
  */
 export async function runRiskAdd(opts = {}) {
   const cwd = opts.cwd ?? process.cwd();
-  const risksPath = path.join(cwd, 'requirements', 'risks', 'risks.md');
+  const risksPath = path.join(cwd, PATHS.risks);
 
   // ── Existence check ───────────────────────────────────────────────────────
 
@@ -46,6 +48,13 @@ export async function runRiskAdd(opts = {}) {
     if (num > highest) highest = num;
   }
 
+  // ── Overflow guard (ARCH F-05) ────────────────────────────────────────────
+
+  if (highest >= 99) {
+    console.error('ERROR: risk register full at R-99 — consider archiving old risks before adding new ones.');
+    return 1;
+  }
+
   const next = highest + 1;
   const riskId = `R-${String(next).padStart(2, '0')}`;
 
@@ -57,7 +66,12 @@ export async function runRiskAdd(opts = {}) {
 
   // Ensure file ends with a newline before appending
   const sep = content.endsWith('\n') ? '' : '\n';
-  fs.appendFileSync(risksPath, `${sep}${newRow}\n`, 'utf-8');
+  try {
+    fs.appendFileSync(risksPath, `${sep}${newRow}\n`, 'utf-8');
+  } catch (err) {
+    console.error(`ERROR: could not write to risks.md: ${err.message}`);
+    return 1;
+  }
 
   console.log(`Appended: ${newRow}`);
   console.log('');

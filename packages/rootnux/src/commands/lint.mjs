@@ -4,7 +4,7 @@
 /**
  * src/commands/lint.mjs
  *
- * Implements `rootnux lint`.
+ * Implements `rootnux lint [--json]`.
  *
  * Validates rootnux artifacts in cwd:
  *   - REQUIREMENTS.md: extracts R-XX IDs, checks status values, checks for duplicates
@@ -15,48 +15,52 @@
  * Exit codes:
  *   0 — clean
  *   1 — errors found
- *   2 — rootnux init not run yet
+ *   2 — rootnux init not run yet OR file too large
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
+import { RXX_PATTERN } from '@leapnux/6nux-core/ids';
+import { STATUSES } from '@leapnux/6nux-core/conventions';
+import { readFileWithSizeCap } from '@leapnux/6nux-core/utils';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-const VALID_STATUSES = new Set([
-  'DONE',
-  'BLOCKED',
-  'PARTIAL',
-  'NOT STARTED',
-  'DECLINED',
-  'DEFERRED',
-  'FAKE',
-]);
-
-const RXX_PATTERN = /\bR-\d{1,4}\b/g;
+const VALID_STATUSES = new Set(STATUSES);
 
 // Column-position-independent status extraction helpers (Fix 7).
 // We no longer lock R-XX to the first column — scan all cells.
 const RXX_CELL_RE = /^R-\d{1,4}$/;
 const STATUS_KEYWORDS = [...VALID_STATUSES].map(s => s.toUpperCase());
 
+// Strip fenced code blocks before counting R-XX (ARCH F-07)
+function stripCodeBlocks(content) {
+  return content.replace(/```[\s\S]*?```/g, '');
+}
+
 // ── Public API ───────────────────────────────────────────────────────────────
 
 /**
- * @param {{ cwd?: string }} opts
+ * @param {{ cwd?: string, json?: boolean }} opts
  * @returns {Promise<number>} exit code
  */
 export async function runLint(opts = {}) {
   const cwd = opts.cwd ?? process.cwd();
+  const jsonMode = opts.json ?? false;
   const reqPath = path.join(cwd, 'requirements', 'REQUIREMENTS.md');
   const tracePath = path.join(cwd, 'requirements', 'TRACEABILITY.md');
 
   // ── Existence check ───────────────────────────────────────────────────────
 
   if (!fs.existsSync(reqPath)) {
-    console.error('rootnux init not run yet (REQUIREMENTS.md missing)');
-    console.error(`  Expected: ${reqPath}`);
+    const msg = 'rootnux init not run yet (REQUIREMENTS.md missing)';
+    if (jsonMode) {
+      process.stdout.write(JSON.stringify({ status: 'errors', errors: [{ message: msg }], warnings: [], rxx_count: 0 }) + '\n');
+    } else {
+      console.error(msg);
+      console.error(`  Expected: ${reqPath}`);
+    }
     return 2;
   }
 
@@ -65,7 +69,22 @@ export async function runLint(opts = {}) {
 
   // ── Parse REQUIREMENTS.md ─────────────────────────────────────────────────
 
-  const reqRaw = fs.readFileSync(reqPath, 'utf-8');
+  let reqRaw;
+  try {
+    reqRaw = readFileWithSizeCap(reqPath);
+  } catch (err) {
+    if (err.code === 'EFILETOOLARGE') {
+      const msg = `requirements/REQUIREMENTS.md: ${err.message}`;
+      if (jsonMode) {
+        process.stdout.write(JSON.stringify({ status: 'errors', errors: [{ message: msg }], warnings: [], rxx_count: 0 }) + '\n');
+      } else {
+        console.error(`ERROR ${msg}`);
+      }
+      return 2;
+    }
+    throw err;
+  }
+
   const reqParsed = matter(reqRaw);
 
   // Frontmatter schema check (warn only)
@@ -73,15 +92,17 @@ export async function runLint(opts = {}) {
     warnings.push(`requirements/REQUIREMENTS.md: YAML frontmatter missing or schema != rxx-v1 (expected: schema: rxx-v1)`);
   }
 
+  // Strip code blocks before counting R-XX (ARCH F-07)
+  const reqRawNoCode = stripCodeBlocks(reqRaw);
+
   // Extract R-XX IDs from content with line numbers
-  const reqLines = reqRaw.split('\n');
+  const reqLines = reqRawNoCode.split('\n');
   const reqIds = new Map(); // id -> first line number (1-based)
   const reqStatusMap = new Map(); // id -> status string
   const duplicates = [];
 
   // Track the index of the "Status" column from the header row (Fix 7).
-  // If found, we use it as a tie-breaker when no known keyword is present.
-  let statusColIndex = -1; // index into pipe-split cells (excluding empty boundary cells)
+  let statusColIndex = -1;
 
   for (let i = 0; i < reqLines.length; i++) {
     const line = reqLines[i];
@@ -109,9 +130,6 @@ export async function runLint(opts = {}) {
     }
 
     // Column-position-independent status extraction (Fix 7):
-    // Find R-XX cell, then resolve the status cell via:
-    //   1. A cell matching a known keyword (fast path)
-    //   2. The header-derived statusColIndex (handles unknown/custom statuses)
     const rxxIndex = cells.findIndex(c => RXX_CELL_RE.test(c));
     if (rxxIndex === -1) continue;
 
@@ -154,29 +172,55 @@ export async function runLint(opts = {}) {
   if (!fs.existsSync(tracePath)) {
     warnings.push(`requirements/TRACEABILITY.md: file missing — cross-link check skipped`);
   } else {
-    const traceRaw = fs.readFileSync(tracePath, 'utf-8');
-    const traceParsed = matter(traceRaw);
-
-    if (!traceParsed.data || traceParsed.data.schema !== 'rtm-v1') {
-      warnings.push(`requirements/TRACEABILITY.md: YAML frontmatter missing or schema != rtm-v1`);
+    let traceRaw;
+    try {
+      traceRaw = readFileWithSizeCap(tracePath);
+    } catch (err) {
+      if (err.code === 'EFILETOOLARGE') {
+        warnings.push(`requirements/TRACEABILITY.md: ${err.message} — cross-link check skipped`);
+        traceRaw = null;
+      } else {
+        throw err;
+      }
     }
 
-    const traceMatches = traceRaw.matchAll(/\bR-\d{1,4}\b/g);
-    for (const m of traceMatches) {
-      traceIds.add(m[0]);
-    }
+    if (traceRaw !== null) {
+      const traceParsed = matter(traceRaw);
 
-    // Cross-link: every R-XX in REQUIREMENTS must appear in TRACEABILITY
-    for (const [id, lineNo] of reqIds) {
-      if (!traceIds.has(id)) {
-        errors.push(
-          `requirements/REQUIREMENTS.md:${lineNo}: ${id} is not traced in TRACEABILITY.md (orphan R-XX)`
-        );
+      if (!traceParsed.data || traceParsed.data.schema !== 'rtm-v1') {
+        warnings.push(`requirements/TRACEABILITY.md: YAML frontmatter missing or schema != rtm-v1`);
+      }
+
+      // Strip code blocks from traceability too
+      const traceRawNoCode = stripCodeBlocks(traceRaw);
+      const traceMatches = traceRawNoCode.matchAll(/\bR-\d{1,4}\b/g);
+      for (const m of traceMatches) {
+        traceIds.add(m[0]);
+      }
+
+      // Cross-link: every R-XX in REQUIREMENTS must appear in TRACEABILITY
+      for (const [id, lineNo] of reqIds) {
+        if (!traceIds.has(id)) {
+          errors.push(
+            `requirements/REQUIREMENTS.md:${lineNo}: ${id} is not traced in TRACEABILITY.md (orphan R-XX)`
+          );
+        }
       }
     }
   }
 
   // ── Output ────────────────────────────────────────────────────────────────
+
+  if (jsonMode) {
+    const result = {
+      status: errors.length === 0 ? 'clean' : 'errors',
+      errors: errors.map(e => ({ message: e })),
+      warnings: warnings.map(w => ({ message: w })),
+      rxx_count: reqIds.size,
+    };
+    process.stdout.write(JSON.stringify(result) + '\n');
+    return errors.length === 0 ? 0 : 1;
+  }
 
   if (warnings.length > 0) {
     for (const w of warnings) {

@@ -142,3 +142,69 @@ describe('lint: empty sprint-log', () => {
     expect(() => run()).toThrow(/process\.exit\(0\)/);
   });
 });
+
+// ── B1: SEC F-07 — file size cap on README.md ────────────────────────────────
+
+describe('lint: file size cap on README (SEC F-07)', () => {
+  it('emits a warning (not an error) when README.md is over 10 MB and continues', () => {
+    const folderName = '2026-04-27_big-readme';
+    const dir = path.join(tmpDir, 'sprint-log', folderName);
+    fs.mkdirSync(dir, { recursive: true });
+    // Write 11 MB README
+    const big = Buffer.alloc(11 * 1024 * 1024, 'a');
+    fs.writeFileSync(path.join(dir, 'README.md'), big);
+
+    // Should NOT error (exit 1), just warn and continue — exits 0
+    expect(() => run()).toThrow(/process\.exit\(0\)/);
+    const warnCalls = (console.warn).mock.calls.flat().join(' ');
+    expect(warnCalls).toMatch(/too large|EFILETOOLARGE/i);
+  });
+});
+
+// ── B1: folder cap warning at > 1000 sprint folders ──────────────────────────
+
+describe('lint: sprint folder cap warning', () => {
+  it('emits WARN when sprint-log has > 1000 sprint folders', () => {
+    // Create 1001 sprint folders with valid names
+    const base = path.join(tmpDir, 'sprint-log');
+    // We create 1001 folders but only check that the cap warning fires.
+    // Creating 1001 full dirs is slow, so we mock readdirSync instead.
+    fs.mkdirSync(base, { recursive: true });
+
+    // Create one real valid folder to pass the "not empty" check
+    const realDir = path.join(base, '2026-01-01_real-sprint');
+    fs.mkdirSync(realDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(realDir, 'README.md'),
+      '---\nsprint: real-sprint\ndate: 2026-01-01\n---\n# Sprint\n',
+      'utf8'
+    );
+
+    // Mock readdirSync to return 1001 valid dir entries
+    const origReaddir = fs.readdirSync.bind(fs);
+    vi.spyOn(fs, 'readdirSync').mockImplementationOnce((_dir) => {
+      return Array.from({ length: 1001 }, (_, i) => {
+        const dd = String(i + 1).padStart(2, '0');
+        return `2026-01-${dd.length === 2 ? dd : '01'}_sprint-${i + 1}`;
+      });
+    });
+    // statSync still needs to return isDirectory: true for the mocked entries
+    vi.spyOn(fs, 'statSync').mockImplementation((p) => {
+      if (p.includes('sprint-log') && !p.endsWith('.md')) {
+        return { isDirectory: () => true };
+      }
+      return { isDirectory: () => false, size: 100 };
+    });
+
+    try {
+      run();
+    } catch (_) {
+      // will throw process.exit(0) or (1) — that's fine
+    }
+
+    // Read warn calls BEFORE restoreAllMocks (which happens in afterEach)
+    const warnCalls = (console.warn).mock.calls.flat().join(' ');
+    vi.restoreAllMocks(); // clean up the fs mocks
+    expect(warnCalls).toMatch(/1001|cap|1000/i);
+  });
+});

@@ -8,7 +8,7 @@
  * Uses os.tmpdir() + fs.mkdtempSync for filesystem isolation.
  */
 
-import { describe, it, beforeEach, afterEach, expect } from 'vitest';
+import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -101,5 +101,42 @@ describe('rootnux risk-add', () => {
     const content = readRisks();
     expect(content).toContain('R-06');
     expect(content).not.toContain('R-03\n');
+  });
+});
+
+// ── B4: ARCH F-05 — R-99 overflow guard + appendFileSync error ────────────────
+
+describe('rootnux risk-add — overflow guard (ARCH F-05)', () => {
+  beforeEach(async () => {
+    await runInit({ cwd: tmpDir });
+  });
+
+  it('returns exit 1 when highest existing risk is R-99', async () => {
+    const rp = risksPath();
+    const base = fs.readFileSync(rp, 'utf-8');
+    fs.writeFileSync(rp, base + '| R-99 | TECH | Max risk | HIGH | OPEN |\n', 'utf-8');
+
+    const errorMessages = [];
+    const errSpy = vi.spyOn(console, 'error').mockImplementation((...args) => {
+      errorMessages.push(args.join(' '));
+    });
+    const code = await runRiskAdd({ cwd: tmpDir });
+    errSpy.mockRestore();
+
+    expect(code).toBe(1);
+    expect(errorMessages.join(' ')).toMatch(/R-99|full|archiv/i);
+  });
+
+  it('returns exit 1 and prints error when appendFileSync throws', async () => {
+    const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(fs, 'appendFileSync').mockImplementationOnce(() => {
+      throw new Error('ENOSPC: no space left on device');
+    });
+
+    const code = await runRiskAdd({ cwd: tmpDir });
+    vi.restoreAllMocks();
+    errSpy.mockRestore();
+
+    expect(code).toBe(1);
   });
 });

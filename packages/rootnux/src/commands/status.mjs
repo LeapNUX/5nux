@@ -14,10 +14,11 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { STATUSES } from '@leapnux/6nux-core/conventions';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-const ALL_STATUSES = ['DONE', 'BLOCKED', 'PARTIAL', 'NOT STARTED', 'DECLINED', 'DEFERRED', 'FAKE'];
+const ALL_STATUSES = STATUSES;
 
 // Known status keywords for column-position-independent parsing (case-insensitive).
 const STATUS_KEYWORDS = ALL_STATUSES.map(s => s.toUpperCase());

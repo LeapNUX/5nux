@@ -3,17 +3,8 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-
-const KEBAB_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-function todayISO() {
-  // Use local date (not UTC) to match the user's calendar day.
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
+import { KEBAB_RE, PATHS } from '@leapnux/6nux-core/conventions';
+import { todayISO } from '@leapnux/6nux-core/ids';
 
 /** Title-case a kebab slug: "my-sprint" → "My Sprint" */
 function titleCase(slug) {
@@ -77,7 +68,7 @@ export function newSprint(slug, opts = {}) {
 
   const date = todayISO();
   const folderName = `${date}_${slug}`;
-  const sprintLogDir = path.join(cwd, 'sprint-log');
+  const sprintLogDir = path.join(cwd, PATHS.sprintLog);
   const sprintDir = path.join(sprintLogDir, folderName);
   const readmePath = path.join(sprintDir, 'README.md');
 

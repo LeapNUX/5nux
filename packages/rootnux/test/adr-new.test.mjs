@@ -12,6 +12,7 @@ import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import matter from 'gray-matter';
 import { runAdrNew } from '../src/commands/adr-new.mjs';
 
 let tmpDir;
@@ -70,7 +71,8 @@ describe('rootnux adr-new', () => {
     const content = fs.readFileSync(path.join(adrDir, files[0]), 'utf-8');
 
     expect(content).toContain('adr: 0001');
-    expect(content).toContain('title: Adopt Event Sourcing');
+    // title is YAML-quoted since v0.4.2 (SEC F-10)
+    expect(content).toMatch(/title: ["']?Adopt Event Sourcing["']?/);
     expect(content).toContain('status: proposed');
     expect(content).toMatch(/date: \d{4}-\d{2}-\d{2}/);
   });
@@ -235,5 +237,47 @@ describe('rootnux adr-new — exclusive create prevents race overwrite (Fix 4)',
       'utf-8'
     );
     expect(afterContent).toBe(firstContent);
+  });
+});
+
+// ── B7/SEC F-10: yamlQuote on ADR title ──────────────────────────────────────
+
+describe('rootnux adr-new — YAML-quoted title (SEC F-10)', () => {
+  let tmpDir5;
+
+  beforeEach(() => {
+    tmpDir5 = fs.mkdtempSync(path.join(os.tmpdir(), 'rootnux-adr-yaml-'));
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    fs.rmSync(tmpDir5, { recursive: true, force: true });
+    vi.restoreAllMocks();
+  });
+
+  it('YAML frontmatter with tricky title parses correctly via gray-matter', async () => {
+    const trickyTitle = 'foo: bar [important]';
+    const code = await runAdrNew(trickyTitle, { cwd: tmpDir5 });
+    expect(code).toBe(0);
+
+    const adrDir = path.join(tmpDir5, 'docs', 'adr');
+    const files = fs.readdirSync(adrDir);
+    const raw = fs.readFileSync(path.join(adrDir, files[0]), 'utf-8');
+
+    // gray-matter must parse the title back to the original string
+    const parsed = matter(raw);
+    expect(parsed.data.title).toBe(trickyTitle);
+  });
+
+  it('title with double quotes is escaped in frontmatter', async () => {
+    const quotedTitle = 'Use "real" authentication';
+    const code = await runAdrNew(quotedTitle, { cwd: tmpDir5 });
+    expect(code).toBe(0);
+
+    const adrDir = path.join(tmpDir5, 'docs', 'adr');
+    const files = fs.readdirSync(adrDir);
+    const raw = fs.readFileSync(path.join(adrDir, files[0]), 'utf-8');
+    const parsed = matter(raw);
+    expect(parsed.data.title).toBe(quotedTitle);
   });
 });

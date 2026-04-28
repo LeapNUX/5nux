@@ -18,6 +18,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { PATHS } from '@leapnux/6nux-core/conventions';
 
 // ── Templates ────────────────────────────────────────────────────────────────
 
@@ -60,16 +61,17 @@ export async function runInit(opts = {}) {
 
   const artifacts = [
     {
-      relPath: path.join('requirements', 'REQUIREMENTS.md'),
+      relPath: PATHS.requirements,
       content: REQUIREMENTS_TEMPLATE,
     },
     {
-      relPath: path.join('requirements', 'TRACEABILITY.md'),
+      relPath: PATHS.traceability,
       content: TRACEABILITY_TEMPLATE,
     },
     {
-      relPath: path.join('requirements', 'risks', 'risks.md'),
+      relPath: PATHS.risks,
       content: RISKS_TEMPLATE,
+      mode: 0o640,
     },
   ];
 
@@ -77,7 +79,7 @@ export async function runInit(opts = {}) {
   const skipped = [];
 
   // Ensure docs/adr/ directory exists
-  const adrDir = path.join(cwd, 'docs', 'adr');
+  const adrDir = path.join(cwd, PATHS.adrs);
   if (!fs.existsSync(adrDir)) {
     fs.mkdirSync(adrDir, { recursive: true });
     created.push('docs/adr/');
@@ -86,7 +88,7 @@ export async function runInit(opts = {}) {
     console.log(`Skipped: docs/adr/ (exists)`);
   }
 
-  for (const { relPath, content } of artifacts) {
+  for (const { relPath, content, mode } of artifacts) {
     const absPath = path.join(cwd, relPath);
     const display = relPath.replace(/\\/g, '/');
 
@@ -102,10 +104,10 @@ export async function runInit(opts = {}) {
     // If the file (or a symlink target) already exists, EEXIST is thrown → skip.
     let fd;
     try {
-      fd = fs.openSync(absPath, 'wx');
+      fd = mode !== undefined ? fs.openSync(absPath, 'wx', mode) : fs.openSync(absPath, 'wx');
       fs.writeSync(fd, content);
       created.push(display);
-      console.log(`Created: ${display}`);
+      console.log(`Created: ${display}${mode !== undefined ? ` (mode: ${mode.toString(8)})` : ''}`);
     } catch (err) {
       if (err.code === 'EEXIST') {
         skipped.push(display);

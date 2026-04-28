@@ -162,3 +162,25 @@ describe('rootnux init — write-failure error path (Fix 9)', () => {
     expect(console.error).toHaveBeenCalledWith(expect.stringContaining('REQUIREMENTS.md'));
   });
 });
+
+// ── B6: SEC F-09 — file mode 0o640 on risks.md ───────────────────────────────
+
+describe('rootnux init — risks.md file mode (SEC F-09)', () => {
+  it('creates risks.md with mode 0o640 on non-Windows', async () => {
+    // On Windows, fs.openSync mode arg is accepted but chmod is a no-op;
+    // skip the mode assertion on Windows to avoid a false positive.
+    if (process.platform === 'win32') {
+      // Just verify the file is created — mode check is moot on Windows
+      await runInit({ cwd: tmpDir });
+      const risksPath = path.join(tmpDir, 'requirements', 'risks', 'risks.md');
+      expect(fs.existsSync(risksPath)).toBe(true);
+      return;
+    }
+
+    await runInit({ cwd: tmpDir });
+    const risksPath = path.join(tmpDir, 'requirements', 'risks', 'risks.md');
+    const stat = fs.statSync(risksPath);
+    // Check only lower 9 bits of mode (permission bits)
+    expect(stat.mode & 0o777).toBe(0o640);
+  });
+});

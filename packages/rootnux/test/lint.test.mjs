@@ -8,7 +8,7 @@
  * Uses os.tmpdir() + fs.mkdtempSync for filesystem isolation.
  */
 
-import { describe, it, beforeEach, afterEach, expect } from 'vitest';
+import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -147,5 +147,111 @@ schema: rtm-v1
 `);
     const code = await runLint({ cwd: tmpDir });
     expect(code).toBe(1);
+  });
+});
+
+// ── B1: file size cap ─────────────────────────────────────────────────────────
+
+describe('rootnux lint — file size cap (SEC F-07)', () => {
+  it('returns exit 2 and prints "too large" when REQUIREMENTS.md exceeds 10 MB', async () => {
+    const dir = path.join(tmpDir, 'requirements');
+    fs.mkdirSync(dir, { recursive: true });
+    // Write 11 MB of content
+    const big = Buffer.alloc(11 * 1024 * 1024, 'a');
+    fs.writeFileSync(path.join(dir, 'REQUIREMENTS.md'), big);
+
+    const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const code = await runLint({ cwd: tmpDir });
+    errSpy.mockRestore();
+
+    expect(code).toBe(2);
+  });
+});
+
+// ── B5: --json flag ────────────────────────────────────────────────────────────
+
+describe('rootnux lint --json', () => {
+  it('outputs valid JSON with status:clean on a clean init', async () => {
+    await runInit({ cwd: tmpDir });
+
+    let output = '';
+    const writeSpy = vi.spyOn(process.stdout, 'write').mockImplementation((s) => { output += s; return true; });
+    const code = await runLint({ cwd: tmpDir, json: true });
+    writeSpy.mockRestore();
+
+    expect(code).toBe(0);
+    const parsed = JSON.parse(output.trim());
+    expect(parsed.status).toBe('clean');
+    expect(Array.isArray(parsed.errors)).toBe(true);
+    expect(Array.isArray(parsed.warnings)).toBe(true);
+    expect(typeof parsed.rxx_count).toBe('number');
+  });
+
+  it('outputs status:errors JSON when there are errors', async () => {
+    writeReq(`---
+title: Requirements
+schema: rxx-v1
+---
+
+| # | Requirement | Status | Notes |
+|---|-------------|--------|-------|
+| R-01 | First req | DONE | |
+`);
+    // Overwrite with a table that has a proper header so status column is detected
+    // and BANANAPEEL triggers an unknown-status error
+    writeReq(`---
+title: Requirements
+schema: rxx-v1
+---
+
+| # | Requirement | Status | Notes |
+|---|-------------|--------|-------|
+| R-01 | Bad req | BANANAPEEL | |
+`);
+    writeTrace(`---\nschema: rtm-v1\n---\n| R-01 | — | — | — | — |\n`);
+
+    let output = '';
+    const writeSpy = vi.spyOn(process.stdout, 'write').mockImplementation((s) => { output += s; return true; });
+    const code = await runLint({ cwd: tmpDir, json: true });
+    writeSpy.mockRestore();
+
+    expect(code).toBe(1);
+    const parsed = JSON.parse(output.trim());
+    expect(parsed.status).toBe('errors');
+    expect(parsed.errors.length).toBeGreaterThan(0);
+    expect(typeof parsed.rxx_count).toBe('number');
+  });
+});
+
+// ── B8: code-block exclusion ──────────────────────────────────────────────────
+
+describe('rootnux lint — code-block exclusion (ARCH F-07)', () => {
+  it('does not count R-XX inside fenced code blocks as real R-IDs', async () => {
+    writeReq(`---
+title: Requirements
+schema: rxx-v1
+---
+
+| # | Requirement | Status | Notes |
+|---|-------------|--------|-------|
+| R-01 | Real req | DONE | |
+
+Here is an example:
+
+\`\`\`
+| R-99 | This is an example, not a real requirement | DONE | |
+\`\`\`
+`);
+    writeTrace(`---
+schema: rtm-v1
+---
+
+| R-XX | Sprint | Code File(s) | Test File(s) | Open Gap |
+|------|--------|--------------|--------------|----------|
+| R-01 | — | — | — | — |
+`);
+    // R-99 is inside a code block — should NOT be counted as an orphan
+    const code = await runLint({ cwd: tmpDir });
+    expect(code).toBe(0);
   });
 });
