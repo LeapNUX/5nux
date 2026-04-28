@@ -40,6 +40,7 @@ import {
   mergeAssessmentLog,
   validateExtension,
 } from '../lib/oscal-signoff.mjs';
+import { validateSurface } from '../lib/validate-surface.mjs';
 
 // ── Public API ───────────────────────────────────────────────────────────────
 
@@ -491,25 +492,6 @@ function parseVersionString(filename) {
 }
 
 // ── Validation helpers ───────────────────────────────────────────────────────
-
-/**
- * Validate that the surface argument is present and lowercase-kebab-case.
- * Matches the validation pattern in sca.mjs.
- *
- * @param {string} surface
- * @throws {Error} with exitCode 2 on invalid input
- */
-function validateSurface(surface) {
-  if (!surface || typeof surface !== 'string') {
-    throw exitError('surface is required (e.g. "login")', 2);
-  }
-  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(surface)) {
-    throw exitError(
-      `surface must be lowercase-kebab-case. Got: "${surface}"`,
-      2,
-    );
-  }
-}
 
 function exitError(message, code) {
   const err = new Error(message);

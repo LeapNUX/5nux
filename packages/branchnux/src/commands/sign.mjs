@@ -40,6 +40,7 @@ import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
 import { appendEntry } from '../lib/uat-log.mjs';
+import { validateSurface } from '../lib/validate-surface.mjs';
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
@@ -57,6 +58,9 @@ import { appendEntry } from '../lib/uat-log.mjs';
  * }
  */
 export async function runSign(surface, opts = {}) {
+  // Block path-traversal attacks: ../foo, ..\\foo, foo/bar, foo bar, etc.
+  validateSurface(surface);
+
   const {
     reject:         rejectTcId,
     justifyWithLlm: justifyWithLlm = false,

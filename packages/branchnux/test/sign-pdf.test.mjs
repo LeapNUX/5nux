@@ -279,3 +279,50 @@ describe('sign-pdf — TC-PDF-07: --output flag writes to custom path', () => {
     expect(pdfArgs.path).toBe(customOutput);
   });
 });
+
+// ── SEC-F5: path-traversal rejection (TC-PDF-08) ──────────────────────────────
+
+describe('sign-pdf — TC-PDF-08: SEC-F5 path-traversal surface rejection', () => {
+  const traversalCases = [
+    ['../foo',       'Unix relative path traversal'],
+    ['..\\foo',      'Windows relative path traversal'],
+    ['foo/bar',      'embedded forward slash'],
+    ['foo bar',      'space in surface name'],
+    ['FOO',          'uppercase letters'],
+    ['foo..bar',     'double-dot without slash'],
+    ['../../etc',    'deep traversal'],
+  ];
+
+  for (const [surface, label] of traversalCases) {
+    it(`rejects "${surface}" — ${label}`, async () => {
+      vi.stubEnv('UAT_SECRET', SECRET);
+      let thrown;
+      try {
+        await runSignPdf(surface, { folder: tmpDir });
+      } catch (err) {
+        thrown = err;
+      }
+      expect(thrown, `expected rejection for: ${surface}`).toBeDefined();
+      expect(thrown.exitCode).toBe(2);
+    });
+  }
+
+  it('accepts a valid kebab-case surface name', async () => {
+    vi.stubEnv('UAT_SECRET', SECRET);
+    vi.stubEnv('CHROME_PATH', '/usr/bin/chromium');
+
+    await makeSurface(tmpDir, 'valid-surface');
+    // Should not throw on validateSurface — may throw later for other reasons (chain etc.)
+    // We just verify no exitCode 2 from the validator.
+    let thrown;
+    try {
+      await runSignPdf('valid-surface', { folder: tmpDir });
+    } catch (err) {
+      thrown = err;
+    }
+    // If it threw, it should NOT be exitCode 2 (validation error)
+    if (thrown) {
+      expect(thrown.exitCode).not.toBe(2);
+    }
+  });
+});
