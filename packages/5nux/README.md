@@ -4,12 +4,12 @@ Meta-package that installs all 5 active 5-NUX CLIs in one command. Each NUX node
 
 | Package | Layer | Status |
 |---|---|---|
-| [@leapnux/rootnux](../rootnux) | Intent (specs, ADRs, risks, KB) | active |
-| [@leapnux/trunknux](../trunknux) | Build (sprint scaffolding, summaries, log) | active |
-| [@leapnux/branchnux](../branchnux) | Verification (test plans, RTM, SCA, OSCAL, sign) | active |
-| [@leapnux/leafnux](../leafnux) | Continuous health (RAG-status snapshot) | active |
-| [@leapnux/fruitnux](../fruitnux) | External deliverables (audit handoff packets) | active scope (verbs in design) |
-| [@leapnux/6nux-core](../6nux-core) | Shared library (conventions, IDs, utils) | active |
+| [@leapnux/rootnux](https://www.npmjs.com/package/@leapnux/rootnux) | Intent (specs, ADRs, risks, KB) | active |
+| [@leapnux/trunknux](https://www.npmjs.com/package/@leapnux/trunknux) | Build (sprint scaffolding, summaries, log) | active |
+| [@leapnux/branchnux](https://www.npmjs.com/package/@leapnux/branchnux) | Verification (test plans, RTM, SCA, OSCAL, sign) | active |
+| [@leapnux/leafnux](https://www.npmjs.com/package/@leapnux/leafnux) | Continuous health (RAG-status snapshot) | active |
+| [@leapnux/fruitnux](https://www.npmjs.com/package/@leapnux/fruitnux) | External deliverables (audit handoff packets) | active scope (verbs in design) |
+| [@leapnux/6nux-core](https://www.npmjs.com/package/@leapnux/6nux-core) | Shared library (conventions, IDs, utils) | active |
 
 ## Install
 
@@ -43,7 +43,7 @@ The 6-NUX taxonomy includes a **soilnux** node (infrastructure, vendors, IaC, on
 
 ## Part of the 5-NUX family
 
-This is the meta-package. Sibling packages: [rootnux](../rootnux), [trunknux](../trunknux), [branchnux](../branchnux), [leafnux](../leafnux), [fruitnux](../fruitnux), [6nux-core](../6nux-core).
+This is the meta-package. Sibling packages: [rootnux](https://www.npmjs.com/package/@leapnux/rootnux), [trunknux](https://www.npmjs.com/package/@leapnux/trunknux), [branchnux](https://www.npmjs.com/package/@leapnux/branchnux), [leafnux](https://www.npmjs.com/package/@leapnux/leafnux), [fruitnux](https://www.npmjs.com/package/@leapnux/fruitnux), [6nux-core](https://www.npmjs.com/package/@leapnux/6nux-core). See the [root README](https://github.com/leapnux/5nux#readme) for the full taxonomy and install instructions.
 
 ## License
 
