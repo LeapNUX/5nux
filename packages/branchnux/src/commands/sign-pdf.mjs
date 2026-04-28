@@ -27,6 +27,7 @@
 import fs from 'fs';
 import path from 'path';
 import { verifyChain } from '../lib/uat-log.mjs';
+import { validateSurface } from '../lib/validate-surface.mjs';
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
@@ -41,6 +42,9 @@ import { verifyChain } from '../lib/uat-log.mjs';
  * opts.json    — emit events as newline-delimited JSON records.
  */
 export async function runSignPdf(surface, opts = {}) {
+  // Block path-traversal attacks: ../foo, ..\\foo, foo/bar, foo bar, etc.
+  validateSurface(surface);
+
   const { folder = process.cwd(), output, json = false } = opts;
 
   // ── 1. Locate surface folder ─────────────────────────────────────────────
@@ -169,12 +173,35 @@ export async function runSignPdf(surface, opts = {}) {
 
   const chromePath = process.env.CHROME_PATH ?? process.env.PUPPETEER_EXECUTABLE_PATH;
 
+  // ── SEC-F6: try with sandbox first; fall back with warning in rootless envs ──
+  let browser;
   try {
-    const browser = await puppeteer.default.launch({
+    browser = await puppeteer.default.launch({
       executablePath: chromePath,
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
+  } catch (_sandboxErr) {
+    process.stderr.write(
+      '[branchnux] WARNING: launching puppeteer with --no-sandbox ' +
+      '(rootless env detected). Do NOT run untrusted .md content through this tool.\n',
+    );
+    try {
+      browser = await puppeteer.default.launch({
+        executablePath: chromePath,
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      });
+    } catch (err) {
+      const renderErr = new Error(
+        `[sign pdf] PDF render failed: ${err.message}\n` +
+        `  Set CHROME_PATH env var to the path of your Chrome/Chromium executable.`,
+      );
+      renderErr.exitCode = 1;
+      throw renderErr;
+    }
+  }
+
+  try {
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle0' });
     await page.pdf({
@@ -185,6 +212,7 @@ export async function runSignPdf(surface, opts = {}) {
     });
     await browser.close();
   } catch (err) {
+    try { await browser.close(); } catch { /* ignore close error */ }
     const renderErr = new Error(
       `[sign pdf] PDF render failed: ${err.message}\n` +
       `  Set CHROME_PATH env var to the path of your Chrome/Chromium executable.`,

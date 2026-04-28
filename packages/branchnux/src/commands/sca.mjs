@@ -44,6 +44,7 @@ import {
   parseCodeAnnotations,
 } from '../lib/parser.mjs';
 import { buildGraph } from '../lib/graph.mjs';
+import { validateSurface } from '../lib/validate-surface.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -364,16 +365,36 @@ export async function runScaPdf(surface, opts = {}) {
 
   const pdfPath = existingFile.replace(/\.md$/, '.pdf');
 
-  // TODO: In production, resolve the chromium executable path from environment
-  // or from puppeteer's own bundled chromium. Currently uses CHROME_PATH env var.
+  // SEC-F6: try with sandbox first; fall back with warning in rootless envs.
   const chromePath = process.env.CHROME_PATH ?? process.env.PUPPETEER_EXECUTABLE_PATH;
 
+  let browser;
   try {
-    const browser = await puppeteer.default.launch({
+    browser = await puppeteer.default.launch({
       executablePath: chromePath,
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
+  } catch (_sandboxErr) {
+    process.stderr.write(
+      '[branchnux] WARNING: launching puppeteer with --no-sandbox ' +
+      '(rootless env detected). Do NOT run untrusted .md content through this tool.\n',
+    );
+    try {
+      browser = await puppeteer.default.launch({
+        executablePath: chromePath,
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      });
+    } catch (err) {
+      throw exitError(
+        `PDF render failed: ${err.message}\n` +
+          `Set CHROME_PATH env var to the path of your Chrome/Chromium executable.`,
+        1,
+      );
+    }
+  }
+
+  try {
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle0' });
     await page.pdf({
@@ -387,6 +408,7 @@ export async function runScaPdf(surface, opts = {}) {
     log(json, { event: 'sca.pdf.done', path: pdfPath });
     if (!json) console.log(`\nPDF rendered: ${pdfPath}\n`);
   } catch (err) {
+    try { await browser.close(); } catch { /* ignore close error */ }
     throw exitError(
       `PDF render failed: ${err.message}\n` +
         `Set CHROME_PATH env var to the path of your Chrome/Chromium executable.`,
@@ -821,18 +843,6 @@ function applySubstitutions(template, subs) {
   return template.replace(/\{\{(\w+)\}\}/g, (match, key) =>
     Object.prototype.hasOwnProperty.call(subs, key) ? subs[key] : match,
   );
-}
-
-function validateSurface(surface) {
-  if (!surface || typeof surface !== 'string') {
-    throw exitError('surface is required', 2);
-  }
-  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(surface)) {
-    throw exitError(
-      `surface must be lowercase-kebab-case. Got: "${surface}"`,
-      2,
-    );
-  }
 }
 
 function exitError(message, code) {
