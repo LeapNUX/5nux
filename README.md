@@ -34,7 +34,26 @@ What you get, concretely:
 | `trunknux new-sprint <slug>` | Date-prefixed sprint folder with scaffolded README + LOG |
 | `leafnux health` | RAG-status snapshot of your whole project (requirements, risks, ADRs, sprint freshness) |
 
-> **Is 5-NUX OSS alone enough to ship + pass audits?** Yes. Adjacent tools (kanban, chat, dashboards, build pipelines) are optional pairings, not requirements. For the full "what's enough" breakdown — see [`docs/scope.md`](docs/scope.md).
+> **Is 5-NUX OSS alone enough to ship + pass audits?** Yes. Adjacent tools (kanban, chat, dashboards, build pipelines) are optional pairings, not requirements.
+
+### What 5-NUX OSS does *not* include — and your three options
+
+For each capability outside 5-NUX OSS scope, you have three orthogonal options:
+
+| If you want... | A: Existing market apps | B: Build yourself | C: Engage LeapNuX premium |
+|---|---|---|---|
+| **Active task tracking + kanban boards** | GitHub Issues, Linear, Jira, Asana, Trello | Custom kanban over your `requirements/` + sprint-log/ | LeapNuX 6-NUX hosted board |
+| **Visual roadmap / Gantt timeline** | Productboard, Aha!, GitHub Projects | Render a Gantt from sprint-log/ folder dates | LeapNuX 6-NUX roadmap view |
+| **Real-time team chat + notifications** | Slack, Discord, Microsoft Teams | Self-host Mattermost / Rocket.Chat | LeapNuX 6-NUX notification hub |
+| **Build + deploy pipelines** | GitHub Actions, CircleCI, Jenkins, Vercel | Self-host Drone / Concourse | Out of scope (use existing tooling) |
+| **GUI for non-technical stakeholders** (compliance officers, executives, board) | None that surface RTM / SCA / OSCAL natively | Render `--json` outputs into your own dashboard | LeapNuX 6-NUX premium GUI — purpose-built for compliance |
+| **Multi-user hosted dashboards / signed evidence portal** | None mapping cleanly to OSCAL + HMAC ledger | Stand up a portal yourself with the JSON outputs | LeapNuX 6-NUX premium evidence portal |
+| **Account-bound auditor access + per-firm scoping** | DocuSign Rooms, ShareFile (generic) | Build access control on your repo + cloud storage | LeapNuX 6-NUX premium audit-room |
+| **Professional support contract + SLA** | None for OSS RTM tooling | Hire a freelance compliance engineer | LeapNuX 6-NUX premium support tier |
+
+**Column A** is what most teams reach for first — pair them with 5-NUX, no integration needed. **Column B** is the DIY path against the `--json` outputs of every 5-NUX verb. **Column C** is when you want a turn-key commercial product with hosted infra, multi-user RBAC, and account-bound access — that's [LeapNuX 6-NUX premium](docs/MOTTO.md).
+
+For the full "what's enough" breakdown, comparison vs DOORS / Polarion / Jama / codeBeamer, and adoption sequence — see [`docs/scope.md`](docs/scope.md).
 
 ---
 
@@ -48,14 +67,14 @@ What you get, concretely:
 | `@leapnux/leafnux` | continuous health | active | `health` |
 | `@leapnux/fruitnux` | external deliverables | scoped (verbs in design) | (`pack` candidate for v0.5.1+) |
 | `@leapnux/6nux-core` | shared library | active | (no CLI; shared schemas, conventions, IDs, utils) |
-| `@leapnux/5nux` | meta-package | active | (no CLI; installs the 3 active NUX CLIs + 2 reserved skeletons) |
+| `@leapnux/5nux` | meta-package | active | (no CLI; installs all 5 active NUX CLIs + 6nux-core) |
 
 ---
 
 ## Install
 
 ```sh
-npm install -g @leapnux/5nux        # full stack (3 active CLIs + 2 reserved skeletons)
+npm install -g @leapnux/5nux        # full stack (all 5 active NUX CLIs + 6nux-core)
 npm install -g @leapnux/rootnux     # just requirements + ADRs + risks + KB
 npm install -g @leapnux/trunknux    # just sprint scaffolding
 npm install -g @leapnux/branchnux   # just verification + RTM + SCA + OSCAL + sign-off

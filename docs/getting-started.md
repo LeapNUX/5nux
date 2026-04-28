@@ -7,30 +7,40 @@
 ## Prerequisites
 
 - Node.js 20 or later (`node --version`)
-- Playwright browsers (installed by BranchNuX on first use)
+- Playwright browsers (installed by branchnux on first use)
 - A terminal
 
 ---
 
 ## Step 1 — Install
 
+The full 5-NUX OSS stack ships as a meta-package — installs all 5 active NUX CLIs (rootnux, trunknux, branchnux, leafnux, fruitnux) + 6nux-core in one command:
+
 ```bash
-npm install -g branchnux
+npm install -g @leapnux/5nux
 branchnux --version    # verify
 ```
 
 Expected output:
 
 ```
-0.1.0
+0.5.0-alpha.1
 ```
 
-That's it. The package is on npm — `npm install -g branchnux` works on any machine with Node 20+.
+> **Note:** the `@leapnux/*` scope claim on npm is in progress. While that's pending, install from GitHub:
+>
+> ```bash
+> npm install -g github:leapnux/5nux
+> ```
 
-**Alternative — install from GitHub** (for unreleased commits / contributors):
+You can also install individual NUX packages if you only want one stage:
 
 ```bash
-npm install -g github:leapnux/5nux
+npm install -g @leapnux/rootnux     # specs, ADRs, risks, KB
+npm install -g @leapnux/trunknux    # sprint scaffolding
+npm install -g @leapnux/branchnux   # verification + RTM + SCA + OSCAL
+npm install -g @leapnux/leafnux     # continuous-health snapshots
+npm install -g @leapnux/fruitnux    # external deliverables (verbs in design)
 ```
 
 **Alternative — clone for development:**

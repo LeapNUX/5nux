@@ -79,7 +79,7 @@ Most enterprise PM tools (DOORS, Polarion, Jama, codeBeamer) were designed pre-L
 - **Aider** — git-aware agent loops
 - **Cline** (formerly Claude Dev) — VS Code-integrated agent
 - **OpenAI Codex CLI** — second-opinion adversarial reviews via the gstack `/codex` skill
-- **MCP-enabled tooling** — `branchnux mcp` server (planned v0.3+) will expose verbs as MCP tools
+- **MCP-enabled tooling** — `branchnux mcp` server in design will expose verbs as MCP tools; until then, MCP-enabled clients can shell out to the standalone CLI directly
 
 If your agent can run a shell command and read/write files, 5-NUX works.
 

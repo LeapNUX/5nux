@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — leafnux + fruitnux promoted from deferred to active OSS (2026-04-28)
+
+- **`@leapnux/leafnux`** — promoted from "reserved skeleton (DEFERRED)" to **active OSS**. Ships `health` verb in v0.5.0-alpha.1. RAG-status snapshot of project state (requirements freshness, ADR coverage, sprint cadence, risk-register staleness).
+- **`@leapnux/fruitnux`** — promoted from "reserved skeleton (DEFERRED)" to **active OSS scope**. `pack` is the first candidate verb (audit-handoff packet bundling). Verbs in design; package skeleton + CLI scaffold shipped.
+- **`@leapnux/5nux` meta-package** — now installs **all 5 active NUX CLIs** (rootnux, trunknux, branchnux, leafnux, fruitnux) plus 6nux-core. No more "optional skeleton" packages.
+- **README.md, packages/5nux/README.md, CLAUDE.md, docs/6-NUX.md, docs/MOTTO.md** — synchronized to reflect leafnux + fruitnux as part of the complete 5-NUX OSS tree (root → trunk → branch → leaf → fruit).
+- **`docs/scope.md`** + **`docs/collaboration.md`** — added: scope clarifies what 5-NUX is/isn't and the three-options framing (existing apps / build yourself / engage LeapNuX premium); collaboration documents stakeholder × node × AI-role matrix and the 4 collab patterns.
+- **6-NUX premium framing** — across MOTTO.md, ARCHITECTURE.md, scope.md, packages/5nux/README.md, CLAUDE.md: removed "future" hedging. 6-NUX premium reads as a real commercial offering today (onboarding, training, hosting, backend, account management).
+
 ### Added — dogfood pass (2026-04-27)
 
 BranchNuX is the tool that produces audit-defensible evidence chains. As of v0.2.2 it didn't dogfood itself. This pass closes that gap. The project now uses its own discipline on its own surface, and every artifact lives in the public repo.

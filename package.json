@@ -34,5 +34,10 @@
     "@vitest/coverage-v8": "^4.1.5",
     "eslint": "^10.2.1",
     "vitest": "^4.1.5"
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "^14.0.0"
+    }
   }
 }

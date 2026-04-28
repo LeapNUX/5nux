@@ -9,12 +9,12 @@ If you're an AI assistant arriving fresh, read [docs/ARCHITECTURE.md](./docs/ARC
 ```
 packages/
 ├── 6nux-core/        → @leapnux/6nux-core   (shared lib — schemas, conventions, IDs, utils)
-├── rootnux/          → @leapnux/rootnux     (5 verbs: init/lint/adr-new/risk-add/status)
-├── trunknux/         → @leapnux/trunknux    (3 verbs: new-sprint/summarize/lint)
+├── rootnux/          → @leapnux/rootnux     (6 verbs: init/lint/adr-new/risk-add/status/kb-init)
+├── trunknux/         → @leapnux/trunknux    (4 verbs: new-sprint/summarize/lint/log)
 ├── branchnux/        → @leapnux/branchnux   (15+ verbs: plan/codify/report/sca/...)
-├── leafnux/          → @leapnux/leafnux     (skeleton — DEFERRED, no committed timeline)
-├── fruitnux/         → @leapnux/fruitnux    (skeleton — DEFERRED, no committed timeline)
-└── 5nux/             → @leapnux/5nux        (meta-package; installs the 5 active NUX packages)
+├── leafnux/          → @leapnux/leafnux     (active — `health` verb shipped v0.5.0)
+├── fruitnux/         → @leapnux/fruitnux    (active scope — `pack` + handoff verbs in design)
+└── 5nux/             → @leapnux/5nux        (meta-package; installs all 5 active NUX packages)
 ```
 
 Run `npm install` at the workspace root. Run `npm test` at the workspace root (executes per-workspace test script for each package that has one).

@@ -42,12 +42,13 @@ The `NuX` suffix denotes "node in the taxonomy" (root-NuX, trunk-NuX, etc.). Bra
 **Definition:** Why the product is what it is. Specs, decisions, governance, declined-by-design rationales.
 
 **What lives here:**
-- `requirements/REQUIREMENTS.md` — 102 R-XX product specs
+- `requirements/REQUIREMENTS.md` — R-XX product specs (scaffolded by `rootnux init`)
 - `requirements/MASTER_BACKLOG.md` — what remains
-- `docs/adr/` *(future)* — Architecture Decision Records
-- `requirements/risks/` *(future)* — risk register
-- `docs/governance/` *(future)* — vendor list, data classification, threat model specs
-- DECLINED + DEFERRED items with rationale (R-97, R-98, R-99, R-100)
+- `docs/adr/` — Architecture Decision Records (scaffolded by `rootnux adr-new`)
+- `requirements/risks/` — risk register (scaffolded by `rootnux risk-add`)
+- `docs/KNOWLEDGE_BASE.md` — KB scaffold (scaffolded by `rootnux kb-init`)
+- `docs/governance/` *(scaffold in design)* — vendor list, data classification, threat model specs
+- DECLINED + DEFERRED items with rationale
 
 **Role:** The foundation. Anchors everything. A trunk node without a root is orphan code; a fruit without a root is unprovenanced evidence.
 

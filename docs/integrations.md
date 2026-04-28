@@ -1,62 +1,73 @@
 # Integrations
 
+5-NUX is OSS PM-tool-chain in CLI form. Every package is a standalone Node.js binary, every artifact is a plain file, every output has a `--json` mode. That makes integration trivial — you don't need an SDK, you `bash -c "<verb>"` and read the file.
+
+This doc covers (a) the standalone CLI surface, (b) AI-agent integration, (c) GRC platform compatibility, (d) MCP server status.
+
 ---
 
-## v0.1 — Standalone CLI
+## Standalone CLIs (current)
 
-BranchNuX v0.1 is a standalone Node.js CLI. It has no runtime dependencies on Claude Code, gstack, or any AI service for its core `init`, `report`, `validate`, `demo`, and `doctor` commands.
-
-**Install:**
+The 5 active NUX packages each ship a Node.js CLI. Install the meta-package or any subset:
 
 ```bash
-npm install -g branchnux@next
-# or without global install:
-npx branchnux <command>
+npm install -g @leapnux/5nux                  # full stack
+# or individually:
+npm install -g @leapnux/rootnux               # specs / ADRs / risks / KB
+npm install -g @leapnux/trunknux              # sprint scaffolding
+npm install -g @leapnux/branchnux             # verification + RTM + SCA + OSCAL + sign
+npm install -g @leapnux/leafnux               # continuous-health snapshots
+npm install -g @leapnux/fruitnux              # external deliverables (verbs in design)
 ```
 
-**Requirements:** Node.js 20+, Playwright chromium (auto-installed on first `demo` or `doctor --fix`).
+> **Note:** the `@leapnux/*` npm scope claim is in progress. Until then, install from GitHub: `npm install -g github:leapnux/5nux`.
 
-No API keys. No SaaS registration. No network calls during `report` or `validate`. Output lives in your repo.
+**Requirements:** Node.js 20+. `branchnux discover/plan/codify/enrich` are LLM-powered and call the Anthropic API via `@anthropic-ai/sdk` — installed as an **optional peer dependency**, only required when those specific verbs are invoked.
+
+The deterministic-core verbs (`init`, `report`, `validate`, `rtm`, `sca`, `sca-oscal`, `sign`, `health`, `new-sprint`, `summarize`, etc.) make zero network calls and require no API key. Output lives in your repo.
 
 ---
 
-## Roadmap
+## LLM acceleration (current, opt-in)
 
-### v0.2 — LLM acceleration (optional)
+LLM-powered verbs ship today behind explicit cost gates:
 
-v0.2 adds LLM-powered commands (`plan`, `codify`, `discover`, `enrich`, `rtm`, `sca generate`). These are opt-in and require a `CLAUDE_API_KEY` environment variable.
+| Verb | What it does |
+|---|---|
+| `branchnux discover` | Crawl a URL surface and propose test scenarios |
+| `branchnux plan` | Draft `test-plan.md` with `[VERIFY]` markers on every TC |
+| `branchnux codify` | Generate Playwright `spec.ts` from `test-plan.md` |
+| `branchnux enrich` | Append-only enrichment passes (security gaps, accessibility gaps, edge cases) |
+| `branchnux sca` | Generate Security Control Assessment from test results + R-XX evidence |
 
-The v0.1 deterministic core (`init`, `report`, `validate`, `demo`, `doctor`) remains fully functional without any API key.
+Cost-control surface (every LLM verb):
 
-LLM integration details:
+- `--dry-run` — prints planned LLM calls and estimated cost; mandatory first run for any new project.
+- `--max-spend <USD>` — aborts mid-run if cost exceeds the cap.
+- `--json` — structured output for downstream agent processing.
 
-- Model: configurable via `--model` flag; default is a cost/speed-balanced Sonnet-class model for mechanical tasks, Opus-class for reasoning tasks (see `docs/v0.2-llm-agents.md`)
-- All LLM-generated cells render with `[VERIFY]` markers until human-attested
-- `--dry-run` flag prints planned LLM calls and estimated cost before executing
-- `--max-spend <USD>` aborts if estimated cost exceeds the threshold
+Configurable via `--model` flag; default is a Sonnet-class model for mechanical tasks, Opus-class for reasoning. All LLM-generated cells render with `[VERIFY]` markers until human-attested — see [`docs/collaboration.md`](./collaboration.md).
 
-### v0.3 — gstack skill bundle (planned)
+---
 
-v0.3 will ship `/branchnux` as a first-class gstack skill. The skill will wrap the standalone CLI and add:
+## AI-agent ecosystems (current)
 
-- Browser-coupled discovery (`branchnux discover` via `claude-in-chrome` MCP)
-- Multi-agent batch plan generation (`branchnux batch-plan`)
-- Design-review and QA enrichment loops
+5-NUX is verified to work cleanly with these agent workflows — no special integration required, just plain CLI invocation:
 
-The standalone CLI remains the primary distribution path. gstack will be an optional integration for teams already using gstack.
+- **Claude Code** (Anthropic) — primary development environment
+- **Cursor** — file edits + CLI
+- **Aider** — git-aware agent loops
+- **Cline** — VS Code-integrated agent
+- **OpenAI Codex CLI** — second-opinion adversarial reviews via the gstack `/codex` skill
+- **MCP-enabled tooling** (see below)
 
-Usage (once shipped):
+If your agent can run a shell command and read/write files, 5-NUX works. The agent uses 5-NUX the same way a human does — same verbs, same artifacts, same evidence chain.
 
-```
-/branchnux init login --industry general
-/branchnux report login
-```
+---
 
-### v0.3 — MCP server for Claude Code (planned)
+## MCP server (in design)
 
-v0.3 will also ship an MCP (Model Context Protocol) server that exposes BranchNuX as a tool in Claude Code. This will enable inline test-plan generation, report access, and RTM queries without leaving the editor.
-
-Usage (once shipped):
+A `branchnux mcp` Model Context Protocol server is in design — will expose every branchnux verb as an MCP tool callable from Claude Code, Cline, and any MCP-enabled client. Target shape once shipped:
 
 ```json
 // .claude/settings.json
@@ -64,29 +75,38 @@ Usage (once shipped):
   "mcpServers": {
     "branchnux": {
       "command": "npx",
-      "args": ["-y", "branchnux", "mcp"]
+      "args": ["-y", "@leapnux/branchnux", "mcp"]
     }
   }
 }
 ```
 
+Until the MCP server ships, the standalone CLI works identically — agents shell out to `branchnux` directly.
+
+---
+
+## gstack skill bundle (in design)
+
+A `/branchnux` gstack skill is in design — will wrap the standalone CLI and add browser-coupled discovery (via `claude-in-chrome` MCP), multi-agent batch plan generation, and design-review enrichment loops. The standalone CLI remains the primary distribution path; gstack will be an optional integration for teams already using gstack.
+
 ---
 
 ## GRC platform compatibility
 
-BranchNuX produces artefacts that import into common GRC platforms. No native integrations exist at v0.1; these are manual exports:
+5-NUX produces artifacts that import into common GRC platforms. No native integrations exist; these are manual exports:
 
-| Platform | Import method | Artefact |
-|----------|--------------|---------|
+| Platform | Import method | Artifact |
+|---|---|---|
 | Vanta | Upload evidence ZIP | `evidence/*.png` + `execution-report.html` |
 | Drata | Evidence upload | `execution-report.html` per control |
 | ServiceNow GRC | CSV import | `test-plan.xlsx` (one row per TC) |
-| Jira | Attachment or JSON import | `findings.json` (v0.2, from `findings.schema.json`) |
+| Jira | Attachment or JSON import | `findings.json` (from `findings.schema.json`) |
+| GovReady / RegScale / IBM OpenPages | OSCAL 1.1.2 JSON ingest | `branchnux sca-oscal <surface>` output |
 
-v0.2's OSCAL JSON output enables native import into any FedRAMP-compliant GRC platform (GovReady, RegScale, IBM OpenPages). This is the path for federal and federal-adjacent customers.
+The OSCAL 1.1.2 output is the canonical path for FedRAMP, SOC 2 examiners, and any GRC platform with NIST RFC-0024 support (mandatory September 2026).
 
 ---
 
 ## Questions?
 
-Open a GitHub Discussion on the `branchnux` repo. Tag it `integrations` for routing.
+Open a GitHub Discussion on the [`leapnux/5nux`](https://github.com/leapnux/5nux) repo. Tag with `integrations` for routing.

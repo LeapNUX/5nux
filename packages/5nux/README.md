@@ -1,14 +1,15 @@
 # @leapnux/5nux — the OSS LeapNuX stack
 
-Meta-package that installs the **active** 5-NUX CLIs in one command. The 2 reserved-skeleton packages (leafnux, fruitnux) are listed as optional dependencies — they install too, but their CLIs only print a "skeleton — deferred" message until real verbs ship.
+Meta-package that installs all 5 active 5-NUX CLIs in one command. Each NUX node serves a different stage of the regulated-software lifecycle, and they all install together.
 
 | Package | Layer | Status |
 |---|---|---|
-| [@leapnux/rootnux](../rootnux) | Intent (specs, ADRs, risks) | active |
-| [@leapnux/trunknux](../trunknux) | Build (sprint scaffolding) | active |
-| [@leapnux/branchnux](../branchnux) | Verification (test plans, RTM, SCA) | active |
-| [@leapnux/leafnux](../leafnux) | Continuous health | reserved skeleton (optional dep) |
-| [@leapnux/fruitnux](../fruitnux) | External deliverables | reserved skeleton (optional dep) |
+| [@leapnux/rootnux](../rootnux) | Intent (specs, ADRs, risks, KB) | active |
+| [@leapnux/trunknux](../trunknux) | Build (sprint scaffolding, summaries, log) | active |
+| [@leapnux/branchnux](../branchnux) | Verification (test plans, RTM, SCA, OSCAL, sign) | active |
+| [@leapnux/leafnux](../leafnux) | Continuous health (RAG-status snapshot) | active |
+| [@leapnux/fruitnux](../fruitnux) | External deliverables (audit handoff packets) | active scope (verbs in design) |
+| [@leapnux/6nux-core](../6nux-core) | Shared library (conventions, IDs, utils) | active |
 
 ## Install
 
@@ -18,25 +19,23 @@ npm install -g @leapnux/5nux
 
 Equivalent to:
 ```sh
-npm install -g @leapnux/rootnux @leapnux/trunknux @leapnux/branchnux
-# leafnux + fruitnux installed as optionalDependencies (skeleton CLIs)
+npm install -g @leapnux/rootnux @leapnux/trunknux @leapnux/branchnux @leapnux/leafnux @leapnux/fruitnux
+# 6nux-core installs as a transitive dependency
 ```
 
 ## What you get
 
-After install, three working CLIs land on your `PATH`:
+After install, five working CLIs land on your `PATH`:
 
 ```
 rootnux init                    # scaffold REQUIREMENTS.md / TRACEABILITY.md / risks/ / docs/adr/
 trunknux new-sprint <slug>      # date-prefixed sprint folder
 branchnux init <surface>        # testing-log/<date>_<surface>/ scaffold
+leafnux health                  # RAG-status snapshot of project state
+fruitnux --help                 # external-deliverable verbs (pack + signing handoff verbs in design)
 ```
 
-Plus 5+ more verbs per package. Run `<verb> --help` for full surface.
-
-## What's deferred
-
-`leafnux` (continuous health) and `fruitnux` (external deliverables) are **reserved skeletons** — their CLIs print a "DEFERRED — future sprint" message. They install with the meta-package so namespaces are claimed, but no real work runs until v0.5+ candidate verbs ship (see [docs/ARCHITECTURE.md](https://github.com/leapnux/5nux/blob/main/docs/ARCHITECTURE.md) v0.5+ section).
+Plus 10+ more verbs across the chain. Run `<verb> --help` for full surface or see [docs/reference.md](https://github.com/leapnux/5nux/blob/main/docs/reference.md).
 
 ## What about the 6th node?
 

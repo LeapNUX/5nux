@@ -97,7 +97,7 @@ Be honest about this:
 - **You need a kanban board your team lives in** — use GitHub Projects, Linear, Jira. 5-NUX won't replace those.
 - **You need real-time multi-user collaboration during sprint planning** — use a SaaS PM tool. 5-NUX is single-user CLI.
 - **You need a vendor with 24/7 support contract for compliance audits** — at OSS scale, use codeBeamer or DOORS with a support tier; 5-NUX has no SLA.
-- **Your team has zero CLI comfort** — 5-NUX assumes terminal fluency. (Until 6-NUX premium ships a GUI, you'd be paddling upstream.)
+- **Your team has zero CLI comfort** — 5-NUX assumes terminal fluency. If you want a GUI for non-engineers today, that's where [6-NUX premium](./MOTTO.md) (hosted SaaS + service engagements) comes in.
 - **You don't ship regulated software** — RTM/SCA/OSCAL aren't your problem. You'd be paying the regulated-software ceremony tax for nothing. Use Linear or whatever your team prefers.
 
 For everyone else — regulated-software teams who treat AI as a partner and want their evidence chain in plain files in their git repo — 5-NUX is exactly what they're shopping for.
@@ -107,7 +107,7 @@ For everyone else — regulated-software teams who treat AI as a partner and wan
 If you're convinced and want to start, the typical adoption sequence:
 
 1. **Read** [`docs/getting-started.md`](./getting-started.md)
-2. **Install** the meta-package: `npm install -g @leapnux/5nux` (after we publish to npm)
+2. **Install** the meta-package: `npm install -g @leapnux/5nux` (npm scope claim in progress; until then `npm install -g github:leapnux/5nux`)
 3. **Run `rootnux init`** in your project root — scaffolds REQUIREMENTS.md, TRACEABILITY.md, risks register, docs/adr/
 4. **Author your R-XX requirements** in REQUIREMENTS.md (or import from your existing spec docs)
 5. **Run `branchnux init <surface>`** for your first surface (e.g. login)
