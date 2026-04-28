@@ -29,7 +29,7 @@ The **NUX suffix** is a 6-NUX-product-family marker. Future LeapNuX products tha
 ## Monorepo layout
 
 ```
-github.com/leapnux/5nux/                      ← repo (transferring from StillNotBald/branchnux)
+github.com/leapnux/5nux/                      ← repo (transferring from leapnux/5nux)
 ├── package.json                              ← workspace root, private:true
 ├── package-lock.json                         ← shared
 ├── LICENSE / NOTICE / SECURITY.md / CLAUDE.md

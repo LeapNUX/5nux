@@ -308,7 +308,7 @@ export async function runDiscover(url, opts = {}) {
       `LLM response could not be parsed as scenarios.md:\n\n  ${parseErr.message}\n\n` +
       `  Raw response saved to: ${rawPath}\n` +
       '  Review the raw file and re-run, or file a bug at:\n' +
-      '  https://github.com/StillNotBald/branchnux/issues',
+      '  https://github.com/leapnux/5nux/issues',
     );
     const err = new Error('LLM response parse error');
     err.exitCode = 3;
@@ -382,7 +382,7 @@ async function fetchHtml(url) {
     resp = await fetch(url, {
       signal: controller.signal,
       headers: {
-        'User-Agent': 'branchnux/0.0.1 (+https://github.com/StillNotBald/branchnux)',
+        'User-Agent': 'branchnux/0.0.1 (+https://github.com/leapnux/5nux)',
         'Accept':     'text/html,application/xhtml+xml',
       },
     });

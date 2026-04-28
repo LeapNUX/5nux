@@ -6,11 +6,11 @@
   "author": "Chu Ling",
   "repository": {
     "type": "git",
-    "url": "https://github.com/StillNotBald/branchnux.git"
+    "url": "https://github.com/leapnux/5nux.git"
   },
-  "homepage": "https://github.com/StillNotBald/branchnux#readme",
+  "homepage": "https://github.com/leapnux/5nux#readme",
   "bugs": {
-    "url": "https://github.com/StillNotBald/branchnux/issues"
+    "url": "https://github.com/leapnux/5nux/issues"
   },
   "type": "module",
   "main": "src/index.mjs",

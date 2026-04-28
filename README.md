@@ -155,7 +155,7 @@ BranchNuX is the most mature node in the tree. A few design decisions worth know
 - **v0.5.0-alpha.1** — `trunknux log`, `rootnux kb-init`, `leafnux health` (three verbs shipping in parallel); fruitnux scoped with first verb candidate (`fruitnux pack`) in design
 - **v1.0** — stability milestone + landing page at leapnux.com + 6-NUX commercial spec
 
-If you want the roadmap to prioritize a specific artifact type, [open an issue](https://github.com/StillNotBald/branchnux/issues).
+If you want the roadmap to prioritize a specific artifact type, [open an issue](https://github.com/leapnux/5nux/issues).
 
 ---
 
@@ -177,4 +177,4 @@ Apache 2.0. See [LICENSE](LICENSE).
 
 Chu Ling ([StillNotBald](https://github.com/StillNotBald)) — ccling1998@gmail.com
 
-Security reports: [GitHub Private Vulnerability Reporting](https://github.com/StillNotBald/branchnux/security/advisories/new) (preferred) or email.
+Security reports: [GitHub Private Vulnerability Reporting](https://github.com/leapnux/5nux/security/advisories/new) (preferred) or email.

@@ -40,7 +40,7 @@ fruitnux v${version}
   premium territory; OSS will likely never grow them.
 
   See docs/6-NUX.md and docs/MOTTO.md for the OSS/Premium product split.
-  Roadmap: https://github.com/StillNotBald/branchnux
+  Roadmap: https://github.com/leapnux/5nux
 `.trim();
 
 console.log(message);

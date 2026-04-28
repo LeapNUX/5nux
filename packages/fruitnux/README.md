@@ -55,9 +55,9 @@ fruitnux is the **external deliverables** layer — SCAs, pen-test reports, SOC 
 packets, regulator-facing PDFs, sign-off packages. The harvest the tree exists to
 produce.
 
-See [docs/6-NUX.md](https://github.com/StillNotBald/branchnux/blob/main/docs/6-NUX.md)
+See [docs/6-NUX.md](https://github.com/leapnux/5nux/blob/main/docs/6-NUX.md)
 for the artifact taxonomy and
-[docs/MOTTO.md](https://github.com/StillNotBald/branchnux/blob/main/docs/MOTTO.md)
+[docs/MOTTO.md](https://github.com/leapnux/5nux/blob/main/docs/MOTTO.md)
 for the OSS/Premium product split.
 
 ## License

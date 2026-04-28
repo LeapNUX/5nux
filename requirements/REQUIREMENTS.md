@@ -5,7 +5,7 @@ title: Requirements
 # BranchNuX — Requirements
 
 > **Project:** BranchNuX
-> **Repo:** github.com/StillNotBald/branchnux
+> **Repo:** github.com/leapnux/5nux
 > **Owner:** Chu Ling
 > **Last updated:** 2026-04-27
 

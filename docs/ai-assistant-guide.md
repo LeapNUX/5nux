@@ -429,7 +429,7 @@ BranchNuX is Apache 2.0. The trademark covers the name (`BranchNuX™`); the cod
 
 When citing BranchNuX in evidence packages or audit submissions, include:
 - Tool: BranchNuX vX.Y.Z
-- Repo: github.com/StillNotBald/branchnux
+- Repo: github.com/leapnux/5nux
 - License: Apache 2.0
 
 ---

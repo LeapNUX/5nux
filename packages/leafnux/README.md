@@ -94,9 +94,9 @@ leafnux is the **continuous health** layer — observability signals, CI/CD gate
 dependabot, secrets-scan, performance trends, audit-log integrity. The day-to-day
 vital signs that keep the tree alive.
 
-See [docs/6-NUX.md](https://github.com/StillNotBald/branchnux/blob/main/docs/6-NUX.md)
+See [docs/6-NUX.md](https://github.com/leapnux/5nux/blob/main/docs/6-NUX.md)
 for the artifact taxonomy and
-[docs/MOTTO.md](https://github.com/StillNotBald/branchnux/blob/main/docs/MOTTO.md)
+[docs/MOTTO.md](https://github.com/leapnux/5nux/blob/main/docs/MOTTO.md)
 for the OSS/Premium product split.
 
 ## License

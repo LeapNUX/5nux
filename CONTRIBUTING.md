@@ -25,8 +25,8 @@ The full DCO text is at https://developercertificate.org.
 **Requirements:** Node 20+, npm 9+ (workspaces).
 
 ```bash
-git clone https://github.com/StillNotBald/branchnux.git
-cd branchnux
+git clone https://github.com/leapnux/5nux.git
+cd 5nux
 npm install                # installs all 7 workspaces
 npm test                   # runs each workspace's test script
 npm run lint               # ESLint across workspaces (where configured)

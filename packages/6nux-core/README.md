@@ -18,7 +18,7 @@ import { parseMarkdownFrontmatter, validateCrossLinks } from '@leapnux/6nux-core
 import { validateRequirements, validateRTM } from '@leapnux/6nux-core/validators'
 ```
 
-See [docs/6-NUX.md](https://github.com/StillNotBald/branchnux) (will move to leapnux/5nux on repo transfer) for the artifact taxonomy this core implements.
+See [docs/6-NUX.md](https://github.com/leapnux/5nux) (will move to leapnux/5nux on repo transfer) for the artifact taxonomy this core implements.
 
 ## License
 

@@ -37,7 +37,7 @@ main value-add evaporates.
 
 ## Decision
 
-Monorepo at `github.com/leapnux/5nux` (currently `StillNotBald/branchnux`,
+Monorepo at `github.com/leapnux/5nux` (currently `leapnux/5nux`,
 transferring when the org is created). npm workspaces only. No Turborepo, no
 Nx, no Lerna.
 

@@ -86,7 +86,7 @@ ROOT (rootnux)  → trunk → branch → leaf → fruit → soil
 
 It captures *why* the product is what it is — specs, decisions, declined-by-design rationales, risk register, governance docs.
 
-See the [6-NUX taxonomy doc](https://github.com/StillNotBald/branchnux) for the full picture.
+See the [6-NUX taxonomy doc](https://github.com/leapnux/5nux) for the full picture.
 
 ## Install
 

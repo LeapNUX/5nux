@@ -62,7 +62,7 @@ If BranchNuX is part of your regulated compliance workflow, your audit package, 
 
 2. **Trademark restriction** — "BranchNuX™" is a trademark of Chu Ling. You may describe your use of the software ("we use BranchNuX for evidence generation") but may not use the name in a way that implies endorsement, affiliation, or that your product is BranchNuX.
 
-3. **Link to the repository** — https://github.com/StillNotBald/branchnux (or the canonical URL at time of your publication)
+3. **Link to the repository** — https://github.com/leapnux/5nux (or the canonical URL at time of your publication)
 
 4. **Sign commits per DCO** — if you contribute back to BranchNuX, all commits must be signed off with `git commit -s`. No CLA required. The DCO sign-off is your legal attestation that you have the right to contribute the code.
 
@@ -71,7 +71,7 @@ If BranchNuX is part of your regulated compliance workflow, your audit package, 
 For academic papers, audit reports, or methodology documentation that references BranchNuX:
 
 ```
-Methodology powered by BranchNuX (Apache 2.0, github.com/StillNotBald/branchnux)
+Methodology powered by BranchNuX (Apache 2.0, github.com/leapnux/5nux)
 and gstack (github.com/garrytan/gstack).
 ```
 

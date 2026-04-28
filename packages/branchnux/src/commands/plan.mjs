@@ -403,7 +403,7 @@ export async function runPlan(slug, opts = {}) {
       `LLM response could not be parsed as test-plan.md:\n\n  ${parseErr.message}\n\n` +
       `  Raw response saved to: ${rawPath}\n` +
       '  Review the raw file and re-run, or file a bug at:\n' +
-      '  https://github.com/StillNotBald/branchnux/issues',
+      '  https://github.com/leapnux/5nux/issues',
     );
     const err = new Error('LLM response parse error');
     err.exitCode = 3;

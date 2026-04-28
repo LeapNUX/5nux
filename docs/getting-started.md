@@ -30,13 +30,13 @@ That's it. The package is on npm — `npm install -g branchnux` works on any mac
 **Alternative — install from GitHub** (for unreleased commits / contributors):
 
 ```bash
-npm install -g github:StillNotBald/branchnux
+npm install -g github:leapnux/5nux
 ```
 
 **Alternative — clone for development:**
 
 ```bash
-git clone https://github.com/StillNotBald/branchnux.git
+git clone https://github.com/leapnux/5nux.git
 cd branchnux && npm install && npm link
 ```
 

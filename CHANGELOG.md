@@ -133,7 +133,7 @@ Restructured from a single-package layout into the **5-NUX monorepo** under the 
 ### Changed
 - **Brand: TrunkNuX → BranchNuX.** Renamed to align with the 6-NUX framework where this tool is the *branch* that verifies trunk + root and produces leaf + fruit, not the trunk itself. The metaphor sharpened: BranchNuX literally runs on a git branch, verifies its claims, and produces audit-ready evidence before merge.
 - Package renamed `trunknux` → `branchnux` (npm, GitHub repo, CLI binary).
-- Repo: github.com/StillNotBald/trunknux → github.com/StillNotBald/branchnux
+- Repo: github.com/StillNotBald/trunknux → github.com/leapnux/5nux
 
 ### Migration
 - Users who installed `trunknux` (never published to npm): install `branchnux` instead. CLI surface unchanged.
@@ -152,7 +152,7 @@ Restructured from a single-package layout into the **5-NUX monorepo** under the 
 - **Binary**: `bin/testnux.mjs` → `bin/branchnux.mjs`. The CLI is invoked as `branchnux` instead of `testnux`.
 - **Constant** `TESTNUX_OSCAL_NAMESPACE` → `BRANCHNUX_OSCAL_NAMESPACE` in `src/lib/oscal.mjs` and `src/lib/oscal-signoff.mjs`. The UUID value is unchanged for backward compatibility — existing OSCAL exports still validate.
 - **Env variable** `TESTNUX_INDUSTRY` → `BRANCHNUX_INDUSTRY` in docs and code.
-- **Repository URL**: `github.com/StillNotBald/testnux` → `github.com/StillNotBald/branchnux`. GitHub auto-redirects existing links.
+- **Repository URL**: `github.com/StillNotBald/testnux` → `github.com/leapnux/5nux`. GitHub auto-redirects existing links.
 - **Roadmap**: `docs/roadmap.md` now leads with the three strategic lanes from the CEO review (Lane A focused, Lane B committed, Lane C aspirational), maps to the version roadmap, and explains the trunk-to-Yggdrasil narrative.
 - **README**: header tagline reframed around the testing-to-audit journey. New trunk metaphor block explains the structural backbone framing and signals the long-term aspiration toward a Yggdrasil-scale audit-content infrastructure.
 
@@ -318,15 +318,15 @@ The "v0.2 capability-parity" stable release. Wires up the LLM agent suite (`plan
 ### Added
 - Initial project scaffold: CLI entry point, command structure, templates, schemas, and docs. (Internal pre-publish version; not on npm.)
 
-[Unreleased]: https://github.com/StillNotBald/branchnux/compare/v0.4.3-alpha.1...HEAD
-[0.4.3-alpha.1]: https://github.com/StillNotBald/branchnux/releases/tag/v0.4.3-alpha.1
-[0.4.2-alpha.1]: https://github.com/StillNotBald/branchnux/releases/tag/v0.4.2-alpha.1
-[0.4.1-alpha.1]: https://github.com/StillNotBald/branchnux/releases/tag/v0.4.1-alpha.1
-[0.4.0-alpha.1]: https://github.com/StillNotBald/branchnux/releases/tag/v0.4.0-alpha.1
-[0.3.0-alpha.1]: https://github.com/StillNotBald/branchnux/releases/tag/v0.3.0-alpha.1
-[0.2.2]: https://github.com/StillNotBald/branchnux/releases/tag/v0.2.2
-[0.2.1]: https://github.com/StillNotBald/branchnux/releases/tag/v0.2.1
-[0.2.0]: https://github.com/StillNotBald/branchnux/releases/tag/v0.2.0
-[0.1.1]: https://github.com/StillNotBald/branchnux/releases/tag/v0.1.1
-[0.1.0]: https://github.com/StillNotBald/branchnux/releases/tag/v0.1.0
-[0.0.1]: https://github.com/StillNotBald/branchnux/releases/tag/v0.0.1
+[Unreleased]: https://github.com/leapnux/5nux/compare/v0.4.3-alpha.1...HEAD
+[0.4.3-alpha.1]: https://github.com/leapnux/5nux/releases/tag/v0.4.3-alpha.1
+[0.4.2-alpha.1]: https://github.com/leapnux/5nux/releases/tag/v0.4.2-alpha.1
+[0.4.1-alpha.1]: https://github.com/leapnux/5nux/releases/tag/v0.4.1-alpha.1
+[0.4.0-alpha.1]: https://github.com/leapnux/5nux/releases/tag/v0.4.0-alpha.1
+[0.3.0-alpha.1]: https://github.com/leapnux/5nux/releases/tag/v0.3.0-alpha.1
+[0.2.2]: https://github.com/leapnux/5nux/releases/tag/v0.2.2
+[0.2.1]: https://github.com/leapnux/5nux/releases/tag/v0.2.1
+[0.2.0]: https://github.com/leapnux/5nux/releases/tag/v0.2.0
+[0.1.1]: https://github.com/leapnux/5nux/releases/tag/v0.1.1
+[0.1.0]: https://github.com/leapnux/5nux/releases/tag/v0.1.0
+[0.0.1]: https://github.com/leapnux/5nux/releases/tag/v0.0.1

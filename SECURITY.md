@@ -16,7 +16,7 @@ Use ONE of these private channels:
 
 ### Option 1 — GitHub Private Vulnerability Reporting (preferred)
 
-Go to https://github.com/StillNotBald/branchnux/security/advisories/new and
+Go to https://github.com/leapnux/5nux/security/advisories/new and
 submit your report. GitHub routes it privately to maintainers; you can
 collaborate on the fix in a private fork before public disclosure.
 

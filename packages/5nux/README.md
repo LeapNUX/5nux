@@ -36,11 +36,11 @@ Plus 5+ more verbs per package. Run `<verb> --help` for full surface.
 
 ## What's deferred
 
-`leafnux` (continuous health) and `fruitnux` (external deliverables) are **reserved skeletons** — their CLIs print a "DEFERRED — future sprint" message. They install with the meta-package so namespaces are claimed, but no real work runs until v0.5+ candidate verbs ship (see [docs/ARCHITECTURE.md](https://github.com/StillNotBald/branchnux/blob/main/docs/ARCHITECTURE.md) v0.5+ section).
+`leafnux` (continuous health) and `fruitnux` (external deliverables) are **reserved skeletons** — their CLIs print a "DEFERRED — future sprint" message. They install with the meta-package so namespaces are claimed, but no real work runs until v0.5+ candidate verbs ship (see [docs/ARCHITECTURE.md](https://github.com/leapnux/5nux/blob/main/docs/ARCHITECTURE.md) v0.5+ section).
 
 ## What about the 6th node?
 
-The 6-NUX taxonomy includes a **soilnux** node (infrastructure, vendors, IaC, on-call, multi-user workflows). That ships as a separate **commercial product** under a future 6-NUX commercial license — not part of the OSS 5-NUX stack. See [docs/MOTTO.md](https://github.com/StillNotBald/branchnux/blob/main/docs/MOTTO.md) for the OSS / Premium split.
+The 6-NUX taxonomy includes a **soilnux** node (infrastructure, vendors, IaC, on-call, multi-user workflows). That ships as a separate **commercial product** under a future 6-NUX commercial license — not part of the OSS 5-NUX stack. See [docs/MOTTO.md](https://github.com/leapnux/5nux/blob/main/docs/MOTTO.md) for the OSS / Premium split.
 
 ## Part of the 5-NUX family
 
