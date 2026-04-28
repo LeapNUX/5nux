@@ -2,14 +2,14 @@
 // Copyright (c) 2026 Chu Ling and LeapNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 // fruitnux CLI — external-deliverables layer of the 6-NUX taxonomy.
-// v0.4.2-alpha.1: skeleton. DEFERRED to a future sprint (no committed timeline).
+// v0.5.0-alpha.1: CLI scaffold only; verbs in design. Active OSS scope.
 
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-let version = '0.4.2-alpha.1';
+let version = '0.5.0-alpha.1';
 try {
   version = JSON.parse(readFileSync(path.join(__dirname, '..', 'package.json'), 'utf-8')).version ?? version;
 } catch {

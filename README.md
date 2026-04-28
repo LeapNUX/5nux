@@ -65,7 +65,7 @@ For the full "what's enough" breakdown, comparison vs DOORS / Polarion / Jama / 
 | `@leapnux/trunknux` | build (sprint scaffolding) | active | `new-sprint`, `summarize`, `lint`, `log` |
 | `@leapnux/branchnux` | verification (test plans, RTM, SCA, OSCAL, sign) | active | `init`, `plan`, `codify`, `report`, `validate`, `sca`, `sca oscal`, `rtm`, `sign`, `sign pdf`, `visual`, `discover`, `enrich`, `br`, `doctor` (15+) |
 | `@leapnux/leafnux` | continuous health | active | `health` |
-| `@leapnux/fruitnux` | external deliverables | scoped (verbs in design) | (`pack` candidate for v0.5.1+) |
+| `@leapnux/fruitnux` | external deliverables | scoped — CLI scaffold only; verbs in design | (`pack` candidate for v0.5.1+) |
 | `@leapnux/6nux-core` | shared library | active | (no CLI; shared schemas, conventions, IDs, utils) |
 | `@leapnux/5nux` | meta-package | active | (no CLI; installs all 5 active NUX CLIs + 6nux-core) |
 
