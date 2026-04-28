@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
+// SPDX-License-Identifier: Apache-2.0
 // trunknux CLI — build-layer of the 6-NUX taxonomy.
 
 import { Command } from 'commander';

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
+// SPDX-License-Identifier: Apache-2.0
 // trunknux new-sprint <slug>
 // Creates a date-prefixed sprint folder in sprint-log/ of the cwd.
 

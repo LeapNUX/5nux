@@ -1,4 +1,5 @@
-// Copyright 2026 Chu Ling - SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
+// SPDX-License-Identifier: Apache-2.0
 
 import { defineConfig } from 'vitest/config';
 

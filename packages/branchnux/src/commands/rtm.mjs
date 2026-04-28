@@ -1,4 +1,4 @@
-// Copyright 2026 Chu Ling
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
@@ -79,9 +79,11 @@ export async function runRtm(opts = {}) {
   let cfg = { ...DEFAULTS };
   if (configPath) {
     try {
-      const userCfg = (await import(path.resolve(configPath))).default ?? {};
+      const resolvedPath = _validateConfigPath(configPath);
+      const userCfg = (await import(resolvedPath)).default ?? {};
       cfg = { ...cfg, ...(userCfg.rtm ?? {}) };
     } catch (err) {
+      if (err.exitCode !== undefined) throw err; // re-throw our own structured errors
       throw exitError(`Failed to load config from ${configPath}: ${err.message}`, 1);
     }
   }
@@ -415,6 +417,47 @@ function _shortRef(ref) {
 
 function testAnnotationsHas(graph, rid) {
   return (graph._testIndex?.get(rid)?.length ?? 0) > 0;
+}
+
+/**
+ * Validate a user-supplied config path before dynamic import.
+ *
+ * Security constraints (SEC-F3, audit ref: docs/audit/2026-04-28/SYNTHESIS-5nux.md):
+ *   1. Extension must be .mjs, .js, or .cjs — reject anything else to prevent
+ *      loading native add-ons (.node), JSON with side-effects, or arbitrary binaries.
+ *   2. Resolved absolute path must start with process.cwd() — reject paths that
+ *      escape the project tree (e.g. ../../etc/passwd, /tmp/evil.mjs).
+ *
+ * @param {string} configPath  raw value from --config flag
+ * @returns {string}           validated resolved absolute path
+ */
+function _validateConfigPath(configPath) {
+  const ALLOWED_EXTENSIONS = new Set(['.mjs', '.js', '.cjs']);
+  const ext = path.extname(configPath).toLowerCase();
+  if (!ALLOWED_EXTENSIONS.has(ext)) {
+    throw exitError(
+      `--config "${configPath}" rejected: extension "${ext}" is not allowed. ` +
+      'Must be .mjs, .js, or .cjs. ' +
+      'The file is executed as a Node.js module; only use files you trust.',
+      1,
+    );
+  }
+
+  const resolved = path.resolve(configPath);
+  const cwdResolved = path.resolve(process.cwd());
+  // Ensure the path is inside cwd (add trailing sep to avoid prefix collisions
+  // e.g. /project-evil matching /project)
+  const cwdWithSep = cwdResolved.endsWith(path.sep) ? cwdResolved : cwdResolved + path.sep;
+  if (!resolved.startsWith(cwdWithSep) && resolved !== cwdResolved) {
+    throw exitError(
+      `--config "${configPath}" rejected: resolved path "${resolved}" is outside the ` +
+      `project directory "${cwdResolved}". ` +
+      'Config files must be inside the current working directory.',
+      1,
+    );
+  }
+
+  return resolved;
 }
 
 function exitError(message, code) {

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright (c) 2026 Chu Ling
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**
@@ -211,7 +211,7 @@ program
   )
   .option('--dry-run', 'print generated content to stdout without writing the file')
   .option('--strict', 'exit 1 if any R-ID has no code or test evidence')
-  .option('--config <path>', 'path to branchnux.config.mjs for glob overrides')
+  .option('--config <path>', 'path to branchnux.config.mjs for glob overrides; executes the file as a Node.js module — must be inside cwd, ext .mjs/.js/.cjs')
   .action(async (opts, cmd) => {
     const global = cmd.parent.opts();
     try {
@@ -245,7 +245,7 @@ scaCmd
   )
   .option('--industry <industry>', 'industry standards profile (general|fintech|healthcare|malaysia-banking)', 'general')
   .option('--dry-run', 'print generated content to stdout without writing the file')
-  .option('--config <path>', 'path to branchnux.config.mjs')
+  .option('--config <path>', 'path to branchnux.config.mjs; executes the file as a Node.js module — must be inside cwd, ext .mjs/.js/.cjs')
   .option('--standards-version <version>', 'standards snapshot version recorded in frontmatter', '1.0.0')
   .action(async (surface, opts, cmd) => {
     const global = cmd.parent.parent.opts();
@@ -271,7 +271,7 @@ scaCmd
     'test results and R-ID mappings. [VERIFY] marks cells needing human or LLM review.',
   )
   .option('--dry-run', 'print updated content to stdout without writing the file')
-  .option('--config <path>', 'path to branchnux.config.mjs')
+  .option('--config <path>', 'path to branchnux.config.mjs; executes the file as a Node.js module — must be inside cwd, ext .mjs/.js/.cjs')
   .option('--standards-version <version>', 'standards snapshot version recorded in frontmatter', '1.0.0')
   .action(async (surface, opts, cmd) => {
     const global = cmd.parent.parent.opts();
@@ -296,7 +296,7 @@ scaCmd
     'Set CHROME_PATH env var if Chrome is not auto-detected.',
   )
   .option('--dry-run', 'show what would be rendered without writing the file')
-  .option('--config <path>', 'path to branchnux.config.mjs')
+  .option('--config <path>', 'path to branchnux.config.mjs; executes the file as a Node.js module — must be inside cwd, ext .mjs/.js/.cjs')
   .action(async (surface, opts, cmd) => {
     const global = cmd.parent.parent.opts();
     try {

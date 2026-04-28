@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
+// SPDX-License-Identifier: Apache-2.0
 // Schema definitions for 6-NUX artifacts. To be filled in as packages extract
 // their schemas during v0.4.x. Currently exports placeholders.
 

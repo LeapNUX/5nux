@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
+// SPDX-License-Identifier: Apache-2.0
 // fruitnux CLI — external-deliverables layer of the 6-NUX taxonomy.
 // v0.4.2-alpha.1: skeleton. DEFERRED to a future sprint (no committed timeline).
 

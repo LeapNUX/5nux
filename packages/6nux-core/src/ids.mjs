@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Chu Ling
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 // ID generators for 6-NUX artifacts (R-XX, ADR-NNNN, etc.).

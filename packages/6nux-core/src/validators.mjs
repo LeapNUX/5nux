@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
+// SPDX-License-Identifier: Apache-2.0
 // Validators for 6-NUX artifacts. Used by all NUX packages to verify their
 // inputs match the shared schemas.
 //

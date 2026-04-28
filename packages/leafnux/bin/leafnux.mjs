@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright (c) 2026 Chu Ling
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /**

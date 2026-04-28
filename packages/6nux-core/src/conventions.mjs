@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Chu Ling
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
 // SPDX-License-Identifier: Apache-2.0
 
 // File-system conventions shared across the 6-NUX product family.

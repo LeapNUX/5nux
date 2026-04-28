@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Chu Ling and LeapNuX Contributors
+// SPDX-License-Identifier: Apache-2.0
 // @leapnux/6nux-core — shared core for the 6-NUX product family
 //
 // Status: shared utilities populated as of v0.4.2-alpha.1 (conventions, ids, utils).
