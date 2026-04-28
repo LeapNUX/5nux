@@ -13,7 +13,7 @@
  *   validate <folder>— lint markdown frontmatter, check R-XX format consistency
  *   demo             — run bundled demo against examples/demo-dashboard/
  *   doctor           — preflight checks for Playwright, Node, Supabase config
- *   mcp              — start the MCP server on stdio (Claude Code integration)
+ *   (mcp server coming in v0.6+)
  *
  * Exit codes:
  *   0  success
@@ -182,27 +182,6 @@ program
       emit(global.json, { error: err.message });
       process.exit(err.exitCode ?? 1);
     }
-  });
-
-// ── mcp ──────────────────────────────────────────────────────────────────────
-
-program
-  .command('mcp')
-  .description(
-    'Start the BranchNuX MCP server on stdio. ' +
-    'Mount this in Claude Code via .claude/settings.json mcpServers. ' +
-    'Requires @modelcontextprotocol/sdk — install separately: ' +
-    'npm install @modelcontextprotocol/sdk',
-  )
-  .action(async () => {
-    // The MCP server is planned for v0.3 and is not yet shipped in this release.
-    console.error(
-      '\nThe BranchNuX MCP server is on the roadmap for v0.3 and has not yet shipped.\n\n' +
-        'In the meantime, use the standalone CLI:\n\n' +
-        '  npx branchnux <command>\n\n' +
-        'See docs/integrations.md for the v0.3 integration roadmap.\n',
-    );
-    process.exit(1);
   });
 
 // ── rtm ───────────────────────────────────────────────────────────────────────

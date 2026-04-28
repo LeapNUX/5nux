@@ -19,7 +19,7 @@ Runs the **regulated-software artifact + evidence chain — requirement → spri
 Two things make it different from every other OSS project tool:
 
 1. **Purpose-built for regulated software.** Auto-generates the artifacts regulators actually ask for — RTM, SCA, OSCAL 1.1.2, HMAC-signed evidence packages. The OSS replacement for IBM DOORS / Polarion / Jama / codeBeamer ($1k–$5k+/seat/year, locked databases). See [`docs/scope.md`](docs/scope.md) for the full positioning vs. enterprise tooling and other OSS PM tools.
-2. **AI-agent native.** Designed in the LLM era — every artifact is a plain file, every action is a CLI verb, every output has a `--json` mode. An LLM agent operates 5-NUX the same way a human does. No custom SDK integration, no proprietary API, no auth dance. `branchnux mcp` starts a Model Context Protocol (MCP) server on stdio so Claude Code can invoke every BranchNuX verb as a native tool — mount it once in `.claude/settings.json` and your agent has the full CLI surface. See [`docs/collaboration.md`](docs/collaboration.md) for how AI agents and humans collaborate at each stage.
+2. **AI-agent native.** Designed in the LLM era — every artifact is a plain file, every action is a CLI verb, every output has a `--json` mode. An LLM agent operates 5-NUX the same way a human does. No custom SDK integration, no proprietary API, no auth dance. A Model Context Protocol (MCP) server for Claude Code integration is coming in v0.6+ — until then, invoke any verb directly via `npx branchnux <command>`. See [`docs/collaboration.md`](docs/collaboration.md) for how AI agents and humans collaborate at each stage.
 
 What you get, concretely:
 
@@ -187,6 +187,7 @@ NUX packages do **not** import each other — they communicate via file-system c
 
 - **v0.4.x** — alpha series; rootnux + trunknux + branchnux mature; leafnux + fruitnux brought into active OSS scope
 - **v0.5.0-alpha.1** — `trunknux log`, `rootnux kb-init`, `leafnux health` shipped; `fruitnux pack` in design
+- **v0.6** — `branchnux mcp` MCP server on stdio (Claude Code integration via `.claude/settings.json mcpServers`)
 - **v1.0** — stability + landing page at leapnux.com + 6-NUX commercial spec
 
 [Open an issue](https://github.com/leapnux/5nux/issues) to propose what to prioritize next.
