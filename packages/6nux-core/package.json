@@ -1,6 +1,6 @@
 {
   "name": "@leapnux/6nux-core",
-  "version": "0.5.0-alpha.1",
+  "version": "0.6.0-alpha.1",
   "description": "Shared core for the 6-NUX product family — schemas, file conventions, validators, ID generators. Internal to LeapNuX 5-NUX/6-NUX packages; not intended for direct end-user use.",
   "license": "Apache-2.0",
   "author": "Chu Ling",
@@ -18,9 +18,10 @@
     ".": "./src/index.mjs",
     "./conventions": "./src/conventions.mjs",
     "./schemas": "./src/schemas.mjs",
+    "./schemas/v1": "./src/schemas/v1/index.mjs",
     "./ids": "./src/ids.mjs",
     "./utils": "./src/utils.mjs",
-    "./validators": "./src/validators.mjs"
+    "./validators": "./src/validators/index.mjs"
   },
   "files": [
     "src/",
@@ -32,6 +33,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "ajv": "^8.20.0",
     "gray-matter": "^4.0.3"
   },
   "engines": {

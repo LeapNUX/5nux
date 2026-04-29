@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.leapnux.com/v1/sprint-folder.schema.json",
+  "title": "Sprint Folder",
+  "description": "Metadata about a sprint-log/<date>_<slug>/ folder. Represents a trunknux artifact: what was built in a sprint. The folder must contain a SPRINT_SUMMARY.md. The name must follow the date-slug convention: YYYY-MM-DD_<kebab-slug>.",
+  "type": "object",
+  "required": ["folderName", "date", "slug"],
+  "properties": {
+    "folderName": {
+      "type": "string",
+      "description": "Full folder name in date-slug form: YYYY-MM-DD_<kebab-slug>.",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "examples": ["2026-04-21_sprint1-2-epod-sol", "2026-04-26_wave13"]
+    },
+    "date": {
+      "type": "string",
+      "description": "Extracted date portion: YYYY-MM-DD.",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "slug": {
+      "type": "string",
+      "description": "Extracted slug portion: lowercase kebab-case identifier. No leading or trailing hyphens; no consecutive hyphens.",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 1
+    },
+    "hasSummary": {
+      "type": "boolean",
+      "description": "Whether SPRINT_SUMMARY.md exists in the folder. Must be true for a valid sprint folder."
+    },
+    "summaryTitle": {
+      "type": "string",
+      "description": "H1 title extracted from SPRINT_SUMMARY.md (the first markdown heading). Free text.",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "folderName": "2026-04-21_sprint1-2-epod-sol",
+      "date": "2026-04-21",
+      "slug": "sprint1-2-epod-sol",
+      "hasSummary": true,
+      "summaryTitle": "Sprint 1-2: EPOD Submission + Statute of Limitations"
+    },
+    {
+      "folderName": "2026-04-26_wave13",
+      "date": "2026-04-26",
+      "slug": "wave13",
+      "hasSummary": true,
+      "summaryTitle": "Wave 13: Security hardening + RTM pass"
+    }
+  ]
+}

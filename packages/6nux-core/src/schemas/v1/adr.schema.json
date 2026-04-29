@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.leapnux.com/v1/adr.schema.json",
+  "title": "ADR Document",
+  "description": "An Architecture Decision Record living under docs/adr/. Frontmatter fields plus the required structural sections. ADR IDs are 4-digit zero-padded (0001..9999). The 'status' field uses a short-form vocabulary distinct from the R-XX status taxonomy.",
+  "type": "object",
+  "required": ["id", "title", "status", "date"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ADR ID in canonical form: 4-digit zero-padded number.",
+      "pattern": "^\\d{4}$",
+      "examples": ["0001", "0009", "0013"]
+    },
+    "title": {
+      "type": "string",
+      "description": "Short human-readable title for the decision. Typically appears in the filename as docs/adr/<id>-<slug>.md.",
+      "minLength": 3
+    },
+    "status": {
+      "type": "string",
+      "description": "Lifecycle status of the ADR. 'Accepted' is the normal terminal state. 'Superseded' ADRs should reference the superseding ADR in the context section.",
+      "enum": ["Proposed", "Accepted", "Rejected", "Superseded", "Deprecated"]
+    },
+    "date": {
+      "type": "string",
+      "description": "ISO 8601 date the decision was recorded (YYYY-MM-DD).",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "context": {
+      "type": "string",
+      "description": "Narrative describing the situation and forces that led to this decision.",
+      "minLength": 1
+    },
+    "decision": {
+      "type": "string",
+      "description": "The decision taken. Should be stated in active voice.",
+      "minLength": 1
+    },
+    "consequences": {
+      "type": "string",
+      "description": "Positive and negative consequences of the decision."
+    },
+    "supersededBy": {
+      "type": "string",
+      "description": "ID of the ADR that supersedes this one (only present when status = Superseded).",
+      "pattern": "^\\d{4}$"
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "0001",
+      "title": "Supabase over Rails + Postgres backend",
+      "status": "Accepted",
+      "date": "2026-04-26",
+      "context": "Regulated financial platform requiring auth, DB, and storage with 13-working-day target.",
+      "decision": "Use Supabase as primary backend: hosted PostgreSQL, GoTrue Auth, and Supabase Storage.",
+      "consequences": "Eliminates custom auth glue; introduces vendor lock-in."
+    }
+  ]
+}

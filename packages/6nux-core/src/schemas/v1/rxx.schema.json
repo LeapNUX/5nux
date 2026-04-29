@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.leapnux.com/v1/rxx.schema.json",
+  "title": "R-XX Requirement Row",
+  "description": "A single row from a 6-NUX REQUIREMENTS.md table. Column order: # | Requirement | Status | Notes. The '#' column holds the R-ID; 'Requirement' is the discriminator column that parsers use to identify requirement tables (other tables use different column 2 headers such as 'Domain').",
+  "type": "object",
+  "required": ["id", "requirement", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "R-ID in canonical form. 1-3 digits, optional single lowercase alpha suffix.",
+      "pattern": "^R-\\d{1,3}[a-z]?$",
+      "examples": ["R-1", "R-12", "R-98a", "R-102"]
+    },
+    "requirement": {
+      "type": "string",
+      "description": "Human-readable requirement description. Free text; must be non-empty.",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "description": "Canonical status after normalization. Must be one of the 8 known statuses (case-sensitive, uppercase). 'BLOCKED-EXTERNAL' is distinct from 'BLOCKED' — use BLOCKED-EXTERNAL when the blocker is a vendor, regulator, or third party outside engineering control.",
+      "enum": [
+        "DONE",
+        "PARTIAL",
+        "BLOCKED",
+        "BLOCKED-EXTERNAL",
+        "NOT STARTED",
+        "DECLINED",
+        "DEFERRED",
+        "FAKE"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-text notes. May be empty string or absent. Escaped pipes (\\|) in source markdown are resolved to '|' before validation."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "R-01",
+      "requirement": "8-module EPOD form (Classification, Legal, Financial, Dates, Ownership, Compliance, Validity, Submission)",
+      "status": "DONE",
+      "notes": "All 8 modules functional, 34 QA defects fixed"
+    },
+    {
+      "id": "R-98a",
+      "requirement": "Sub-item introduced after R-98 was already assigned",
+      "status": "DEFERRED",
+      "notes": ""
+    },
+    {
+      "id": "R-88",
+      "requirement": "EventEmitter bus for async claim lifecycle events",
+      "status": "PARTIAL",
+      "notes": "In-process bus works; AWS SNS/SQS/EventBridge is Tier 2B AWS Sprint dependency"
+    }
+  ]
+}

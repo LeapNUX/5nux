@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.leapnux.com/v1/test-plan.schema.json",
+  "title": "Test Plan",
+  "description": "Metadata extracted from a testing-log/<date>_<slug>/test-plan.md file. Represents a branchnux artifact: the verification plan for a surface. Must have a route and a non-empty set of test cases.",
+  "type": "object",
+  "required": ["folderName", "date", "slug", "route"],
+  "properties": {
+    "folderName": {
+      "type": "string",
+      "description": "Full folder name in date-slug form: YYYY-MM-DD_<kebab-slug>.",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}_[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "examples": ["2026-04-25_login-23-tc", "2026-04-27_branchnux-cli"]
+    },
+    "date": {
+      "type": "string",
+      "description": "Extracted date portion: YYYY-MM-DD.",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "slug": {
+      "type": "string",
+      "description": "Extracted slug portion: lowercase kebab-case.",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 1
+    },
+    "route": {
+      "type": "string",
+      "description": "The application route or CLI surface this test plan covers. For web surfaces, typically starts with '/'. For CLI surfaces, the command name. Free text.",
+      "minLength": 1,
+      "examples": ["/login", "/register", "branchnux sca"]
+    },
+    "hasPlan": {
+      "type": "boolean",
+      "description": "Whether test-plan.md exists in the folder."
+    },
+    "tcCount": {
+      "type": "integer",
+      "description": "Number of test cases found in the Test Case Matrix table.",
+      "minimum": 0
+    },
+    "pageType": {
+      "type": "string",
+      "description": "Classifier for the surface type. Informational; used by dashboard tooling.",
+      "enum": ["Form (auth)", "Form (data entry)", "Dashboard", "List view", "Detail view", "CLI", "API", "Other"]
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "folderName": "2026-04-25_login-23-tc",
+      "date": "2026-04-25",
+      "slug": "login-23-tc",
+      "route": "/login",
+      "hasPlan": true,
+      "tcCount": 23,
+      "pageType": "Form (auth)"
+    },
+    {
+      "folderName": "2026-04-27_branchnux-cli",
+      "date": "2026-04-27",
+      "slug": "branchnux-cli",
+      "route": "branchnux",
+      "hasPlan": true,
+      "tcCount": 60,
+      "pageType": "CLI"
+    }
+  ]
+}
