@@ -57,6 +57,62 @@ For the full "what's enough" breakdown, comparison vs DOORS / Polarion / Jama / 
 
 ---
 
+## Where 5-NUX fits — the 4-layer AI-native stack
+
+5-NUX isn't a standalone tool competing with anything. It's the **PM-and-audit methodology layer** in a 4-layer stack you assemble from OSS components:
+
+```
+  ┌─────────────────────────────────────────────────────────┐
+  │ LAYER 4 — DOMAIN INSTANTIATION                          │
+  │   your project (regulated fintech / e-commerce /        │
+  │   health-tech / your domain)                            │
+  └─────────────────────────────────────────────────────────┘
+                              ▲
+  ┌─────────────────────────────────────────────────────────┐
+  │ LAYER 3 — METHODOLOGY  (third-party, domain-shaped)     │
+  │                                                         │
+  │   • gstack — DEV workflow                               │
+  │     /codex /cso /review /ship /qa /plan-eng-review      │
+  │     "how to build & ship code"                          │
+  │                                                         │
+  │   • 5-NUX — PM/AUDIT workflow  (this project)           │
+  │     rootnux trunknux branchnux leafnux fruitnux soilnux │
+  │     "how to track, verify, audit what was built"        │
+  │                                                         │
+  │   Same audience, different jobs. Stack them — they      │
+  │   complement, they don't compete.                       │
+  └─────────────────────────────────────────────────────────┘
+                              ▲
+  ┌─────────────────────────────────────────────────────────┐
+  │ LAYER 2 — EXTENSIBILITY  (Anthropic ships)              │
+  │   Skills · Hooks · MCP · Sub-agents · Memory            │
+  └─────────────────────────────────────────────────────────┘
+                              ▲
+  ┌─────────────────────────────────────────────────────────┐
+  │ LAYER 1 — AI-NATIVE RUNTIME  (Anthropic ships)          │
+  │   Claude Code (the agent in your terminal)              │
+  └─────────────────────────────────────────────────────────┘
+```
+
+**One-liner:** *the PM-and-audit methodology layer for AI-native development. Pairs with [gstack](https://github.com/gstack-tools/gstack) for dev workflow. Both run on [Claude Code](https://docs.anthropic.com/claude-code).*
+
+### Common objections answered
+
+| Question | Answer |
+|---|---|
+| *Isn't 5-NUX just gstack?* | No. gstack does **dev** workflow (codex / ship / qa / pre-landing review). 5-NUX does **PM and audit** (RTM / SCA / OSCAL / HMAC sign-off / risk register / ADRs). Same audience, different jobs. A regulated team needs both — they stack, they don't replace. |
+| *Isn't this just Claude Code?* | No. Claude Code is the **runtime**. 5-NUX is the **methodology** that runs on it. Like asking "isn't Linux just the kernel?" — the kernel doesn't make decisions about your build process. |
+| *Why not Jira / Linear / Notion / Confluence?* | Those are SaaS UIs with their own data store. 5-NUX is **git-native AND AI-native** — every artifact is a markdown file in your repo, every action is a CLI verb, every output has a `--json` mode. Different category of thing. Use them ALONGSIDE 5-NUX (kanban in Linear, audit trail in 5-NUX). |
+| *Do I have to use Claude Code?* | The verbs run as standalone Node.js — no Claude Code required for the OSS path. Claude Code is the AI-native acceleration; 5-NUX works with or without it. |
+
+### Why the stack wins over single-vendor SaaS
+
+- **No lock-in.** Every layer is OSS and replaceable. If you outgrow gstack, swap it. If you fork 5-NUX, fork it. Your data is markdown in your git repo.
+- **No procurement cycle.** Three `npm install -g` commands instead of three SaaS vendor reviews.
+- **Audit-grade by construction.** Git history is the audit trail. The methodology layer (5-NUX) generates regulator-ready evidence (RTM / SCA / OSCAL) without any extra tooling.
+
+---
+
 ## The 7 packages
 
 | Package | Layer | Status | Verbs |
