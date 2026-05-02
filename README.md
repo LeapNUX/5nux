@@ -1,6 +1,6 @@
 # 5-NUX
 
-**AI-native OSS PM tool in CLI** — purpose-built for regulated software, with auto-generated RTM, SCA, and OSCAL evidence out of the box.
+**A free, open-source project-management toolkit you run from the terminal** — built for software teams that have to prove their work to auditors, regulators, or compliance officers. It auto-generates the paperwork those reviewers ask for, straight out of your git repo.
 
 > 5-NUX gives you a whole tree. You provide the soil and you ship yourself.
 
@@ -12,133 +12,167 @@
 
 ---
 
-## What 5-NUX does for your project
+## A quick glossary (read this first)
 
-Runs the **regulated-software artifact + evidence chain — requirement → sprint → test → validation → audit handoff** — entirely from the CLI, in plain files in your git repo. No SaaS. No login. No vendor lock-in.
+5-NUX touches a few areas with their own jargon. Here's the plain-English version we'll use throughout.
 
-Two things make it different from every other OSS project tool:
+**The tool names — don't be put off by them.** The five tools are named after parts of a tree (root, trunk, branch, leaf, fruit) because each one maps to a stage of a project's life. You don't have to memorize them — just remember what each tool *does*:
 
-1. **Purpose-built for regulated software.** Auto-generates the artifacts regulators actually ask for — RTM, SCA, OSCAL 1.1.2, HMAC-signed evidence packages. The OSS replacement for IBM DOORS / Polarion / Jama / codeBeamer ($1k–$5k+/seat/year, locked databases). See [`docs/scope.md`](docs/scope.md) for the full positioning vs. enterprise tooling and other OSS PM tools.
-2. **AI-agent native.** Designed in the LLM era — every artifact is a plain file, every action is a CLI verb, every output has a `--json` mode. An LLM agent operates 5-NUX the same way a human does. No custom SDK integration, no proprietary API, no auth dance. A Model Context Protocol (MCP) server for Claude Code integration is coming in v0.6+ — until then, invoke any verb directly via `npx branchnux <command>`. See [`docs/collaboration.md`](docs/collaboration.md) for how AI agents and humans collaborate at each stage.
+| Tool name | Just think of it as… | What it does in one line |
+|---|---|---|
+| **rootnux** | the **Planning** tool | Writes specs, decision records, risk register, knowledge base |
+| **trunknux** | the **Sprint** tool | Sets up sprint folders and weekly logs |
+| **branchnux** | the **Test** tool | Drafts test plans and runs reports |
+| **leafnux** | the **Health-Check** tool | Red/amber/green snapshot of your project |
+| **fruitnux** | the **Audit-Pack** tool | Generates the paperwork auditors ask for |
+| **5nux** | the **Bundle** | One install that gives you all five tools |
+| **6nux-core** | the **Shared library** | Internal — you don't run it directly |
 
-What you get, concretely:
+**The audit and compliance jargon:**
 
-| You run | You get |
+| Term you'll see | What it actually means |
 |---|---|
-| `fruitnux rtm` | Requirements Traceability Matrix regenerated from REQUIREMENTS.md + sprint folders + source-code annotations + test files |
-| `fruitnux sca generate <surface>` | Security Control Assessment (8 standard sections, regulator-ready) |
-| `fruitnux sca oscal <surface>` | NIST OSCAL 1.1.2 JSON — the format FedRAMP auditors and SOC 2 examiners prefer |
-| `fruitnux sign <surface>` | HMAC-chained tamper-evident attestation; signed PDF for handoff |
-| `rootnux adr-new <title>` | Sequentially numbered ADR scaffold |
-| `rootnux risk-add` | Risk register entry |
-| `trunknux new-sprint <slug>` | Date-prefixed sprint folder with scaffolded README + LOG |
-| `branchnux plan <slug>` | AI-drafted test plan with `[VERIFY]` markers |
-| `leafnux health` | RAG-status snapshot of your whole project (requirements, risks, ADRs, sprint freshness) |
-
-> **Is 5-NUX OSS alone enough to ship + pass audits?** Yes. Adjacent tools (kanban, chat, dashboards, build pipelines) are optional pairings, not requirements.
-
-### What 5-NUX OSS does *not* include — and your three options
-
-For each capability outside 5-NUX OSS scope, you have three orthogonal options:
-
-| If you want... | A: Existing market apps | B: Build yourself | C: Engage LeapNuX premium |
-|---|---|---|---|
-| **Active task tracking + kanban boards** | GitHub Issues, Linear, Jira, Asana, Trello | Custom kanban over your `requirements/` + sprint-log/ | LeapNuX 6-NUX hosted board |
-| **Visual roadmap / Gantt timeline** | Productboard, Aha!, GitHub Projects | Render a Gantt from sprint-log/ folder dates | LeapNuX 6-NUX roadmap view |
-| **Real-time team chat + notifications** | Slack, Discord, Microsoft Teams | Self-host Mattermost / Rocket.Chat | LeapNuX 6-NUX notification hub |
-| **Build + deploy pipelines** | GitHub Actions, CircleCI, Jenkins, Vercel | Self-host Drone / Concourse | Out of scope (use existing tooling) |
-| **GUI for non-technical stakeholders** (compliance officers, executives, board) | None that surface RTM / SCA / OSCAL natively | Render `--json` outputs into your own dashboard | LeapNuX 6-NUX premium GUI — purpose-built for compliance |
-| **Multi-user hosted dashboards / signed evidence portal** | None mapping cleanly to OSCAL + HMAC ledger | Stand up a portal yourself with the JSON outputs | LeapNuX 6-NUX premium evidence portal |
-| **Account-bound auditor access + per-firm scoping** | DocuSign Rooms, ShareFile (generic) | Build access control on your repo + cloud storage | LeapNuX 6-NUX premium audit-room |
-| **Professional support contract + SLA** | None for OSS RTM tooling | Hire a freelance compliance engineer | LeapNuX 6-NUX premium support tier |
-
-**Column A** is what most teams reach for first — pair them with 5-NUX, no integration needed. **Column B** is the DIY path against the `--json` outputs of every 5-NUX verb. **Column C** is when you want a turn-key commercial product with hosted infra, multi-user RBAC, and account-bound access — that's [LeapNuX 6-NUX premium](docs/MOTTO.md).
-
-For the full "what's enough" breakdown, comparison vs DOORS / Polarion / Jama / codeBeamer, and adoption sequence — see [`docs/scope.md`](docs/scope.md).
+| **Regulated software** | Anything that has to pass audits — finance, health-tech, government, anything bound by SOC 2, FedRAMP, HIPAA, ISO, etc. |
+| **RTM** (Requirements Traceability Matrix) | A spreadsheet that links each requirement to the code that implements it and the test that proves it. Auditors ask for this constantly. |
+| **SCA** (Security Control Assessment) | A short report that says "here's a security control, here's how we implemented it, here's the evidence it works." |
+| **OSCAL** | A machine-readable format (JSON) the U.S. government uses for compliance reports. Auditors at FedRAMP and SOC 2 firms can ingest it directly. |
+| **HMAC sign-off** | A cryptographic signature on each entry, chained together so any later edit is detectable. Think "tamper-proof receipt." |
+| **ADR** (Architecture Decision Record) | A one-page note explaining why you made a key technical choice (e.g. "we picked Postgres over Mongo because…"). |
+| **`[VERIFY]` marker** | A flag on AI-drafted text that means "a human still has to read this and confirm it before it counts as verified." |
+| **Verb** | A subcommand you run, like `git commit` or `npm install`. Each 5-NUX tool is a small CLI with a handful of verbs. |
 
 ---
 
-## Where 5-NUX fits — the 4-layer AI-native stack
+## What 5-NUX does for your project
 
-5-NUX isn't a standalone tool competing with anything. It's the **PM-and-audit methodology layer** in a 4-layer stack you assemble from OSS components:
+It runs the full project paper trail — **requirement → sprint → test → check → audit hand-off** — entirely from the terminal, as plain files in your git repo. No SaaS subscription, no login, no vendor you can't replace.
+
+Two things make it different from every other open-source project tool:
+
+1. **Built for teams that have to pass audits.** It auto-generates the documents reviewers actually ask for — traceability matrices, security control reports, machine-readable compliance JSON, tamper-proof sign-off ledgers. It's the open-source alternative to enterprise tools like IBM DOORS, Polarion, Jama, and codeBeamer (which charge $1k–$5k+ per seat per year and lock your data inside their database). See [`docs/scope.md`](docs/scope.md) for the full comparison.
+2. **Designed to work alongside AI coding assistants.** Every artifact is a plain text file, every command produces machine-readable output (`--json`), so an AI agent can drive 5-NUX the same way a human can — no special API, no auth dance. A direct Claude Code integration (Model Context Protocol — Anthropic's standard for letting AI assistants call external tools) is coming in v0.6+; today you can already invoke any verb via `npx branchnux <command>`. See [`docs/collaboration.md`](docs/collaboration.md) for how AI and humans split the work.
+
+What you actually get:
+
+| What you want | The command | What lands in your repo |
+|---|---|---|
+| Regenerate the traceability matrix (every requirement ↔ its code ↔ its tests) | `fruitnux rtm` *(audit-pack tool)* | `requirements/TRACEABILITY.md` |
+| An auditor-ready security control report (8 standard sections) | `fruitnux sca generate <surface>` | `sca/<surface>.md` |
+| The same report in the U.S. government's machine-readable JSON format | `fruitnux sca oscal <surface>` | OSCAL 1.1.2 JSON file |
+| A cryptographically signed PDF — any later tampering is detectable | `fruitnux sign <surface>` | Signed PDF + sign-off ledger |
+| A "why we chose this" decision record, auto-numbered | `rootnux adr-new <title>` *(planning tool)* | `docs/adr/NNNN-<slug>.md` |
+| A new entry in your risk register | `rootnux risk-add` | row appended to `requirements/risks/risks.md` |
+| A dated sprint folder with starter README and log | `trunknux new-sprint <slug>` *(sprint tool)* | `sprint-log/<date>_<slug>/` |
+| An AI-drafted test plan (every AI line flagged for human review) | `branchnux plan <slug>` *(test tool)* | `testing-log/<date>_<slug>/test-plan.md` |
+| A red/amber/green snapshot of your whole project | `leafnux health` *(health-check tool)* | terminal output (or JSON) |
+
+> **Is 5-NUX by itself enough to ship and pass audits?** Yes. Other tools (kanban boards, team chat, dashboards, CI/CD) are nice pairings, not requirements.
+
+### What 5-NUX *doesn't* include — and your three options
+
+For each capability outside 5-NUX, you have three choices:
+
+| If you want… | A: Use an existing app | B: Build it yourself | C: Pay for the LeapNuX hosted version |
+|---|---|---|---|
+| **Task tracking + kanban** | GitHub Issues, Linear, Jira, Asana, Trello | A custom kanban over the markdown files | LeapNuX hosted board |
+| **Roadmap / Gantt timeline** | Productboard, Aha!, GitHub Projects | Render a Gantt from sprint folder dates | LeapNuX roadmap view |
+| **Team chat + notifications** | Slack, Discord, Microsoft Teams | Self-host Mattermost / Rocket.Chat | LeapNuX notification hub |
+| **Build + deploy pipelines** | GitHub Actions, CircleCI, Jenkins, Vercel | Self-host Drone / Concourse | Out of scope (use existing tools) |
+| **A nice GUI for non-technical stakeholders** (compliance, executives, board) | None that show traceability and security reports natively | Render the `--json` output into your own dashboard | LeapNuX premium GUI, designed for compliance reviewers |
+| **Multi-user hosted dashboards / signed evidence portal** | None mapped cleanly to compliance JSON + tamper-proof ledger | Build a portal yourself off the JSON outputs | LeapNuX premium evidence portal |
+| **Per-auditor access controls** | DocuSign Rooms, ShareFile (generic) | Add access control on top of your repo + cloud storage | LeapNuX premium audit-room |
+| **A support contract with a real SLA** | None for open-source traceability tooling | Hire a freelance compliance engineer | LeapNuX premium support |
+
+**Column A** is what most teams reach for first — pair it with 5-NUX, no integration needed. **Column B** is the DIY path against the JSON output of every verb. **Column C** is when you want a turn-key commercial product with hosting, multi-user roles, and per-auditor access — that's [LeapNuX premium](docs/MOTTO.md).
+
+For the full "what's enough" breakdown and comparison vs. enterprise tools — see [`docs/scope.md`](docs/scope.md).
+
+---
+
+## Where 5-NUX fits — the four-layer stack
+
+5-NUX isn't a standalone product competing with anything. It's the **project-management-and-audit layer** in a four-layer stack you assemble from open-source pieces:
 
 ```
   ┌─────────────────────────────────────────────────────────┐
-  │ LAYER 4 — DOMAIN INSTANTIATION                          │
-  │   your project (regulated fintech / e-commerce /        │
-  │   health-tech / your domain)                            │
+  │ LAYER 4 — YOUR PROJECT                                  │
+  │   Whatever you're actually building — a fintech app,    │
+  │   an e-commerce site, a health-tech platform, etc.      │
   └─────────────────────────────────────────────────────────┘
                               ▲
   ┌─────────────────────────────────────────────────────────┐
-  │ LAYER 3 — METHODOLOGY  (third-party, domain-shaped)     │
+  │ LAYER 3 — WORKFLOW TOOLS  (third-party, open-source)    │
   │                                                         │
-  │   • gstack — DEV workflow                               │
+  │   • gstack — DEVELOPMENT workflow                       │
   │     /codex /cso /review /ship /qa /plan-eng-review      │
-  │     "how to build & ship code"                          │
+  │     "how to write, review, and ship code"               │
   │                                                         │
-  │   • 5-NUX — PM/AUDIT workflow  (this project)           │
+  │   • 5-NUX — PROJECT-MANAGEMENT + AUDIT workflow (this)  │
   │     rootnux trunknux branchnux leafnux fruitnux soilnux │
-  │     "how to track, verify, audit what was built"        │
+  │     "how to plan, verify, and audit what was built"     │
   │                                                         │
-  │   Same audience, different jobs. Stack them — they      │
-  │   complement, they don't compete.                       │
+  │   Same audience, different jobs. They complement each   │
+  │   other — they don't compete.                           │
   └─────────────────────────────────────────────────────────┘
                               ▲
   ┌─────────────────────────────────────────────────────────┐
-  │ LAYER 2 — EXTENSIBILITY  (Anthropic ships)              │
+  │ LAYER 2 — AI EXTENSION POINTS  (built into Claude Code) │
   │   Skills · Hooks · MCP · Sub-agents · Memory            │
   └─────────────────────────────────────────────────────────┘
                               ▲
   ┌─────────────────────────────────────────────────────────┐
-  │ LAYER 1 — AI-NATIVE RUNTIME  (Anthropic ships)          │
-  │   Claude Code (the agent in your terminal)              │
+  │ LAYER 1 — THE AI ASSISTANT ITSELF                       │
+  │   Claude Code — Anthropic's AI agent in your terminal   │
   └─────────────────────────────────────────────────────────┘
 ```
 
-**One-liner:** *the PM-and-audit methodology layer for AI-native development. Pairs with [gstack](https://github.com/gstack-tools/gstack) for dev workflow. Both run on [Claude Code](https://docs.anthropic.com/claude-code).*
+**One-liner:** *the project-management and audit layer for AI-assisted development. Pairs with [gstack](https://github.com/gstack-tools/gstack) for development workflow. Both run on top of [Claude Code](https://docs.anthropic.com/claude-code).*
 
-### Common objections answered
+### Common questions
 
 | Question | Answer |
 |---|---|
-| *Isn't 5-NUX just gstack?* | No. gstack does **dev** workflow (codex / ship / qa / pre-landing review). 5-NUX does **PM and audit** (RTM / SCA / OSCAL / HMAC sign-off / risk register / ADRs). Same audience, different jobs. A regulated team needs both — they stack, they don't replace. |
-| *Isn't this just Claude Code?* | No. Claude Code is the **runtime**. 5-NUX is the **methodology** that runs on it. Like asking "isn't Linux just the kernel?" — the kernel doesn't make decisions about your build process. |
-| *Why not Jira / Linear / Notion / Confluence?* | Those are SaaS UIs with their own data store. 5-NUX is **git-native AND AI-native** — every artifact is a markdown file in your repo, every action is a CLI verb, every output has a `--json` mode. Different category of thing. Use them ALONGSIDE 5-NUX (kanban in Linear, audit trail in 5-NUX). |
-| *Do I have to use Claude Code?* | The verbs run as standalone Node.js — no Claude Code required for the OSS path. Claude Code is the AI-native acceleration; 5-NUX works with or without it. |
+| *Isn't 5-NUX just gstack?* | No. gstack handles **development** workflow (review code, ship code, run QA). 5-NUX handles **project management and audits** (traceability, security reports, tamper-proof sign-off, risk register, decision records). Same audience, different jobs. A regulated team needs both. |
+| *Isn't this just Claude Code?* | No. Claude Code is the **AI assistant**. 5-NUX is the **playbook** that runs on top of it. Like asking "isn't Linux just the kernel?" — the kernel doesn't decide your build process. |
+| *Why not Jira / Linear / Notion / Confluence?* | Those are SaaS apps with their own database. 5-NUX lives in your git repo — every artifact is a markdown file, every command has a JSON output. Different category. Use them **alongside** 5-NUX (kanban in Linear, audit trail in 5-NUX). |
+| *Do I have to use Claude Code?* | No. The verbs run as plain Node.js — you don't need any AI assistant for the open-source path. Claude Code makes things faster; 5-NUX works with or without it. |
 
-### Why the stack wins over single-vendor SaaS
+### Why a stack of small tools beats one big SaaS
 
-- **No lock-in.** Every layer is OSS and replaceable. If you outgrow gstack, swap it. If you fork 5-NUX, fork it. Your data is markdown in your git repo.
-- **No procurement cycle.** Three `npm install -g` commands instead of three SaaS vendor reviews.
-- **Audit-grade by construction.** Git history is the audit trail. The methodology layer (5-NUX) generates regulator-ready evidence (RTM / SCA / OSCAL) without any extra tooling.
+- **No lock-in.** Every layer is open-source and replaceable. Outgrow gstack? Swap it. Want to fork 5-NUX? Fork it. Your data is markdown in your git repo.
+- **No procurement cycle.** Three `npm install -g` commands instead of three vendor reviews.
+- **Audit-ready by default.** Your git history is the audit trail. The 5-NUX layer generates the reports auditors want — without any extra tooling.
 
 ---
 
-## The 7 packages
+## The seven packages
 
-| Package | Layer | Status | Verbs |
-|---|---|---|---|
-| `@leapnux/rootnux` | intent (specs, ADRs, risks, KB) | active | `init`, `lint`, `adr-new`, `risk-add`, `status`, `kb-init` |
-| `@leapnux/trunknux` | build (sprint scaffolding) | active | `new-sprint`, `summarize`, `lint`, `log` |
-| `@leapnux/branchnux` | verification (test plans, reports, LLM planning) | active | `init`, `plan`, `codify`, `enrich`, `discover`, `batch-plan`, `report`, `validate`, `run`, `compare`, `visual baseline`, `visual compare`, `doctor`, `demo` (~14 verbs) |
-| `@leapnux/fruitnux` | external deliverables (SCAs, OSCAL, sign-offs, RTM) | active | `sca init`, `sca generate`, `sca pdf`, `sca oscal`, `sign`, `sign pdf`, `sign stale-check`, `br init`, `br link`, `br rtm`, `rtm` (~11 verbs) |
-| `@leapnux/leafnux` | continuous health | active | `health` |
-| `@leapnux/6nux-core` | shared library | active | (no CLI; shared schemas, conventions, IDs, utils) |
-| `@leapnux/5nux` | meta-package | active | (no CLI; installs all 5 active NUX CLIs + 6nux-core) |
+The names follow a tree metaphor — each package maps to a project stage. The "just call it…" column is the friendly name we use in conversation.
+
+| Just call it… | Package name | What it does | Status | Commands |
+|---|---|---|---|---|
+| The **Planning** tool | `@leapnux/rootnux` | Specs, decision records, risks, knowledge base | active | `init`, `lint`, `adr-new`, `risk-add`, `status`, `kb-init` |
+| The **Sprint** tool | `@leapnux/trunknux` | Sprint folders + weekly logs | active | `new-sprint`, `summarize`, `lint`, `log` |
+| The **Test** tool | `@leapnux/branchnux` | Test plans, reports, AI-drafted planning | active | `init`, `plan`, `codify`, `enrich`, `discover`, `batch-plan`, `report`, `validate`, `run`, `compare`, `visual baseline`, `visual compare`, `doctor`, `demo` (~14 commands) |
+| The **Audit-Pack** tool | `@leapnux/fruitnux` | Security reports, compliance JSON, sign-off, traceability | active | `sca init`, `sca generate`, `sca pdf`, `sca oscal`, `sign`, `sign pdf`, `sign stale-check`, `br init`, `br link`, `br rtm`, `rtm` (~11 commands) |
+| The **Health-Check** tool | `@leapnux/leafnux` | Ongoing project-state snapshot | active | `health` |
+| The **Shared library** | `@leapnux/6nux-core` | Internal — you don't run it directly | active | — |
+| The **Bundle** | `@leapnux/5nux` | One install that pulls in all five tools at once | active | — |
 
 ---
 
 ## Install
 
-> **Not yet published.** `@leapnux/*` packages are not yet on npm — org claim and scope reservation are pending. Clone this repo and run via the package binaries from the workspace root (see below).
+> **Not yet on npm.** The `@leapnux/*` namespace is being claimed; until then, clone this repo and run the package binaries from the workspace root.
 
 ```sh
-# Coming soon (once @leapnux scope is claimed on npm):
-npm install -g @leapnux/5nux        # full stack (all 5 active NUX CLIs + 6nux-core)
-npm install -g @leapnux/rootnux     # just requirements + ADRs + risks + KB
-npm install -g @leapnux/trunknux    # just sprint scaffolding
-npm install -g @leapnux/branchnux   # just verification + RTM + SCA + OSCAL + sign-off
-npm install -g @leapnux/leafnux     # just continuous-health snapshots
+# Coming soon (once the @leapnux namespace is claimed on npm):
+npm install -g @leapnux/5nux        # the whole bundle (all five tools + shared library)
+npm install -g @leapnux/rootnux     # just specs + decisions + risks + knowledge base
+npm install -g @leapnux/trunknux    # just sprint folders
+npm install -g @leapnux/branchnux   # just test planning + reports
+npm install -g @leapnux/fruitnux    # just audit hand-off (security reports, compliance JSON, sign-off, traceability)
+npm install -g @leapnux/leafnux     # just ongoing health check
 ```
 
 **Until then — install from source:**
@@ -153,108 +187,119 @@ npm install
 
 ## Quick tour
 
+Each line below is annotated with the friendly tool name in `[brackets]` so you can see which tool you're invoking.
+
 ```sh
-rootnux init                                          # scaffold REQUIREMENTS.md + TRACEABILITY.md + risks/ + docs/adr/
-rootnux adr-new "Use PostgreSQL for primary store"    # ADR with sequential numbering
-rootnux kb-init                                       # Knowledge Base scaffold (audit-prep sections)
-trunknux new-sprint v1-launch                         # date-prefixed sprint folder
-trunknux summarize                                    # SPRINT_SUMMARY.md from git log
-branchnux plan login                                  # AI-drafted test plan with [VERIFY] markers
-fruitnux rtm                                          # regenerate TRACEABILITY.md (moved from branchnux in v0.6)
-fruitnux sca init login                               # scaffold 8-section Security Control Assessment
-fruitnux sca generate login                           # fill SCA evidence rows from test results
-fruitnux sca oscal login                              # NIST OSCAL 1.1.2 JSON
-fruitnux sign login                                   # HMAC-chained sign-off
-leafnux health                                        # GREEN/AMBER/RED snapshot of project state
+# [Planning tool]
+rootnux init                                          # set up REQUIREMENTS.md + traceability + risks + decision-record folders
+rootnux adr-new "Use PostgreSQL for primary store"    # new decision record, auto-numbered
+rootnux kb-init                                       # set up the knowledge-base scaffold (audit-prep sections)
+
+# [Sprint tool]
+trunknux new-sprint v1-launch                         # new dated sprint folder
+trunknux summarize                                    # auto-generate a sprint summary from your git log
+
+# [Test tool]
+branchnux plan login                                  # AI-drafted test plan (every AI line flagged for human review)
+
+# [Audit-Pack tool]
+fruitnux rtm                                          # regenerate the traceability matrix
+fruitnux sca init login                               # set up an 8-section security control report
+fruitnux sca generate login                           # fill in the report from your test results
+fruitnux sca oscal login                              # export it as government-standard compliance JSON
+fruitnux sign login                                   # cryptographically sign the report — tampering is detectable
+
+# [Health-Check tool]
+leafnux health                                        # red / amber / green snapshot of project state
 ```
 
-Full verb reference: [`docs/reference.md`](docs/reference.md). First-15-minutes walkthrough: [`docs/getting-started.md`](docs/getting-started.md).
+Full command reference: [`docs/reference.md`](docs/reference.md). First-15-minutes walkthrough: [`docs/getting-started.md`](docs/getting-started.md).
 
 ---
 
-## Stakeholders × AI roles
+## Who runs what — and where AI helps
 
-Each NUX node serves a different stakeholder, with a different relationship to AI-drafted content:
+Each tool serves a different role on the team, with a different relationship to AI-drafted content:
 
-| Node | Stage | Human stakeholder | AI's typical role |
+| Tool | Stage | Who uses it | What AI does here |
 |---|---|---|---|
-| **rootnux** | Requirement | Product / PM / spec author | Drafts R-XX entries, scaffolds ADRs |
-| **trunknux** | Development | Dev / Eng | Summarizes git log, drafts narrative |
-| **branchnux** | Test + validation | QA / Test lead | Discovers test scenarios, generates plans (with `[VERIFY]` markers) |
-| **leafnux** | Continuous health | Eng / SRE | Reads artifacts, computes RAG status |
-| **fruitnux** | Audit handoff | Compliance / Legal / external auditor | Generates SCA, OSCAL, HMAC sign-off ledgers, RTM, BR-attestations |
+| **Planning tool** (`rootnux`) | Requirements | Product / project manager / spec author | Drafts requirement entries, sets up decision records |
+| **Sprint tool** (`trunknux`) | Development | Developer / engineer | Summarizes the git log, drafts the sprint narrative |
+| **Test tool** (`branchnux`) | Test + verification | QA / test lead | Discovers test scenarios, drafts test plans (each AI line flagged for human review) |
+| **Health-Check tool** (`leafnux`) | Ongoing health | Engineer / SRE | Reads the artifacts, computes a red/amber/green status |
+| **Audit-Pack tool** (`fruitnux`) | Audit hand-off | Compliance / legal / external auditor | Generates security reports, compliance JSON, sign-off ledgers, traceability |
 
-Where the AI/human boundary sits at each stage, the four collab patterns (drafted-by-AI/attested-by-human, append-only enrichment, one-agent-per-slug, cost-gated automation), and the typical end-to-end cycle — see [`docs/collaboration.md`](docs/collaboration.md).
+For where the AI/human boundary sits at each stage, the four collaboration patterns (drafted-by-AI / confirmed-by-human, append-only enrichment, one agent per topic, cost-gated automation), and the typical end-to-end cycle — see [`docs/collaboration.md`](docs/collaboration.md).
 
 ---
 
-## Project folder layout
+## Folder layout in your project
 
-The five NUX nodes are **peers** at your project root — different stakeholders, different folders, parallel views of the same project. Nothing is nested under another node:
+The five tools produce **peer folders** at the root of your project — different roles, different folders, parallel views of the same project. Nothing is nested under another tool:
 
 ```
 your-project/
-├── requirements/                  ← rootnux  (Product / PM)
-│   ├── REQUIREMENTS.md            ← R-XX specs
-│   ├── TRACEABILITY.md            ← RTM (generated by branchnux rtm)
+├── requirements/                  ← Planning tool (rootnux) — Product / PM
+│   ├── REQUIREMENTS.md            ← R-XX requirement entries
+│   ├── TRACEABILITY.md            ← traceability matrix (generated by Audit-Pack tool)
 │   ├── risks/risks.md             ← risk register
-│   └── validations/<surface>/     ← branchnux + fruitnux output (SCAs, audit packets)
+│   └── validations/<surface>/     ← test results + audit packets (Test + Audit-Pack tools)
 │
-├── docs/                          ← rootnux  (Product / PM)
-│   ├── adr/NNNN-<slug>.md         ← ADRs (rootnux adr-new)
-│   └── KNOWLEDGE_BASE.md          ← KB scaffold (rootnux kb-init)
+├── docs/                          ← Planning tool (rootnux) — Product / PM
+│   ├── adr/NNNN-<slug>.md         ← decision records (rootnux adr-new)
+│   └── KNOWLEDGE_BASE.md          ← knowledge-base scaffold (rootnux kb-init)
 │
-├── sprint-log/                    ← trunknux  (Dev / Eng)
+├── sprint-log/                    ← Sprint tool (trunknux) — Dev / Eng
 │   └── <date>_<slug>/
 │       ├── README.md              ← sprint scaffold (trunknux new-sprint)
 │       ├── LOG.md                 ← weekly journal entries (trunknux log)
 │       └── SPRINT_SUMMARY.md      ← git-log roll-up (trunknux summarize)
 │
-├── testing-log/                   ← branchnux  (QA / Test lead)
+├── testing-log/                   ← Test tool (branchnux) — QA / test lead
 │   └── <date>_<surface>/
-│       ├── test-plan.md           ← TC matrix + Given/When/Then (branchnux plan)
+│       ├── test-plan.md           ← test cases + Given/When/Then steps (branchnux plan)
 │       ├── execution-log.md       ← run results (auto-generated)
 │       └── evidence/              ← screenshots, logs (auto)
 │
-├── <your-app-source>/             ← your code (whatever framework you use — outside 5-NUX scope)
+├── <your-app-source>/             ← your code (whatever framework — outside 5-NUX scope)
 │
-└── (leafnux output: lives in your CI / dependabot / observability stack — not in the repo)
+└── (Health-Check output: lives in your CI / dependabot / observability tools — not in the repo)
 ```
 
-NUX packages do **not** import each other — they communicate via file-system conventions in `@leapnux/6nux-core`. Implementation spec: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+The five tools do **not** import each other — they coordinate through file conventions in `@leapnux/6nux-core`. Implementation details: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ---
 
 ## 📚 Documentation
 
-- **[`docs/MOTTO.md`](docs/MOTTO.md)** — OSS / Premium product split (and why it stays sharp)
-- **[`docs/scope.md`](docs/scope.md)** — what 5-NUX is, isn't, and what's actually enough; comparison vs. DOORS / Polarion / Jama
-- **[`docs/collaboration.md`](docs/collaboration.md)** — stakeholders + AI/human collaboration patterns at each stage
-- **[`docs/6-NUX.md`](docs/6-NUX.md)** — taxonomy schema (the conceptual model)
-- **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** — implementation spec (monorepo layout, package contracts, security model)
-- **[`docs/concepts.md`](docs/concepts.md)** — three-track discipline, `[VERIFY]` markers, HMAC chain, deterministic-core vs. opt-in-AI split
-- **[`docs/getting-started.md`](docs/getting-started.md)** — first 15 minutes
-- **[`docs/reference.md`](docs/reference.md)** — full verb reference
-- **[`docs/adr/`](docs/adr/)** — Architecture Decision Records (7 locked decisions documented via `rootnux adr-new` itself)
+- **[`docs/MOTTO.md`](docs/MOTTO.md)** — what's free vs. what's a paid premium offering (and why we keep that line sharp)
+- **[`docs/scope.md`](docs/scope.md)** — what 5-NUX is, what it isn't, what's enough on its own; comparison vs. DOORS / Polarion / Jama
+- **[`docs/collaboration.md`](docs/collaboration.md)** — who does what, and how AI and humans collaborate at each stage
+- **[`docs/6-NUX.md`](docs/6-NUX.md)** — the conceptual model (root / trunk / branch / leaf / fruit / soil)
+- **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** — implementation details (monorepo layout, package contracts, security model)
+- **[`docs/concepts.md`](docs/concepts.md)** — three-track discipline, `[VERIFY]` markers, the cryptographic chain, deterministic-core vs. opt-in-AI split
+- **[`docs/getting-started.md`](docs/getting-started.md)** — your first 15 minutes
+- **[`docs/reference.md`](docs/reference.md)** — full command reference
+- **[`docs/adr/`](docs/adr/)** — decision records (7 locked architectural decisions, all written via `rootnux adr-new` itself)
 - **[`CHANGELOG.md`](CHANGELOG.md)** — release history
-- **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — how to contribute (DCO, hygiene rules, workspace workflow)
+- **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — how to contribute (commit sign-off, hygiene rules, workspace workflow)
 
 ---
 
 ## Roadmap
 
-- **v0.4.x** — alpha series; rootnux + trunknux + branchnux mature; leafnux + fruitnux brought into active OSS scope
+- **v0.4.x** — alpha series; rootnux + trunknux + branchnux mature; leafnux + fruitnux brought into active scope
 - **v0.5.0-alpha.1** — `trunknux log`, `rootnux kb-init`, `leafnux health` shipped; `fruitnux pack` in design
-- **v0.6** — `branchnux mcp` MCP server on stdio (Claude Code integration via `.claude/settings.json mcpServers`)
-- **v1.0** — stability + landing page at leapnux.com + 6-NUX commercial spec
+- **v0.6** — direct Claude Code integration (Anthropic's Model Context Protocol — wires 5-NUX commands straight into your AI assistant via `.claude/settings.json`)
+- **v1.0** — stability + landing page at leapnux.com + the commercial premium spec
 
-[Open an issue](https://github.com/leapnux/5nux/issues) to propose what to prioritize next.
+[Open an issue](https://github.com/leapnux/5nux/issues) to vote on what to prioritize next.
 
 ---
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md). Quick version: sign commits with `git commit -s` (DCO, no CLA), ship tests with every PR, open an issue before a large change.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md). Quick version: sign your commits with `git commit -s` (a one-line "I wrote this" certificate — no extra paperwork to sign), include tests with every pull request, open an issue first for anything large.
 
 ---
 
